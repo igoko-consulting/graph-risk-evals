@@ -37,11 +37,12 @@ def fit_predict(config: dict, seed: int, X: np.ndarray, y: np.ndarray, train: np
     return model.predict_proba(X[score])[:, 1]
 
 
-def tune(X: np.ndarray, y: np.ndarray, train: np.ndarray, validation: np.ndarray, seed: int) -> tuple[dict, list[dict]]:
+def search(configs: list[dict], fit_predict_fn, y: np.ndarray, validation: np.ndarray) -> tuple[dict, list[dict]]:
+    """Random search shared by every arm: fit_predict_fn(config) returns validation scores."""
     trials = []
-    for config in sample_configs(seed):
+    for config in configs:
         started = time.perf_counter()
-        scores = fit_predict(config, seed, X, y, train, validation)
+        scores = fit_predict_fn(config)
         trials.append({
             "config": config,
             "validation_average_precision": float(average_precision_score(y[validation], scores)),
@@ -49,3 +50,7 @@ def tune(X: np.ndarray, y: np.ndarray, train: np.ndarray, validation: np.ndarray
         })
     best = max(range(len(trials)), key=lambda i: trials[i]["validation_average_precision"])
     return trials[best]["config"], trials
+
+
+def tune(X: np.ndarray, y: np.ndarray, train: np.ndarray, validation: np.ndarray, seed: int) -> tuple[dict, list[dict]]:
+    return search(sample_configs(seed), lambda c: fit_predict(c, seed, X, y, train, validation), y, validation)
