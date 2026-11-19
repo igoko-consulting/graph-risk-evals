@@ -57,8 +57,8 @@ Source: `mirror`. Files verified against pinned SHA-256 checksums.
 
 ### Operating point
 
-- k = **101.8235**, the mean illicit labels per step over steps 1 to 34 (3,462 labels over 34 steps). Computed before any test step is read.
-- Not pre-registered; open, to be fixed before any arm is evaluated (see change_log.md).
+- Mean illicit labels per step over steps 1 to 34: 101.8235 (3,462 labels over 34 steps). Computed before any test step is read.
+- k used for precision at k: **102**. Rule: nearest whole number, halves rounded up; fixed 2026-11-19 before any arm was built (see change_log.md).
 
 ### Labels by time step
 
