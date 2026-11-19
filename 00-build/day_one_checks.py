@@ -67,10 +67,10 @@ def render_notes(checks: dict, k: dict, balance: dict) -> str:
         "",
         "### Operating point",
         "",
-        f"- k = **{k['data']['k_mean']:.4f}**, the mean illicit labels per step over steps {k['data']['steps'][0]} to "
-        f"{k['data']['steps'][1]} ({k['data']['illicit_labels_total']:,} labels over {len(k['data']['illicit_labels_per_step'])} steps). "
-        "Computed before any test step is read.",
-        f"- {k['data']['integer_rule'].capitalize()}.",
+        f"- Mean illicit labels per step over steps {k['data']['steps'][0]} to {k['data']['steps'][1]}: "
+        f"{k['data']['k_mean']:.4f} ({k['data']['illicit_labels_total']:,} labels over "
+        f"{len(k['data']['illicit_labels_per_step'])} steps). Computed before any test step is read.",
+        f"- k used for precision at k: **{k['data']['k']}**. Rule: {k['data']['integer_rule']}.",
         "",
         "### Labels by time step",
         "",

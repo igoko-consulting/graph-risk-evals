@@ -1,3 +1,5 @@
+import math
+
 import duckdb
 
 from paths import COLUMNAR_STORE
@@ -24,15 +26,17 @@ def main() -> None:
     assert all(r[1] > 0 for r in rows), "a step in 1 to 34 has no nodes"
     illicit = {r[0]: r[2] for r in rows}
     k_mean = sum(illicit.values()) / len(illicit)
+    k = math.floor(k_mean + 0.5)
     path = write_result("k", {
         "definition": "Mean number of illicit labels per time step across steps 1 to 34, computed before any test step is read",
         "steps": [first, last],
         "illicit_labels_per_step": illicit,
         "illicit_labels_total": sum(illicit.values()),
         "k_mean": k_mean,
-        "integer_rule": "not pre-registered; open, to be fixed before any arm is evaluated (see change_log.md)",
+        "k": k,
+        "integer_rule": "nearest whole number, halves rounded up; fixed 2026-11-19 before any arm was built (see change_log.md)",
     })
-    print(f"k = {k_mean:.4f} from steps {first} to {last}; written to {path.name}")
+    print(f"k = {k} (mean {k_mean:.4f}) from steps {first} to {last}; written to {path.name}")
 
 
 if __name__ == "__main__":

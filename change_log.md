@@ -27,8 +27,11 @@ The pre-registration is hashed and tagged, so it cannot be corrected in place. T
 1. **Specification version.** It cites `prds/prd-v2.md` v2.3. The PRD was at v2.4 when the tag was made. v2.4 added requirement traceability to the architecture table and pointed the junction diagram at the pre-registration for thresholds. No hypothesis, definition, period or kill criterion differs between the two.
 2. **Tuning parity names two arms.** The protocol commitments say "Arms A and D receive the same tuning search method...". The PRD tuning contract says the protocol is identical across arms. It is read as applying to every arm, A, B and D.
 
+### Integer rule for k
+
+**k is the mean rounded to the nearest whole number, halves rounded up.** The pre-registration defines k as a mean, which is not a whole number, and a top-k queue needs one. The rule was chosen by the author after the mean was known (`results/k.json`), with no arm built, no model score produced and no test-step result seen. Rounding to nearest is the plainest reading of sizing a queue from historical case volume. `00-build/compute_k.py` applies it and writes both the mean and the integer.
+
 ### Open before Phase 2
 
-- **Integer rule for k.** The pre-registration defines k as a mean, which is not a whole number (`results/k.json`). A top-k queue needs a whole number. The rounding rule must be fixed and recorded here before any arm is evaluated, without reference to test-step data.
 - **Analyst cost per alert.** Still open, as the pre-registration records.
 - **Two-stage predicted-score aggregation.** Leakage design and test still to be written before Arm B runs.
