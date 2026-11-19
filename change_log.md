@@ -18,14 +18,14 @@ Dated decisions. Figures live in `results/`; this file points to them rather tha
 
 **Leakage gate status.** The future-edge and label-shuffle tests do not exist yet because no model features exist yet. `00-build/results_io.py` refuses to write any result flagged as using model features until they do. Session 1 results use labels and graph structure only.
 
-**Library finding for Phase 2.** LightGBM 4.7.0 and XGBoost 3.4.1 install on macOS but fail to load without Homebrew's `libomp`. scikit-learn 1.9.1's histogram gradient boosting, torch 2.15.0 and torch-geometric 2.8.1 all load and run on Python 3.13 CPU with no system dependencies. The gradient-boosted tree library is chosen in Phase 2; a clean clone on a stock Mac is the constraint.
+**Library finding for Phase 2.** LightGBM 4.7.0 and XGBoost 3.4.1 install on macOS but fail to load without Homebrew's `libomp`. scikit-learn 1.9.1's histogram gradient boosting, torch 2.15.0 and torch-geometric 2.8.1 all load and run on Python 3.13 CPU with no system dependencies. **Gradient-boosted trees: scikit-learn's `HistGradientBoostingClassifier`.** Chosen by the author on 2026-11-19, before any arm was built, because a clean clone must run on a stock Mac with no system libraries installed by hand. LightGBM is the more common choice in practice; using it would mean asking every reviewer to install Homebrew first. Pinned when Phase 2 first imports it.
 
 ### Errata to the pre-registration
 
 The pre-registration is hashed and tagged, so it cannot be corrected in place. These are recorded here before any arm has run.
 
 1. **Specification version.** It cites `prds/prd-v2.md` v2.3. The PRD was at v2.4 when the tag was made. v2.4 added requirement traceability to the architecture table and pointed the junction diagram at the pre-registration for thresholds. No hypothesis, definition, period or kill criterion differs between the two.
-2. **Tuning parity names two arms.** The protocol commitments say "Arms A and D receive the same tuning search method...". The PRD tuning contract says the protocol is identical across arms. It is read as applying to every arm, A, B and D.
+2. **Tuning parity names two arms.** The protocol commitments say "Arms A and D receive the same tuning search method...". The PRD tuning contract says the protocol is identical across arms. It applies to every arm, A, B and D, as confirmed by the author on 2026-11-19.
 
 ### Integer rule for k
 

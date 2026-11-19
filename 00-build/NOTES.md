@@ -30,7 +30,7 @@
 ## Friction and findings
 
 - **Kùzu to LadybugDB.** Kùzu is archived. LadybugDB 0.19.0 onwards links Homebrew's OpenSSL on macOS and fails to load without it, so 0.18.3 is pinned. Surfacing this on day one rather than in Phase 2 is the point of the thin slice.
-- **Gradient-boosted trees on a stock Mac.** LightGBM and XGBoost need Homebrew's `libomp`. scikit-learn's histogram gradient boosting does not. Decide in Phase 2.
+- **Gradient-boosted trees on a stock Mac.** LightGBM and XGBoost need Homebrew's `libomp`. scikit-learn's histogram gradient boosting does not, so Arms A and B use it.
 - **Layout.** Pipeline code lives here as scripts with snake_case names, because Python cannot import a hyphenated module. `PYTHONPATH` is set by the Makefile and `pytest.ini`. Artefacts keep kebab-case names.
 - **One graph database, not 49.** Each per-step graph is the set of nodes sharing a `time_step` property; queries take the step as a parameter. With no cross-step edges this is equivalent to separate graphs and far simpler to load.
 - **Deterministic chart output.** Charts use matplotlib's bundled font, text drawn as paths and a fixed SVG hash salt, so a rerun on any machine produces the same bytes and diffs only show real changes.
