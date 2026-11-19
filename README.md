@@ -45,6 +45,7 @@ Each rung is climbed only once the one below has been measured and plateaued.
 
 ## The decision matrix
 
+<!-- generated:decision-matrix by 00-build/render_readme.py from results/; do not edit by hand -->
 _Populated from `results/` when Phase 3 completes._
 
 | Finding | Product decision | Evidence |
@@ -53,6 +54,7 @@ _Populated from `results/` when Phase 3 completes._
 | Graph features materially improve detection economics | Invest in graph-derived features, not graph models | _pending_ |
 | The GNN adds material value beyond graph features | Investigate whether the operational burden is justified | _pending_ |
 | All arms perform similarly | Do not invest further on the basis of this dataset | _pending_ |
+<!-- end generated:decision-matrix -->
 
 ---
 
@@ -89,6 +91,12 @@ k = 102 alerts per time step (`results/k.json`). PR-AUC is average precision poo
 **Phase 2 finding (draft for the author to edit).** Adding graph features lifted precision at k before the regime shift: B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band. Arm D is built in Phase 3 to test whether learned message passing adds more than hand-built graph features. After the shift at step 43, precision at k was 4.9% for A and 10.9% for B; B minus A +6.0 pts (+4.2 pts to +7.7 pts), B higher, outside the noise band. There are fewer illicit labels than alerts after the shift, so no model could exceed 23.7% there (before the shift the ceiling is 81.4%). Mean per-step PR-AUC fell by 89.0% for A and 85.5% for B from the pre-shift to the post-shift period. H3 is assessed across all arms in Phase 3. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. The post-shift period has few illicit labels, which caps precision at k there.
 <!-- end generated:results -->
 
+### Hypotheses
+
+<!-- generated:hypotheses by 00-build/render_readme.py from results/; do not edit by hand -->
+_Assessed when Phase 3 completes, against the rules in [`01-the-bet/pre-registration.md`](01-the-bet/pre-registration.md) and [`change_log.md`](change_log.md)._
+<!-- end generated:hypotheses -->
+
 ---
 
 ## Deliverables at a glance
@@ -117,9 +125,11 @@ k = 102 alerts per time step (`results/k.json`). PR-AUC is average precision poo
 
 Separated deliberately into three categories.
 
+<!-- generated:limitations by 00-build/render_readme.py from results/; do not edit by hand -->
 **What this demonstrates.** _pending results._
 
 **What this suggests.** _pending results._
+<!-- end generated:limitations -->
 
 **What this cannot establish.**
 

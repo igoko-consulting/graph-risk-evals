@@ -167,9 +167,127 @@ def precision_at_k_a_b() -> None:
     _save(fig, "precision-at-k-arms-a-b.svg")
 
 
+ARM_D = "#1baf7a"
+ARMS = (("A", ARM_A, "Arm A, local features"), ("B", ARM_B, "Arm B, plus graph features"),
+        ("D", ARM_D, "Arm D, GraphSAGE"))
+
+
+def _diff_panel(ax, comparisons: list[tuple[str, dict]]) -> None:
+    lows = [c["interval_95"]["low"] for _, c in comparisons]
+    highs = [c["interval_95"]["high"] for _, c in comparisons]
+    left, right = min(min(lows), 0.0), max(max(highs), 0.0)
+    width = (right - left) or 0.01
+    for y, (label, c) in enumerate(comparisons):
+        lo, hi = c["interval_95"]["low"], c["interval_95"]["high"]
+        ax.plot([lo, hi], [y, y], color=TEXT_SECONDARY, linewidth=2, solid_capstyle="round")
+        ax.plot([c["difference"]], [y], marker="o", markersize=8, color=TEXT, markeredgecolor=SURFACE, markeredgewidth=2)
+        ax.text(right + 0.06 * width, y, f"{c['difference'] * 100:+.1f} pts ({lo * 100:+.1f} to {hi * 100:+.1f}), {c['verdict']}",
+                va="center", ha="left", color=TEXT_SECONDARY, fontsize=8)
+    ax.axvline(0, color=TEXT, linewidth=1)
+    ax.set_yticks(range(len(comparisons)))
+    ax.set_yticklabels([label for label, _ in comparisons])
+    ax.set_ylim(-0.6, len(comparisons) - 0.4)
+    ax.invert_yaxis()
+    ax.set_facecolor(SURFACE)
+    ax.grid(axis="x", color=GRID, linewidth=0.8)
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+    ax.tick_params(length=0)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v * 100:+.0f} pts" if v else "0"))
+    ax.set_xlim(left - 0.1 * width, right + 1.5 * width)
+
+
+def precision_at_k_all_arms() -> None:
+    ev = read_result("evaluation-phase-3")["data"]
+    k = ev["k"]
+    fig, (top, bottom) = plt.subplots(
+        2, 1, figsize=(10, 7.2), gridspec_kw={"height_ratios": [3, 2], "hspace": 0.45}
+    )
+    fig.patch.set_facecolor(SURFACE)
+    periods = ("pre_shift_test", "post_shift_test")
+    for arm, colour, label in ARMS:
+        rows = [r for p in periods for r in ev["metrics"][arm][p]["per_step"]]
+        top.plot([r["time_step"] for r in rows], [r["precision_at_k"] for r in rows], color=colour, linewidth=2,
+                 marker="o", markersize=5, markeredgecolor=SURFACE, markeredgewidth=1.5, label=label)
+    rows = [r for p in periods for r in ev["metrics"]["A"][p]["per_step"]]
+    top.step([r["time_step"] for r in rows], [min(r["illicit"], k) / k for r in rows], where="mid", color=TEXT_SECONDARY,
+             linewidth=1, linestyle=(0, (3, 2)), label="Best possible")
+    _frame(top)
+    top.set_ylabel(f"Precision at k = {k}")
+    top.set_ylim(0, 1.14)
+    top.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    top.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    top.set_xticks(range(35, 50))
+    top.set_xlim(34.5, 49.5)
+    top.set_xlabel("Test time step")
+    top.text(38.5, 1.12, "Pre-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    top.text(46, 1.12, "Post-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    fig.legend(loc="upper left", frameon=False, ncol=4, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.935),
+               handlelength=1.6, columnspacing=1.4)
+    pre = "pre_shift_test"
+    _diff_panel(bottom, [(f"{pair}, pre-shift", ev["comparisons"][pair][pre]["p_at_k"])
+                         for pair in ("B minus A", "D minus B", "D minus A")])
+    bottom.set_xlabel("Difference in precision at k pooled over steps 35 to 42, with 95% bootstrap interval")
+    fig.suptitle("Precision at k by test step, all arms", x=0.07, y=0.985, ha="left", fontsize=13, color=TEXT,
+                 fontweight="bold")
+    fig.text(0.07, 0.945, f"Top {k} labelled transactions per step, scores averaged over five seeds. "
+             "Dashed: the best any ranking could do.", ha="left", color=TEXT_SECONDARY, fontsize=8.5)
+    fig.text(0.07, 0.012, "Labelled transactions only; unlabelled is not licit. One dataset, one regime shift. "
+             "Cryptocurrency data, not payments data.\nSource: results/evaluation-phase-3.json.",
+             ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
+    fig.subplots_adjust(left=0.16, right=0.985, top=0.87, bottom=0.12)
+    _save(fig, "precision-at-k-all-arms.svg")
+
+
+def label_budget_curve() -> None:
+    lb = read_result("label-budget-curve")["data"]
+    k = lb["k"]
+    budgets = lb["budgets_percent"]
+    pre = "pre_shift_test"
+    fig, ax = plt.subplots(figsize=(10, 5.6))
+    fig.patch.set_facecolor(SURFACE)
+    for arm, colour, label in ARMS:
+        points = [lb["curve"][f"{b:03d}"][pre][arm] for b in budgets]
+        y = [p["precision_at_k_pooled"] for p in points]
+        ax.fill_between(budgets, [p["interval_95"]["low"] for p in points], [p["interval_95"]["high"] for p in points],
+                        color=colour, alpha=0.15, linewidth=0)
+        ax.plot(budgets, y, color=colour, linewidth=2, marker="o", markersize=6, markeredgecolor=SURFACE,
+                markeredgewidth=1.5, label=label)
+        ax.text(budgets[-1] * 1.06, y[-1], label.split(",")[0], va="center", ha="left", color=TEXT, fontsize=8.5)
+    ax.set_xscale("log")
+    ax.set_xticks(budgets)
+    ax.set_xticklabels([f"{b}%" for b in budgets])
+    ax.minorticks_off()
+    ax.set_xlim(budgets[0] * 0.85, budgets[-1] * 1.45)
+    ax.set_facecolor(SURFACE)
+    ax.grid(axis="y", color=GRID, linewidth=0.8)
+    ax.set_axisbelow(True)
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+    ax.tick_params(length=0)
+    ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    ax.set_ylabel(f"Precision at k = {k}, pre-shift")
+    ax.set_xlabel("Share of training labels used")
+    fig.legend(loc="upper left", frameon=False, ncol=3, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.915),
+               handlelength=1.6, columnspacing=1.6)
+    fig.suptitle("Label-budget curve: precision at k as training labels shrink", x=0.07, y=0.985, ha="left",
+                 fontsize=13, color=TEXT, fontweight="bold")
+    fig.text(0.07, 0.925, "Pooled over steps 35 to 42. Bands are 95% bootstrap intervals. Full protocol re-run at every budget.",
+             ha="left", color=TEXT_SECONDARY, fontsize=8.5)
+    fig.text(0.07, 0.015, "Validation labels kept in full at every budget, so small budgets are somewhat optimistic. "
+             "Cryptocurrency data, not payments data.\nSource: results/label-budget-curve.json.",
+             ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
+    fig.subplots_adjust(left=0.08, right=0.985, top=0.82, bottom=0.17)
+    _save(fig, "label-budget-curve.svg")
+
+
 if __name__ == "__main__":
     from paths import RESULTS
 
     class_balance()
     if (RESULTS / "evaluation-arms-a-b.json").is_file():
         precision_at_k_a_b()
+    if (RESULTS / "evaluation-phase-3.json").is_file():
+        precision_at_k_all_arms()
+    if (RESULTS / "label-budget-curve.json").is_file():
+        label_budget_curve()
