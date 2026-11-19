@@ -67,3 +67,28 @@ def test_ties_break_by_node_order_not_at_random():
     scores = np.array([0.5, 0.5, 0.5])
     positives = np.array([False, True, True])
     assert evaluate_arms.tp_at(scores, positives, 1) == 0
+
+
+def test_label_budgets_nest_keep_class_balance_and_leave_validation_alone():
+    from features import BUDGETS, budget_labels
+    steps = np.repeat(np.arange(1, 50), 40)
+    labels = np.tile(np.r_[np.ones(8, int), np.zeros(32, int)], 49)
+    n = len(steps)
+    frame = Frame(np.arange(n), steps, labels, np.zeros((n, 1)), np.zeros((n, 1)))
+    kept = {f: budget_labels(frame, f, seed=2) for f in BUDGETS}
+    training = steps <= 29
+    for small, large in zip(BUDGETS, BUDGETS[1:]):
+        kept_small = set(np.flatnonzero((kept[small] != -1) & training))
+        assert kept_small <= set(np.flatnonzero((kept[large] != -1) & training))
+    quarter = kept[0.25]
+    assert (quarter[training] == 1).sum() == round(0.25 * (labels[training] == 1).sum())
+    assert (quarter[training] == 0).sum() == round(0.25 * (labels[training] == 0).sum())
+    assert np.array_equal(quarter[~training], labels[~training])
+    assert np.array_equal(kept[1.0], labels)
+
+
+def test_arm_d_drops_cross_step_edges():
+    from arm_d import same_step_edges
+    steps = np.array([1, 1, 2, 2])
+    src, dst = same_step_edges(np.array([0, 1, 2, 0]), np.array([1, 0, 3, 3]), steps)
+    assert list(zip(src, dst)) == [(0, 1), (1, 0), (2, 3)]

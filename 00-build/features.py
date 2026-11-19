@@ -87,3 +87,19 @@ def stage_one_scores(frame: Frame, fit_predict) -> np.ndarray:
     scores[evaluation] = fit_predict(training, evaluation)
     assert not np.isnan(scores).any()
     return scores
+
+
+BUDGETS = (0.05, 0.10, 0.25, 0.50, 1.00)
+
+
+def budget_labels(frame: Frame, fraction: float, seed: int) -> np.ndarray:
+    """Keeps `fraction` of each class among labelled training nodes; one permutation per seed, so budgets nest."""
+    rng = np.random.default_rng([seed, 20261119])
+    labels = frame.labels.copy()
+    training = frame.mask("training")
+    for cls in (ILLICIT, LICIT):
+        members = np.flatnonzero(training & (frame.labels == cls))
+        order = rng.permutation(members)
+        keep = int(round(fraction * len(members)))
+        labels[order[keep:]] = UNKNOWN
+    return labels
