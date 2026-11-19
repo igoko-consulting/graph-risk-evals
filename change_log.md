@@ -106,3 +106,38 @@ Precision at k is reported with its ceiling for each period: the best any rankin
 **Draft interpretation, for the author to edit.** The generated paragraph under Results in the README states the finding with its figures. The gain from graph features is small but clear before the shift, and larger in absolute terms after it, where both arms are far below the ceiling the labels allow. H1 and H2 need Arm D and are assessed in Phase 3.
 
 **Presentation changes after the run, results untouched.** The Phase 2 chart gained a "best possible" line showing where steps have fewer illicit labels than alerts, and its labels were moved so they fit. One drafted README sentence claimed the post-shift intervals were wide. They are not, for precision at k, so it now says that the few post-shift labels cap precision at k. No result file was regenerated for either change.
+
+## 2026-11-19, Phase 3 protocol, fixed before Arm D or any label budget runs
+
+Written after the Phase 2 results for Arms A and B were known, and before any Arm D model or reduced-budget model existed. Where a rule below covers A and B, it is stated so it cannot be chosen to flatter a result already seen.
+
+### Arm D, two-layer GraphSAGE
+
+- **Input:** the 93 local features, standardised with the mean and standard deviation of every node in training steps 1 to 29. No labels are used for scaling.
+- **Graph:** same-step edges only, used in both directions, matching Arm B's in- and out-neighbour features. Edges are filtered to the same step in code, so an injected cross-step edge cannot reach a message.
+- **Architecture, fixed:** SAGEConv with mean aggregation to a hidden layer, ReLU, dropout, SAGEConv to one output. Two layers.
+- **Training, inductive:** full-batch on the subgraph of training steps only. Validation and test nodes and edges are never seen in training. Loss is binary cross-entropy on labelled training nodes, optimiser Adam, no early stopping.
+- **Search, same method and trial count as A and B:** random search, 40 trials per seed, 5 seeds, objective average precision on validation steps 30 to 34. Space: hidden size 32, 64 or 128; learning rate log-uniform 0.001 to 0.03; dropout 0 to 0.5; weight decay log-uniform 0.000001 to 0.001; epochs 50 to 200; class weighting none or balanced. Arm D's search space necessarily differs from the gradient-boosted space; trial count and compute are recorded so the comparison of effort is visible.
+- **Leakage:** the gate also trains a reference Arm D and checks that its scores for earlier steps do not move under the injected future edges, and that no score moves when evaluation labels are shuffled.
+
+### Label-budget curve (H4)
+
+- **Budgets:** 5, 10, 25, 50 and 100 percent of the labelled nodes in training steps 1 to 29. The 100 percent point is the main run.
+- **Sampling:** for each seed, one permutation of the training labels, stratified by class. Each budget takes the first share of it, so smaller budgets are nested inside larger ones. Every arm at a given seed and budget uses the same labels. Labels left out are treated as unknown; the nodes and edges stay in the graph.
+- **Validation labels are kept in full at every budget.** In practice scarce labels would also mean a smaller validation set. This makes the curve somewhat optimistic at small budgets, and it is listed as a limitation.
+- **Full protocol at each budget:** 40 trials, 5 seeds, every arm, with Arm B's stage one retrained on the reduced labels.
+
+### Decision rules
+
+- **H1** uses PR-AUC pooled over the pre-shift period, from seed-averaged scores: (B − A) / (max(B, D) − A). Undefined if neither B nor D beats A. Supported if the 95% bootstrap interval on the ratio lies wholly at or above 0.5. Rejected if it lies wholly below. Otherwise not separable from the threshold.
+- **H2** as pre-registered: rejected only if D − B in pre-shift precision at k is at least 5 points and its 95% interval excludes zero.
+- **H3:** the relative fall in mean per-step PR-AUC from the pre-shift to the post-shift period, per arm. For each pair of arms, the difference in relative fall gets a bootstrap interval. Supported if every simpler arm falls less than every more complex arm, with every pairwise interval excluding zero. Contradicted if any more complex arm falls less than a simpler one, outside the noise band. Otherwise not separable. Phase 2 already showed Arm B falling less than Arm A, recorded in `results/evaluation-arms-a-b.json`. This rule was written knowing that.
+- **H4:** supported if B − A in pre-shift precision at k is larger at 5 percent than at 100 percent, with the 95% interval on that difference of differences wholly above zero. Contradicted if wholly below. Otherwise not separable. The same comparison is reported for D − A.
+- **Bootstrap:** one shared set of 1,000 resamples, stratified by time step, paired across every arm and budget, drawn in the same order as Phase 2, so the A and B intervals match those already published.
+
+### Cost per true positive, modelled
+
+- **Analyst cost:** alerts reviewed (k per step times the steps in the period) times €25, with the range €12.50 to €37.50.
+- **Compute cost:** all recorded fit time for the arm, tuning included, times the threads used, at €0.05 per vCPU-hour. Shown separately so its scale is visible.
+- **Cost per true positive:** analyst plus compute cost, divided by true positives in the top k, pooled over the period. Reported for both periods.
+- **Build days per arm** are an author-time cost the code cannot measure. They are recorded in `03-the-margin/NOTES.md` by the author, not generated.

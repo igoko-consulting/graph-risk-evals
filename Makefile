@@ -3,6 +3,8 @@ VENV := .venv
 PY := $(VENV)/bin/python
 UV := $(shell command -v uv 2>/dev/null || ls $(HOME)/.local/bin/uv 2>/dev/null)
 EXCLUDE_NEWER ?= 2026-11-05
+# CPU-only PyTorch, consulted for PyTorch packages only, so a Linux clone does not pull CUDA libraries.
+TORCH_CPU_INDEX := https://download.pytorch.org/whl/cpu
 STAGES := compute_k class_balance day_one_checks build_graph_store leakage_gate run_arms evaluate_arms render_charts render_readme
 
 export PYTHONPATH := $(CURDIR):$(CURDIR)/00-build
@@ -18,10 +20,10 @@ all: test data
 $(VENV)/.installed: requirements.txt .python-version
 ifneq ($(UV),)
 	$(UV) venv --clear --python $(PYTHON_VERSION) $(VENV)
-	$(UV) pip sync --python $(PY) requirements.txt
+	$(UV) pip sync --python $(PY) --torch-backend cpu requirements.txt
 else
 	python3.13 -m venv --clear $(VENV)
-	$(PY) -m pip install -r requirements.txt
+	$(PY) -m pip install --extra-index-url $(TORCH_CPU_INDEX) -r requirements.txt
 endif
 	@touch $@
 
@@ -39,4 +41,5 @@ distclean: clean
 	rm -rf data $(VENV)
 
 lock:
-	$(UV) pip compile requirements.in --universal --python-version 3.13 --exclude-newer $(EXCLUDE_NEWER) --no-header --no-annotate -o requirements.txt
+	$(UV) pip compile requirements.in --universal --python-version 3.13 --exclude-newer $(EXCLUDE_NEWER) \
+	  --no-header --no-annotate --torch-backend cpu -o requirements.txt
