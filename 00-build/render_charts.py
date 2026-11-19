@@ -90,13 +90,82 @@ def class_balance() -> None:
              "and this is cryptocurrency data, not payments data.\nSource: results/class-balance-by-time-step.json. "
              "Data licence CC BY-NC-ND 4.0.", ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
     fig.subplots_adjust(left=0.07, right=0.985, top=0.86, bottom=0.14)
+    _save(fig, "class-balance-by-time-step.svg")
 
+
+def _save(fig, name: str) -> None:
     CHARTS.mkdir(parents=True, exist_ok=True)
-    target = CHARTS / "class-balance-by-time-step.svg"
+    target = CHARTS / name
     fig.savefig(target, format="svg", facecolor=SURFACE, metadata={"Date": None})
     plt.close(fig)
     print(f"chart written to {target.relative_to(CHARTS.parents[1])}")
 
 
+ARM_A = "#2a78d6"
+ARM_B = "#eb6834"
+
+
+def precision_at_k_a_b() -> None:
+    ev = read_result("evaluation-arms-a-b")["data"]
+    k = ev["k"]
+    fig, (top, bottom) = plt.subplots(
+        2, 1, figsize=(10, 6.4), gridspec_kw={"height_ratios": [3, 1.6], "hspace": 0.45}
+    )
+    fig.patch.set_facecolor(SURFACE)
+    for arm, colour, label in (("A", ARM_A, "Arm A, local features"), ("B", ARM_B, "Arm B, plus graph features")):
+        rows = [r for p in ("pre_shift_test", "post_shift_test") for r in ev["metrics"][arm][p]["per_step"]]
+        top.plot([r["time_step"] for r in rows], [r["precision_at_k"] for r in rows], color=colour, linewidth=2,
+                 marker="o", markersize=5, markeredgecolor=SURFACE, markeredgewidth=1.5, label=label)
+    _frame(top)
+    top.set_ylabel(f"Precision at k = {k}")
+    top.set_ylim(0, 1.05)
+    top.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    top.set_xticks(range(35, 50))
+    top.set_xlim(34.5, 49.5)
+    top.set_xlabel("Test time step")
+    top.text(38.5, 1.02, "Pre-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    top.text(46, 1.02, "Post-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    fig.legend(loc="upper left", frameon=False, ncol=2, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.93),
+               handlelength=1.6, columnspacing=1.6)
+
+    periods = (("pre_shift_test", "Pre-shift, steps 35 to 42"), ("post_shift_test", "Post-shift, steps 43 to 49"))
+    for y, (period, label) in enumerate(periods):
+        c = ev["comparisons_b_minus_a"][period]["p_at_k"]
+        lo, hi = c["interval_95"]["low"], c["interval_95"]["high"]
+        bottom.plot([lo, hi], [y, y], color=TEXT_SECONDARY, linewidth=2, solid_capstyle="round")
+        bottom.plot([c["difference"]], [y], marker="o", markersize=8, color=TEXT, markeredgecolor=SURFACE, markeredgewidth=2)
+        bottom.text(hi, y + 0.28, f"  {c['difference']:+.1%} ({lo:+.1%} to {hi:+.1%}), {c['verdict']}",
+                    va="center", ha="left", color=TEXT_SECONDARY, fontsize=8)
+    bottom.axvline(0, color=TEXT, linewidth=1)
+    bottom.set_yticks([0, 1])
+    bottom.set_yticklabels([p[1] for p in periods])
+    bottom.set_ylim(-0.6, 1.8)
+    bottom.invert_yaxis()
+    bottom.set_facecolor(SURFACE)
+    bottom.grid(axis="x", color=GRID, linewidth=0.8)
+    for side in ("top", "right", "left"):
+        bottom.spines[side].set_visible(False)
+    bottom.tick_params(length=0)
+    bottom.xaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    bottom.set_xlabel("Arm B minus Arm A, precision at k pooled over the period, with 95% bootstrap interval")
+    span = max(abs(v) for p, _ in periods for v in ev["comparisons_b_minus_a"][p]["p_at_k"]["interval_95"].values()
+               if isinstance(v, float))
+    bottom.set_xlim(-span * 1.6, span * 2.6)
+
+    fig.suptitle("Precision at k by test step, Arms A and B", x=0.07, y=0.985, ha="left", fontsize=13, color=TEXT,
+                 fontweight="bold")
+    fig.text(0.07, 0.935, f"Top {k} labelled transactions per step, scores averaged over five seeds.", ha="left",
+             color=TEXT_SECONDARY, fontsize=9)
+    fig.text(0.07, 0.015, "Labelled transactions only; unlabelled is not licit. One dataset, one regime shift. "
+             "Cryptocurrency data, not payments data.\nSource: results/evaluation-arms-a-b.json.",
+             ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
+    fig.subplots_adjust(left=0.2, right=0.985, top=0.86, bottom=0.14)
+    _save(fig, "precision-at-k-arms-a-b.svg")
+
+
 if __name__ == "__main__":
+    from paths import RESULTS
+
     class_balance()
+    if (RESULTS / "evaluation-arms-a-b.json").is_file():
+        precision_at_k_a_b()

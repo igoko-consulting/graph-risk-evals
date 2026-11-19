@@ -66,7 +66,7 @@ Every path terminates in a publishable finding, including the two that stop the 
 
 ![Architecture](docs/img/architecture.png)
 
-Two gates can halt the pipeline. **Gate 1** checks the pre-registration hash against its tag before anything is written to `results/`. **Gate 2** runs two leakage tests before any arm is tuned: insert a future edge and assert no earlier feature value changes; shuffle the test labels and assert no feature value changes at all.
+Two gates can halt the pipeline. **Gate 1** checks the pre-registration hash against its tag before anything is written to `results/`. **Gate 2** runs three leakage tests before any arm is tuned: insert a future edge and assert no earlier feature value changes; shuffle the test labels and assert no feature value changes at all; flip sampled training labels and assert those nodes' own neighbour-score features do not move. Results in `results/leakage-tests.json`.
 
 ---
 
@@ -74,11 +74,13 @@ Two gates can halt the pipeline. **Gate 1** checks the pre-registration hash aga
 
 _Populated as phases complete. Nothing here is hand-entered._
 
+<!-- generated:results by 00-build/render_readme.py from results/; do not edit by hand -->
 | Arm | Precision at k | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive |
 |---|---|---|---|---|
 | A | _pending_ | _pending_ | _pending_ | _pending_ |
 | B | _pending_ | _pending_ | _pending_ | _pending_ |
 | D | _pending_ | _pending_ | _pending_ | _pending_ |
+<!-- end generated:results -->
 
 ---
 
@@ -86,12 +88,12 @@ _Populated as phases complete. Nothing here is hand-entered._
 
 | # | Deliverable | Phase | Status | File |
 |---|---|---|---|---|
-| 1 | Pre-registration, tagged and hash-enforced | 1 | — | [`01-the-bet/pre-registration.md`](01-the-bet/pre-registration.md) |
-| 2 | Loader and schema contract | 1 | — | `loaders/` |
-| 3 | Thin end-to-end slice | 1 | — | `00-build/` |
-| 4 | Arm A, 94 local features | 2 | — | `00-build/` |
-| 5 | Arm B, traversal queries | 2 | — | [`graph/queries/`](graph/queries/) |
-| 6 | Leakage tests | 2 | — | `tests/` |
+| 1 | Pre-registration, tagged and hash-enforced | 1 | Done | [`01-the-bet/pre-registration.md`](01-the-bet/pre-registration.md) |
+| 2 | Loader and schema contract | 1 | Done | `loaders/` |
+| 3 | Thin end-to-end slice | 1 | Done | `00-build/` |
+| 4 | Arm A, 93 local features, time step excluded | 2 | Done | `00-build/` |
+| 5 | Arm B, traversal queries | 2 | Done | [`graph/queries/`](graph/queries/) |
+| 6 | Leakage tests | 2 | Done | `00-build/leakage_gate.py`, `tests/` |
 | 7 | Arm D, GraphSAGE | 3 | — | `00-build/` |
 | 8 | Label-budget curve | 3 | — | `results/` |
 | 9 | Cost per true positive | 3 | — | `03-the-margin/` |
