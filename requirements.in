@@ -3,3 +3,4 @@ duckdb
 ladybug==0.18.3
 matplotlib
 pytest
+scikit-learn

@@ -31,7 +31,52 @@ The pre-registration is hashed and tagged, so it cannot be corrected in place. T
 
 **k is the mean rounded to the nearest whole number, halves rounded up.** The pre-registration defines k as a mean, which is not a whole number, and a top-k queue needs one. The rule was chosen by the author after the mean was known (`results/k.json`), with no arm built, no model score produced and no test-step result seen. Rounding to nearest is the plainest reading of sizing a queue from historical case volume. `00-build/compute_k.py` applies it and writes both the mean and the integer.
 
-### Open before Phase 2
+## 2026-11-19, protocol fixed before any arm runs
 
-- **Analyst cost per alert.** Still open, as the pre-registration records.
-- **Two-stage predicted-score aggregation.** Leakage design and test still to be written before Arm B runs.
+Agreed by the author before any model was trained. The pre-registration leaves these open or unspecified; they are fixed here so none can be chosen after seeing a result.
+
+### Tuning contract, identical for every arm
+
+- **Search:** random search, 40 trials per seed, over one search space shared by every gradient-boosted arm. A seed fixes the sequence of candidate configurations, so Arms A and B evaluate the same 40 candidates for a given seed.
+- **Space** (`HistGradientBoostingClassifier`): learning rate log-uniform 0.01 to 0.3; iterations 50 to 500; leaf nodes 15 to 127; minimum leaf size 10 to 200; L2 log-uniform 0.0001 to 10; feature subsampling 0.5 to 1.0; class weighting none or balanced. No internal early stopping.
+- **Objective:** average precision on labelled nodes in validation steps 30 to 34, pooled.
+- **Training window:** labelled nodes in steps 1 to 29. Final models are not refitted on validation steps.
+- **Seeds:** 5 per arm. Each seed reruns the whole search, so seed spread includes tuning variance.
+- **Recorded per arm:** trial count and fit time.
+
+### Metrics
+
+- **Precision at k:** for each test step, the 102 highest-scoring labelled nodes. Pooled over a period as true positives divided by 102 times the number of steps.
+- **PR-AUC:** average precision. For H1, pooled over labelled nodes in the pre-shift period. For H3, the mean of per-step values, as pre-registered.
+- **Scores:** each node's score is the mean of its 5 seed scores. Per-seed metrics are also reported.
+- **Bootstrap:** 1,000 resamples of labelled nodes, drawn with replacement within each time step, paired across arms. 95% intervals are the 2.5th and 97.5th percentiles.
+
+### Kill criterion metric
+
+Arm D is built only if the 95% interval on Arm B minus Arm A, for precision at k pooled over pre-shift steps 35 to 42, lies wholly above zero. Post-shift results are reported but do not decide. If the criterion fires, Phase 3 continues without Arm D: label-budget curve for A and B, cost per true positive and limitations.
+
+### Arm B structural features, and what "available at that time" means
+
+- **Time scope.** Every graph feature for a node counts only neighbours in the node's own time step. An edge touching a later step can never change an earlier node's features. The future-edge test checks this with an injected cross-step edge.
+- **In-degree and out-degree:** directed, same-step neighbours.
+- **PageRank within the time step:** damping 0.85, uniform teleport over the step's nodes, dangling mass spread uniformly over the step, iterated in Cypher until no value moves by more than 1e-10 or 100 iterations.
+- **Two-hop neighbourhood size:** distinct nodes reachable within two hops ignoring direction, excluding the node itself.
+
+### Two-stage score aggregates
+
+- **Stage 1** is Arm A's tuned model for the same seed.
+- **Training steps** are scored out of fold, over five contiguous blocks: 1 to 6, 7 to 12, 13 to 18, 19 to 24, 25 to 29. Each block is scored by a model trained on the other four, so no node is scored by a model that saw its own step. Some of those models are trained on later training steps; this touches training features only, never an evaluation step.
+- **Validation and test steps** are scored by a stage-1 model trained on steps 1 to 29.
+- **Aggregates:** mean and maximum of in-neighbour and out-neighbour stage-1 scores, computed in the graph store.
+- **Own-label test:** flip the labels of sampled training nodes, rebuild, and assert their aggregates do not change. If this or either pre-registered leakage test fails, the feature is dropped, not adjusted.
+
+### Leakage gate
+
+The future-edge, label-shuffle and own-label tests run on the full data in every build, before any feature-derived result is written. `results_io.write_result` refuses such a result unless the gate passed at the same commit on the same data.
+
+### Phase 3, fixed now
+
+- **Cost per true positive (modelled):** analyst cost €25 per alert, range €12.50 to €37.50 (±50%). This is an author assumption, about 20 minutes of first-line review at about €75 an hour fully loaded, not a sourced figure. Compute at €0.05 per vCPU-hour.
+- **Arm D input:** the 93 local features only, so any relational signal D finds is learned rather than inherited from the provided aggregates.
+- **Runtime:** the full tuning protocol takes priority over the 30-minute target. Measured runtime is recorded as a finding.
+- **Write-up:** interpretation is drafted by Claude and marked as a draft for the author to edit. Every number in it is generated from `results/`.
