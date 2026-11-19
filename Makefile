@@ -3,9 +3,12 @@ VENV := .venv
 PY := $(VENV)/bin/python
 UV := $(shell command -v uv 2>/dev/null || ls $(HOME)/.local/bin/uv 2>/dev/null)
 EXCLUDE_NEWER ?= 2026-11-05
-STAGES := compute_k class_balance day_one_checks build_graph_store render_charts
+STAGES := compute_k class_balance day_one_checks build_graph_store leakage_gate run_arms evaluate_arms render_charts render_readme
 
 export PYTHONPATH := $(CURDIR):$(CURDIR)/00-build
+# Performance cores only: on Apple silicon, threads on efficiency cores make every fit wait for stragglers.
+OMP_NUM_THREADS ?= $(shell sysctl -n hw.perflevel0.physicalcpu 2>/dev/null || nproc 2>/dev/null || echo 4)
+export OMP_NUM_THREADS
 
 .PHONY: all data test clean distclean lock
 
