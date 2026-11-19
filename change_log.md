@@ -145,3 +145,7 @@ Written after the Phase 2 results for Arms A and B were known, and before any Ar
 ### Phase 3 smoke run, before the official run
 
 The Phase 3 stages were run once in miniature: 2 trials, 2 seeds, Arm D capped at 20 epochs, one 5 percent budget. It printed test-period comparisons including Arm D, which is unavoidable when testing the evaluation end to end. Its numbers come from models far smaller than the protocol's and were discarded. Changes made afterwards were presentation only: README wording ("gnn" casing, the compute-share sentence, and a limitations line that asserted every arm collapses after the shift, which now states the measured falls instead) and chart label layout. No protocol rule, feature, model or evaluation step changed.
+
+## 2026-11-19, Arm D search space kept as fixed
+
+After the Phase 3 headline was seen, Arm D's chosen learning rate or epoch count sat near the top of its range in three of five seeds (`results/arm-d-tuning.json`). The search space is kept as pre-registered in the Phase 3 protocol above. Widening it after test results are known would let the result choose the protocol. No exploratory rerun is planned. The README lists "whether a different GNN would close the gap" under what this cannot establish.
