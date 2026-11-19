@@ -86,9 +86,37 @@ def test_write_succeeds_when_gate_passes(repo, tmp_path, monkeypatch):
     assert doc["data"] == {"value": 1}
 
 
-def test_feature_derived_results_are_refused_until_leakage_tests_exist(repo, tmp_path, monkeypatch):
+def test_feature_derived_results_are_refused_without_a_leakage_gate(repo, tmp_path, monkeypatch):
     monkeypatch.setattr(results_io, "dataset_provenance", lambda: {"dataset": "x", "source": "x", "files_sha256": {}})
     out = tmp_path / "results"
-    with pytest.raises(results_io.ResultRefused):
+    with pytest.raises(results_io.ResultRefused, match="has not run"):
         results_io.write_result("arm-a", {"value": 1}, uses_model_features=True, root=repo, results_dir=out)
     assert not out.exists()
+
+
+def test_feature_derived_results_are_refused_when_the_gate_failed(repo, tmp_path, monkeypatch):
+    monkeypatch.setattr(results_io, "dataset_provenance", lambda: {"dataset": "x", "source": "x", "files_sha256": {}})
+    out = tmp_path / "results"
+    results_io.write_result("leakage-tests", {"gate_passed": False, "dropped_features": []}, root=repo, results_dir=out)
+    with pytest.raises(results_io.ResultRefused, match="did not pass"):
+        results_io.write_result("arm-a", {"value": 1}, uses_model_features=True, root=repo, results_dir=out)
+    assert not (out / "arm-a.json").exists()
+
+
+def test_feature_derived_results_are_refused_after_a_new_commit(repo, tmp_path, monkeypatch):
+    monkeypatch.setattr(results_io, "dataset_provenance", lambda: {"dataset": "x", "source": "x", "files_sha256": {}})
+    out = tmp_path / "results"
+    results_io.write_result("leakage-tests", {"gate_passed": True, "dropped_features": []}, root=repo, results_dir=out)
+    (repo / "code.py").write_text("changed = True\n")
+    git(repo, "add", "code.py")
+    git(repo, "commit", "-q", "-m", "Change code after the gate ran")
+    with pytest.raises(results_io.ResultRefused, match="different commit"):
+        results_io.write_result("arm-a", {"value": 1}, uses_model_features=True, root=repo, results_dir=out)
+
+
+def test_feature_derived_results_are_written_when_the_gate_passed(repo, tmp_path, monkeypatch):
+    monkeypatch.setattr(results_io, "dataset_provenance", lambda: {"dataset": "x", "source": "x", "files_sha256": {}})
+    out = tmp_path / "results"
+    results_io.write_result("leakage-tests", {"gate_passed": True, "dropped_features": []}, root=repo, results_dir=out)
+    path = results_io.write_result("arm-a", {"value": 1}, uses_model_features=True, root=repo, results_dir=out)
+    assert json.loads(path.read_text())["provenance"]["leakage_gate"]["dropped_features"] == []

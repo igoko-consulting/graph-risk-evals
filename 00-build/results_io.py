@@ -31,11 +31,24 @@ def dataset_provenance() -> dict:
     return json.loads(path.read_text())
 
 
+def leakage_gate_status(root: Path, results_dir: Path) -> dict:
+    path = results_dir / "leakage-tests.json"
+    if not path.is_file():
+        raise ResultRefused("the leakage gate has not run, so no feature-derived result may be written")
+    gate = json.loads(path.read_text())
+    if not gate["data"]["gate_passed"]:
+        raise ResultRefused("the leakage gate did not pass")
+    if gate["provenance"]["git"]["commit"] != _git_state(root)["commit"]:
+        raise ResultRefused("the leakage gate passed at a different commit; rerun it")
+    if gate["provenance"]["dataset"]["files_sha256"] != dataset_provenance()["files_sha256"]:
+        raise ResultRefused("the leakage gate passed on different data; rerun it")
+    return {"passed_at": gate["provenance"]["generated_at"], "dropped_features": gate["data"]["dropped_features"]}
+
+
 def write_result(name: str, data: dict, *, uses_model_features: bool = False,
                  root: Path = ROOT, results_dir: Path = RESULTS) -> Path:
     gate = prereg_gate.check(root)
-    if uses_model_features:
-        raise ResultRefused("leakage tests are not implemented yet, so no feature-derived result may be written")
+    leakage = leakage_gate_status(root, results_dir) if uses_model_features else NO_FEATURES
     raw = dataset_provenance()
     doc = {
         "result": name,
@@ -44,7 +57,7 @@ def write_result(name: str, data: dict, *, uses_model_features: bool = False,
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "git": _git_state(root),
             "preregistration": gate,
-            "leakage_gate": NO_FEATURES,
+            "leakage_gate": leakage,
             "dataset": {"name": raw["dataset"], "source": raw["source"], "files_sha256": raw["files_sha256"]},
         },
         "data": data,
