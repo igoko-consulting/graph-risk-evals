@@ -84,7 +84,7 @@ To exercise every code path before the long run, the full pipeline was run once 
 
 ### Thread count
 
-`make` sets `OMP_NUM_THREADS` to the machine's performance cores. With all 12 cores, scikit-learn's fits ran about five times slower on this Mac because threads placed on efficiency cores held up every iteration. Predictions from the same configuration are identical at 6 and 12 threads. The setting is recorded in each arm's tuning result.
+`make` sets `OMP_NUM_THREADS` to the machine's performance cores. With all 12 cores, scikit-learn's fits ran several times slower on this Mac because threads placed on efficiency cores held up every iteration. Predictions from the same configuration are identical at 6 and 12 threads. The setting is recorded in each arm's tuning result.
 
 ### Reporting addition
 
@@ -96,3 +96,13 @@ Precision at k is reported with its ceiling for each period: the best any rankin
 - **Arm D input:** the 93 local features only, so any relational signal D finds is learned rather than inherited from the provided aggregates.
 - **Runtime:** the full tuning protocol takes priority over the 30-minute target. Measured runtime is recorded as a finding.
 - **Write-up:** interpretation is drafted by Claude and marked as a draft for the author to edit. Every number in it is generated from `results/`.
+
+## 2026-11-19, Phase 2 result
+
+**Gate passed.** The official run was a clean clone at the commit recorded in every result file. Every leakage test passed and no feature was dropped (`results/leakage-tests.json`). Both arms were tuned under the full contract (`results/arm-a-tuning.json`, `results/arm-b-tuning.json`).
+
+**Kill criterion did not fire.** Arm B's precision at k, pooled over the pre-shift steps, is higher than Arm A's, and the 95% interval on the difference lies wholly above zero (`results/evaluation-arms-a-b.json`, `kill_criterion`). As pre-registered, Arm D is built in Phase 3.
+
+**Draft interpretation, for the author to edit.** The generated paragraph under Results in the README states the finding with its figures. The gain from graph features is small but clear before the shift, and larger in absolute terms after it, where both arms are far below the ceiling the labels allow. H1 and H2 need Arm D and are assessed in Phase 3.
+
+**Presentation changes after the run, results untouched.** The Phase 2 chart gained a "best possible" line showing where steps have fewer illicit labels than alerts, and its labels were moved so they fit. One drafted README sentence claimed the post-shift intervals were wide. They are not, for precision at k, so it now says that the few post-shift labels cap precision at k. No result file was regenerated for either change.

@@ -2,9 +2,9 @@
   "result": "class-balance-by-time-step",
   "provenance": {
     "generated_by": "class_balance.py",
-    "generated_at": "2026-11-19T13:11:44+00:00",
+    "generated_at": "2026-11-19T14:10:53+00:00",
     "git": {
-      "commit": "6e382ac66ea72246380f7c3956f4852b1bb88e95",
+      "commit": "f0084c188e7c2c6f6a05c5738fe80b2dffab3420",
       "uncommitted_changes": false
     },
     "preregistration": {

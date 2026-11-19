@@ -1,0 +1,126 @@
+{
+  "result": "leakage-tests",
+  "provenance": {
+    "generated_by": "leakage_gate.py",
+    "generated_at": "2026-11-19T14:16:16+00:00",
+    "git": {
+      "commit": "f0084c188e7c2c6f6a05c5738fe80b2dffab3420",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": "not applicable: no model feature values are used or written",
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its unperturbed value. A feature that moves is dropped, not adjusted.",
+    "tests": {
+      "future_edge": {
+        "what": "Inject edges dated to the last time step, including two that cross back to step 10. No feature of any node in an earlier step may change.",
+        "injected_edges": [
+          [
+            709696,
+            714973
+          ],
+          [
+            194835939,
+            16134
+          ],
+          [
+            68818265,
+            194748070
+          ]
+        ],
+        "effect_visible_in_last_step": true
+      },
+      "label_shuffle": {
+        "what": "Permute every label in steps 30 to 49. No feature of any node may change."
+      },
+      "own_label_flip": {
+        "what": "In each stage-one block in turn, flip the labels of 40 sampled training nodes. Their own neighbour-score aggregates may not change.",
+        "nodes_flipped": 200,
+        "effect_visible_elsewhere": true
+      }
+    },
+    "stage_one_model": {
+      "config": {
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "l2_regularization": 0.0,
+        "max_features": 1.0,
+        "class_weight": null
+      },
+      "seed": 0,
+      "note": "fixed reference model; the gate runs before any arm is tuned"
+    },
+    "tolerance": 1e-12,
+    "per_feature": {
+      "in_degree": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "passed": true
+      },
+      "out_degree": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "passed": true
+      },
+      "pagerank": {
+        "future_edge_max_change_earlier_steps": 5.551115123125783e-17,
+        "label_shuffle_max_change": 0.0,
+        "passed": true
+      },
+      "two_hop_size": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "passed": true
+      },
+      "nbr_score_in_mean": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "own_label_flip_max_change": 0.0,
+        "passed": true
+      },
+      "nbr_score_in_max": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "own_label_flip_max_change": 0.0,
+        "passed": true
+      },
+      "nbr_score_out_mean": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "own_label_flip_max_change": 0.0,
+        "passed": true
+      },
+      "nbr_score_out_max": {
+        "future_edge_max_change_earlier_steps": 0.0,
+        "label_shuffle_max_change": 0.0,
+        "own_label_flip_max_change": 0.0,
+        "passed": true
+      }
+    },
+    "tests_valid": true,
+    "dropped_features": [],
+    "gate_passed": true,
+    "pagerank": {
+      "damping": 0.85,
+      "iterations": 100,
+      "pagerank_final_max_change": 1.8487203304676236e-11
+    },
+    "seconds": 316.3
+  }
+}

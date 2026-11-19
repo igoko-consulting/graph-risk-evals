@@ -75,11 +75,18 @@ Two gates can halt the pipeline. **Gate 1** checks the pre-registration hash aga
 _Populated as phases complete. Nothing here is hand-entered._
 
 <!-- generated:results by 00-build/render_readme.py from results/; do not edit by hand -->
-| Arm | Precision at k | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive |
-|---|---|---|---|---|
-| A | _pending_ | _pending_ | _pending_ | _pending_ |
-| B | _pending_ | _pending_ | _pending_ | _pending_ |
-| D | _pending_ | _pending_ | _pending_ | _pending_ |
+| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive |
+|---|---|---|---|---|---|
+| A, 93 local features | 75.4% (71.4% to 78.2%) | 4.9% (3.4% to 6.7%) | 90.3% (88.8% to 91.7%) | 3.4% (2.7% to 4.6%) | Phase 3 |
+| B, plus graph features | 77.2% (73.3% to 80.3%) | 10.9% (8.7% to 13.2%) | 92.0% (90.6% to 93.4%) | 5.1% (4.3% to 6.5%) | Phase 3 |
+| B minus A | +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band | +6.0 pts (+4.2 pts to +7.7 pts), B higher, outside the noise band | +1.7 pts (+1.2 pts to +2.2 pts), B higher, outside the noise band | +1.8 pts (+1.3 pts to +2.3 pts), B higher, outside the noise band | |
+| D, GraphSAGE | Phase 3 | | | | |
+
+k = 102 alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled transactions in the period. Brackets are 95% paired bootstrap intervals, 1,000 resamples stratified by time step. A difference is called only when its interval excludes zero. Labelled transactions only; unlabelled is not licit. Source: `results/evaluation-arms-a-b.json`.
+
+![Precision at k by test step](site/charts/precision-at-k-arms-a-b.svg)
+
+**Phase 2 finding (draft for the author to edit).** Adding graph features lifted precision at k before the regime shift: B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band. Arm D is built in Phase 3 to test whether learned message passing adds more than hand-built graph features. After the shift at step 43, precision at k was 4.9% for A and 10.9% for B; B minus A +6.0 pts (+4.2 pts to +7.7 pts), B higher, outside the noise band. There are fewer illicit labels than alerts after the shift, so no model could exceed 23.7% there (before the shift the ceiling is 81.4%). Mean per-step PR-AUC fell by 89.0% for A and 85.5% for B from the pre-shift to the post-shift period. H3 is assessed across all arms in Phase 3. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. The post-shift period has few illicit labels, which caps precision at k there.
 <!-- end generated:results -->
 
 ---
