@@ -8,6 +8,7 @@ import time
 import duckdb
 import numpy as np
 
+import arm_d
 import graph_store
 from features import ILLICIT, LICIT, STAGE_ONE_BLOCKS, Frame, load_frame, stage_one_scores
 from paths import COLUMNAR_STORE, STORE
@@ -16,6 +17,8 @@ from results_io import write_result
 
 TOLERANCE = 1e-12
 FLIPS_PER_BLOCK = 40
+D_REFERENCE_CONFIG = {"hidden": 32, "learning_rate": 0.01, "dropout": 0.0, "weight_decay": 0.0,
+                      "epochs": 30, "class_weight": None}
 BASE_GRAPH = STORE / "features-base.lbug"
 FUTURE_GRAPH = STORE / "features-future-edge.lbug"
 STRUCTURAL_CACHE = STORE / "structural-features.npz"
@@ -47,17 +50,43 @@ def pick_future_edges(con, frame: Frame) -> list[tuple[int, int]]:
     return [(a, b), (int(late[-1]), int(old[0])), (int(old[-1]), int(late[-2]))]
 
 
+def check_arm_d(frame: Frame, edge_src, edge_dst, future_edges, shuffled_labels) -> dict:
+    """Arm D has no engineered features, so its scores stand in for them."""
+    train = frame.mask("training") & frame.labelled
+    everything = np.ones(len(frame.node_ids), dtype=bool)
+    extra = np.array(future_edges)
+    base_graph = arm_d.build_graph(frame, edge_src, edge_dst)
+    future_graph = arm_d.build_graph(frame, np.concatenate([edge_src, extra[:, 0]]), np.concatenate([edge_dst, extra[:, 1]]))
+    base = arm_d.fit_predict(D_REFERENCE_CONFIG, 0, base_graph, frame.labels, train, everything)
+    future = arm_d.fit_predict(D_REFERENCE_CONFIG, 0, future_graph, frame.labels, train, everything)
+    shuffled = arm_d.fit_predict(D_REFERENCE_CONFIG, 0, base_graph, shuffled_labels, train, everything)
+    earlier = frame.steps < frame.steps.max()
+    checks = {
+        "reference_config": D_REFERENCE_CONFIG,
+        "future_edge_max_change_earlier_steps": max_diff(base, future, earlier),
+        "future_edge_effect_visible_in_last_step": max_diff(base, future, ~earlier) > TOLERANCE,
+        "label_shuffle_max_change": max_diff(base, shuffled, everything),
+    }
+    checks["passed"] = (checks["future_edge_max_change_earlier_steps"] <= TOLERANCE
+                        and checks["label_shuffle_max_change"] <= TOLERANCE
+                        and checks["future_edge_effect_visible_in_last_step"])
+    return checks
+
+
 def main() -> None:
     started = time.perf_counter()
     with duckdb.connect(str(COLUMNAR_STORE), read_only=True) as con:
         frame = load_frame(con)
         future_edges = pick_future_edges(con, frame)
+        edge_src, edge_dst = arm_d.load_edges(con)
         base_files = graph_store.export(con, STAGING / "base")
         future_files = graph_store.export(con, STAGING / "future", future_edges)
     steps = np.unique(frame.steps)
 
     base_db, base = graph_store.build(BASE_GRAPH, *base_files)
+    structural_started = time.perf_counter()
     structural, structural_meta = graph_store.structural_features(base, frame.node_ids, steps)
+    structural_meta["structural_features_seconds"] = round(time.perf_counter() - structural_started, 1)
     np.savez(STRUCTURAL_CACHE, node_ids=frame.node_ids, **structural)
     values, base_scores = feature_values(frame, base, structural)
     names = list(values)
@@ -105,9 +134,11 @@ def main() -> None:
     for n, change in own_change.items():
         results[n]["own_label_flip_max_change"] = change
 
+    arm_d_checks = check_arm_d(frame, edge_src, edge_dst, future_edges, shuffled)
+
     for n, r in results.items():
         r["passed"] = all(v <= TOLERANCE for v in r.values())
-    tests_valid = future_effect_visible and flip_effect_visible
+    tests_valid = future_effect_visible and flip_effect_visible and arm_d_checks["passed"]
     dropped = sorted(n for n, r in results.items() if not r["passed"])
     write_result("leakage-tests", {
         "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its "
@@ -129,6 +160,7 @@ def main() -> None:
                 "effect_visible_elsewhere": flip_effect_visible,
             },
         },
+        "arm_d": arm_d_checks,
         "stage_one_model": {"config": REFERENCE_CONFIG, "seed": 0, "note": "fixed reference model; the gate runs before any arm is tuned"},
         "tolerance": TOLERANCE,
         "per_feature": results,
