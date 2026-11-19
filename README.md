@@ -152,7 +152,7 @@ Datasets sit behind a loader interface from the first commit, so this is additiv
 make all
 ```
 
-One command on a clean clone. Pinned versions, laptop CPU, under 30 minutes. Datasets are fetched by script and never committed.
+One command on a clean clone. Pinned versions, laptop CPU, under 30 minutes. Datasets are fetched by script and never committed. Needs [uv](https://docs.astral.sh/uv/) or Python 3.13; see `00-build/NOTES.md`.
 
 ---
 
