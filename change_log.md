@@ -59,7 +59,7 @@ Arm D is built only if the 95% interval on Arm B minus Arm A, for precision at k
 
 - **Time scope.** Every graph feature for a node counts only neighbours in the node's own time step. An edge touching a later step can never change an earlier node's features. The future-edge test checks this with an injected cross-step edge.
 - **In-degree and out-degree:** directed, same-step neighbours.
-- **PageRank within the time step:** damping 0.85, uniform teleport over the step's nodes, dangling mass spread uniformly over the step, iterated in Cypher until no value moves by more than 1e-10 or 100 iterations.
+- **PageRank within the time step:** damping 0.85, uniform teleport over the step's nodes, dangling mass spread uniformly over the step, iterated in Cypher for exactly 100 iterations. Revised before any arm ran: the first draft stopped once no value moved by more than 1e-10, but a global stopping rule lets a change in one step alter how many iterations every other step gets, which the future-edge test would rightly flag. The final largest change is recorded in `results/leakage-tests.json`.
 - **Two-hop neighbourhood size:** distinct nodes reachable within two hops ignoring direction, excluding the node itself.
 
 ### Two-stage score aggregates
@@ -72,7 +72,23 @@ Arm D is built only if the 95% interval on Arm B minus Arm A, for precision at k
 
 ### Leakage gate
 
-The future-edge, label-shuffle and own-label tests run on the full data in every build, before any feature-derived result is written. `results_io.write_result` refuses such a result unless the gate passed at the same commit on the same data.
+The future-edge, label-shuffle and own-label tests run on the full data in every build, before any arm is tuned, using a fixed reference stage-one model (scikit-learn defaults, seed 0). The properties under test, neighbour scoping and the out-of-fold design, do not depend on the stage-one configuration. A test whose perturbation has no visible effect anywhere is treated as invalid and halts the build. `results_io.write_result` refuses any feature-derived result unless the gate passed at the same commit on the same data.
+
+### Own-label test corrected before any arm ran
+
+The first development run of the gate flipped 200 training labels drawn from all five stage-one blocks at once, and the flipped nodes' score aggregates moved. The cause was the test, not a leak. A node flipped in block 1 changes the stage-one models that score blocks 2 to 5, so a node in block 3 saw its neighbours' scores move because of other nodes' labels. The out-of-fold design intends exactly that: each block is scored using every other block's labels. It is not a node's own label reaching its own features, which is what the agreed test is meant to check. The test now flips 40 nodes within one block at a time, all five blocks in turn, so the model scoring the flipped nodes' block is untouched by the flip. No arm had been tuned or evaluated, and no performance figure existed, when this was found and changed. The development run's output was discarded; the gate result in `results/` comes from the corrected test.
+
+### Smoke run before the official run
+
+To exercise every code path before the long run, the full pipeline was run once with 2 trials and 2 seeds instead of 40 and 5. It printed a test-period comparison, which is unavoidable when testing the evaluation code end to end. Its output was discarded, and nothing in the protocol, features or evaluation was changed after it. The only change made afterwards was the thread count below, which affects runtime and not results.
+
+### Thread count
+
+`make` sets `OMP_NUM_THREADS` to the machine's performance cores. With all 12 cores, scikit-learn's fits ran about five times slower on this Mac because threads placed on efficiency cores held up every iteration. Predictions from the same configuration are identical at 6 and 12 threads. The setting is recorded in each arm's tuning result.
+
+### Reporting addition
+
+Precision at k is reported with its ceiling for each period: the best any ranking could achieve when a step has fewer illicit labels than alerts. Added before any arm ran, after the synthetic-score check showed that several test steps, most of them post-shift, have fewer than 102 illicit labels.
 
 ### Phase 3, fixed now
 

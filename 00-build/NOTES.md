@@ -20,17 +20,24 @@
 3. `class_balance.py`: labels per time step.
 4. `day_one_checks.py`: counts against the PRD, feature split, cross-step edges. Writes the generated block in `04-the-data/NOTES.md` from `results/`.
 5. `build_graph_store.py`: per-step graphs in LadybugDB, in-degree via `graph/queries/in-degree.cypher`, checked node by node against the columnar store.
-6. `render_charts.py`: static SVG charts from `results/` only.
+6. `leakage_gate.py`: Gate 2, before any arm is tuned. Computes every Arm B feature in the graph store, then recomputes it under a future edge, a test-label shuffle and an own-label flip.
+7. `run_arms.py`: Arm A tuned per seed; its model becomes stage one for Arm B's score aggregates; Arm B tuned per seed. Per-node scores stay in `data/store/runs/` and are never published.
+8. `evaluate_arms.py`: precision at k, PR-AUC, paired bootstrap, the kill-criterion verdict.
+9. `render_charts.py`: static SVG charts from `results/` only.
+10. `render_readme.py`: the generated blocks in `README.md`, from `results/` only.
 
 ## The two gates
 
 - **Gate 1, pre-registration.** `prereg_gate.py` hashes `01-the-bet/pre-registration.md` and compares it with the file in the commit tagged `prereg-v1`, which must be an annotated tag. Every write to `results/` goes through `results_io.write_result`, which runs the gate first. Tests in `tests/test_prereg_gate.py` prove it refuses an edited file, a whitespace change, a missing or lightweight tag and a deleted file, and that nothing is written when it refuses. A GitHub zip download has no tags, so the gate fails there by design.
-- **Gate 2, leakage.** Not built yet; there are no model features to test. `write_result(..., uses_model_features=True)` refuses until it exists.
+- **Gate 2, leakage.** `leakage_gate.py` writes `results/leakage-tests.json`. `write_result(..., uses_model_features=True)` refuses unless that file says the gate passed at the current commit on the current data. Any feature that moves under a perturbation is dropped from Arm B. A perturbation with no visible effect anywhere invalidates the test and halts the build.
 
 ## Friction and findings
 
 - **Kùzu to LadybugDB.** Kùzu is archived. LadybugDB 0.19.0 onwards links Homebrew's OpenSSL on macOS and fails to load without it, so 0.18.3 is pinned. Surfacing this on day one rather than in Phase 2 is the point of the thin slice.
 - **Gradient-boosted trees on a stock Mac.** LightGBM and XGBoost need Homebrew's `libomp`. scikit-learn's histogram gradient boosting does not, so Arms A and B use it.
 - **Layout.** Pipeline code lives here as scripts with snake_case names, because Python cannot import a hyphenated module. `PYTHONPATH` is set by the Makefile and `pytest.ini`. Artefacts keep kebab-case names.
+- **Every traversal is scoped to the node's own step.** Without the `time_step` filters, a single injected cross-step edge would change an earlier node's degree, PageRank, two-hop size and score aggregates. The two-hop query filters intermediate nodes too, using LadybugDB's recursive-pattern predicate; filtering only the endpoints would let a path run through a future node.
+- **PageRank in Cypher is the slowest graph-store stage.** Four statements per iteration over every node, 100 fixed iterations, with no built-in algorithm used. Kept in the graph store as the PRD requires. Its cost against a library implementation is not measured here; that belongs to the engine comparison appendix in Phase 4. The gate's total time is in `results/leakage-tests.json`.
+- **Two-hop size is the most expensive single query**, because it is a variable-length pattern.
 - **One graph database, not 49.** Each per-step graph is the set of nodes sharing a `time_step` property; queries take the step as a parameter. With no cross-step edges this is equivalent to separate graphs and far simpler to load.
 - **Deterministic chart output.** Charts use matplotlib's bundled font, text drawn as paths and a fixed SVG hash salt, so a rerun on any machine produces the same bytes and diffs only show real changes.
