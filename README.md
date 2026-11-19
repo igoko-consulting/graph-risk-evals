@@ -137,6 +137,7 @@ Separated deliberately into three categories.
 - **Anything about real-time performance.** The dataset is static and small. Ingest throughput, concurrency and freshness are not testable and no claim is made about them.
 - **Production economics at scale.** The cost model is modelled, not measured, and dominated by an assumed analyst cost per alert with a stated sensitivity range.
 - **Generalisation from one dataset.** One graph, one regime shift, one label distribution.
+- **Whether a different GNN would close the gap.** Arm D is one architecture with one search space, fixed before any result and given the same trial count as the tree models. A deeper model, other aggregators or the 72 aggregate features as input are not tested.
 
 **Prior work.** The headline comparison on this dataset has been published. A random forest on the full feature set outperformed a two-layer graph convolutional network, and performance collapsed after the regime shift. This lab adds a cleanly separated baseline, a fixed alert budget, cost per true positive, a label-budget curve, and an equal documented tuning protocol.
 

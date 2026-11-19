@@ -1,7 +1,9 @@
 """Writes the generated blocks of README.md from results/.
 
-Every branch of wording below was written before any arm had run, so the text that appears is
-selected by the result, not composed after seeing it. It is a draft for the author to edit.
+The Phase 2 wording and the decision rules were written before any arm had run. Three pieces of Phase 3
+wording were added after the Phase 3 headline was seen, to state it accurately rather than to change it:
+the by-construction note on H1, the pair intervals behind H3, and finding_phase3. Outcomes are computed in
+evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
 """
 import re
 
@@ -125,7 +127,51 @@ def euro(x) -> str:
 
 def cost_cell(cost: dict, arm: str) -> str:
     c = cost["by_arm"][arm]["pre_shift_test"]["cost_per_true_positive_eur"]
-    return f"{euro(c['central'])} ({euro(c['low'])} to {euro(c['high'])}), modelled"
+    return f"{euro(c['central'])} modelled; {euro(c['low'])} to {euro(c['high'])} across the analyst-cost range"
+
+
+def outside(ci: dict) -> bool:
+    return ci["low"] > 0 or ci["high"] < 0
+
+
+def h1_by_construction(h1: dict) -> bool:
+    """(B - A) / (max(B, D) - A) is exactly 1 whenever B >= D, so an interval of [1, 1] means B beat D in every resample."""
+    ci = h1["interval_95"]
+    return ci is not None and ci["low"] == 1.0 and ci["high"] == 1.0
+
+
+def finding_phase3(ev: dict) -> str:
+    m, cmp, k = ev["metrics"], ev["comparisons"], ev["k"]
+    pre, post = "pre_shift_test", "post_shift_test"
+    p = {a: m[a][pre]["precision_at_k_pooled"] for a in ("A", "B", "D")}
+    ranked = sorted(p, key=lambda a: -p[a])
+    ba, db, da = (cmp[name][pre]["p_at_k"] for name in ("B minus A", "D minus B", "D minus A"))
+    parts = [
+        f"Before the regime shift, the arms ranked {ranked[0]}, then {ranked[1]}, then {ranked[2]} on precision at k. "
+        f"B minus A was {diff_with_ci(ba)}; D minus B {diff_with_ci(db)}; D minus A {diff_with_ci(da)}."
+    ]
+    if da["interval_95"]["high"] < 0:
+        parts.append(
+            "Given A's local features plus the transaction graph, the GNN still ranked below A. "
+            "That matches the direction of the published comparison cited in the pre-registration."
+        )
+    u = {a: m[a][pre]["unlabelled_share_of_top_k_all_nodes"] for a in ("A", "B", "D")}
+    parts.append(
+        f"Ranked over every transaction in a step, labelled or not, unlabelled transactions would fill {pct(u['D'])} of "
+        f"D's top {k} before the shift, against {pct(u['A'])} for A and {pct(u['B'])} for B."
+        + (" Precision at k counts labelled transactions only, so it describes less of D's real queue than of A's or B's."
+           if u["D"] > max(u["A"], u["B"]) else "")
+    )
+    q = {a: m[a][post]["precision_at_k_pooled"] for a in ("A", "B", "D")}
+    parts.append(
+        f"After the shift at step 43, precision at k was {pct(q['A'])} for A, {pct(q['B'])} for B and {pct(q['D'])} for D, "
+        f"against a ceiling of {pct(m['A'][post]['precision_at_k_ceiling'])} set by the number of illicit labels."
+    )
+    parts.append(
+        "This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level "
+        "payments graphs. Arm D's search space was fixed before any result and was not widened afterwards."
+    )
+    return "**Phase 3 finding (draft for the author to edit).** " + " ".join(parts)
 
 
 def results_block_phase3(ev: dict, cost: dict) -> str:
@@ -153,8 +199,9 @@ def results_block_phase3(ev: dict, cost: dict) -> str:
         "transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, 1,000 resamples stratified "
         "by time step; a difference is called only when its interval excludes zero. Labelled transactions only; "
         f"unlabelled is not licit. **Cost is modelled, not measured:** analyst cost of €{a['central']:.0f} per alert, "
-        f"bracketed at €{a['low']:.2f} to €{a['high']:.2f}, plus compute at true scale. Sources: "
-        "`results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.",
+        f"with a range of €{a['low']:.2f} to €{a['high']:.2f}, plus measured tuning time priced at "
+        f"€{cost['assumptions']['compute_eur_per_vcpu_hour']:.2f} per vCPU-hour. The cost range is that assumption's "
+        "range, not a confidence interval. Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.",
         "",
         "![Precision at k by test step, all arms](site/charts/precision-at-k-all-arms.svg)",
     ]
@@ -164,19 +211,34 @@ def results_block_phase3(ev: dict, cost: dict) -> str:
 def hypotheses_block(ev: dict, budget: dict | None) -> str:
     h = ev["hypotheses"]
     h1, h2, h3 = h["H1"], h["H2"], h["H3"]
+    ap = {a: ev["metrics"][a]["pre_shift_test"]["average_precision_pooled"] for a in ("A", "B", "D")}
     h1_ev = ("Undefined" if h1["interval_95"] is None else
              f"{h1['point']:.2f} ({h1['interval_95']['low']:.2f} to {h1['interval_95']['high']:.2f})")
-    h3_ev = "; ".join(f"{a} fell {pct(v)}" for a, v in h3["relative_fall"].items())
+    h1_ev = f"Share of lift, PR-AUC pre-shift: {h1_ev}. Threshold 0.5."
+    h1_outcome = sentence(h1["outcome"])
+    if h1_by_construction(h1):
+        h1_outcome += ", by construction"
+        h1_ev += " The ratio is 1 whenever B beats D, as it did in every resample, so the available lift is B's own."
+        if ap["D"] < ap["A"]:
+            h1_ev += (f" D's PR-AUC was also below A's ({pct(ap['D'])} against {pct(ap['A'])}), so the GNN added no "
+                      "lift for graph features to capture.")
+    pairs = "; ".join(
+        f"{name} {signed(v['difference'])} ({signed(v['interval_95']['low'])} to {signed(v['interval_95']['high'])}), "
+        + ("outside" if outside(v["interval_95"]) else "within") + " the noise band"
+        for name, v in h3["pairs"].items()
+    )
+    h3_ev = ("Relative fall in mean per-step PR-AUC: " + "; ".join(f"{a} fell {pct(v)}" for a, v in h3["relative_fall"].items())
+             + f". Differences in fall, positive where the more complex arm fell more: {pairs}. "
+             "Supported needs all three above zero.")
     rows = [
         "| Hypothesis | Outcome | Evidence |",
         "|---|---|---|",
-        f"| **H1.** Graph-derived features capture the majority of available lift | {sentence(h1['outcome'])} "
-        f"| Share of lift, PR-AUC pre-shift: {h1_ev}. Threshold 0.5. |",
+        f"| **H1.** Graph-derived features capture the majority of available lift | {h1_outcome} | {h1_ev} |",
         f"| **H2.** The GNN does not justify its cost | {sentence(h2['outcome'])} "
         f"| D minus B, precision at k pre-shift: {diff_with_ci(ev['comparisons']['D minus B']['pre_shift_test']['p_at_k'])}. "
         "Bar: +5.0 pts and excluding zero. |",
         f"| **H3.** Simpler arms degrade less after the regime shift | {sentence(h3['outcome'])} "
-        f"| Relative fall in mean per-step PR-AUC: {h3_ev}. |",
+        f"| {h3_ev} |",
     ]
     if budget:
         h4 = budget["H4"]
@@ -228,18 +290,21 @@ def decision_block(ev: dict, cost: dict) -> str:
 def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
     cmp, h = ev["comparisons"], ev["hypotheses"]
     pre = "pre_shift_test"
-    ba, db = cmp["B minus A"][pre]["p_at_k"], cmp["D minus B"][pre]["p_at_k"]
+    ba, db, da = (cmp[name][pre]["p_at_k"] for name in ("B minus A", "D minus B", "D minus A"))
     share = max(cost["by_arm"][a][pre]["compute_share_of_cost"] for a in ("A", "B", "D"))
     demonstrated = [
         f"On this dataset, before the regime shift, adding graph features to a tuned local-feature model changed "
         f"precision at k by {diff_with_ci(ba)}.",
-        f"A two-layer GraphSAGE on the same local features, against graph features: D minus B {diff_with_ci(db)}.",
+        f"A two-layer GraphSAGE on the same local features, against graph features: D minus B {diff_with_ci(db)}. "
+        f"Against the local-feature model alone: D minus A {diff_with_ci(da)}.",
         "After the regime shift at step 43, mean per-step PR-AUC fell by "
         + ", ".join(f"{pct(v)} for {a}" for a, v in h["H3"]["relative_fall"].items()) + ".",
         "No feature moved under the future-edge, label-shuffle or own-label tests (`results/leakage-tests.json`).",
     ]
     suggested = [
-        f"H1, whether hand-built graph features capture most of the available lift: {h['H1']['outcome']}.",
+        f"H1, whether hand-built graph features capture most of the available lift: {h['H1']['outcome']}"
+        + (", but only by construction, because B beat D in every resample. It says nothing about how much a "
+           "stronger GNN might add." if h1_by_construction(h["H1"]) else "."),
         f"Compute is {share_text(share)} of modelled cost per true positive for every arm. Analyst time dominates, "
         "so the decision turns on alert quality, not on compute.",
     ]
@@ -257,8 +322,7 @@ def main() -> None:
         ev = read_result("evaluation-phase-3")["data"]
         cost = read_result("cost-per-true-positive")["data"]
         budget = read_result("label-budget-curve")["data"] if (RESULTS / "label-budget-curve.json").is_file() else None
-        phase2 = read_result("evaluation-arms-a-b")["data"]
-        text = replace_block(text, "results", results_block_phase3(ev, cost) + "\n\n" + finding(phase2))
+        text = replace_block(text, "results", results_block_phase3(ev, cost) + "\n\n" + finding_phase3(ev))
         text = replace_block(text, "hypotheses", hypotheses_block(ev, budget))
         text = replace_block(text, "decision-matrix", decision_block(ev, cost))
         text = replace_block(text, "limitations", limitations_block(ev, cost, budget))
