@@ -94,7 +94,7 @@ def finding(ev: dict) -> str:
     )
     limits = (
         "This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level "
-        "payments graphs, and the post-shift period has few illicit labels, so its intervals are wide."
+        "payments graphs. The post-shift period has few illicit labels, which caps precision at k there."
     )
     return f"**Phase 2 finding (draft for the author to edit).** {headline} {shift} {limits}"
 

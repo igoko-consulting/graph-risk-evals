@@ -116,16 +116,20 @@ def precision_at_k_a_b() -> None:
         rows = [r for p in ("pre_shift_test", "post_shift_test") for r in ev["metrics"][arm][p]["per_step"]]
         top.plot([r["time_step"] for r in rows], [r["precision_at_k"] for r in rows], color=colour, linewidth=2,
                  marker="o", markersize=5, markeredgecolor=SURFACE, markeredgewidth=1.5, label=label)
+    rows = [r for p in ("pre_shift_test", "post_shift_test") for r in ev["metrics"]["A"][p]["per_step"]]
+    top.step([r["time_step"] for r in rows], [min(r["illicit"], k) / k for r in rows], where="mid", color=TEXT_SECONDARY,
+             linewidth=1, linestyle=(0, (3, 2)), label="Best possible: fewer illicit labels than alerts")
     _frame(top)
     top.set_ylabel(f"Precision at k = {k}")
-    top.set_ylim(0, 1.05)
+    top.set_ylim(0, 1.14)
     top.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
     top.set_xticks(range(35, 50))
     top.set_xlim(34.5, 49.5)
     top.set_xlabel("Test time step")
-    top.text(38.5, 1.02, "Pre-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
-    top.text(46, 1.02, "Post-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
-    fig.legend(loc="upper left", frameon=False, ncol=2, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.93),
+    top.text(38.5, 1.12, "Pre-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    top.text(46, 1.12, "Post-shift", ha="center", va="top", color=TEXT_SECONDARY, fontsize=8)
+    top.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    fig.legend(loc="upper left", frameon=False, ncol=3, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.93),
                handlelength=1.6, columnspacing=1.6)
 
     periods = (("pre_shift_test", "Pre-shift, steps 35 to 42"), ("post_shift_test", "Post-shift, steps 43 to 49"))
@@ -134,23 +138,23 @@ def precision_at_k_a_b() -> None:
         lo, hi = c["interval_95"]["low"], c["interval_95"]["high"]
         bottom.plot([lo, hi], [y, y], color=TEXT_SECONDARY, linewidth=2, solid_capstyle="round")
         bottom.plot([c["difference"]], [y], marker="o", markersize=8, color=TEXT, markeredgecolor=SURFACE, markeredgewidth=2)
-        bottom.text(hi, y + 0.28, f"  {c['difference']:+.1%} ({lo:+.1%} to {hi:+.1%}), {c['verdict']}",
+        bottom.text(lo, y - 0.38, f"{c['difference'] * 100:+.1f} pts ({lo * 100:+.1f} to {hi * 100:+.1f}), {c['verdict']}",
                     va="center", ha="left", color=TEXT_SECONDARY, fontsize=8)
     bottom.axvline(0, color=TEXT, linewidth=1)
     bottom.set_yticks([0, 1])
     bottom.set_yticklabels([p[1] for p in periods])
-    bottom.set_ylim(-0.6, 1.8)
+    bottom.set_ylim(-0.8, 1.5)
     bottom.invert_yaxis()
     bottom.set_facecolor(SURFACE)
     bottom.grid(axis="x", color=GRID, linewidth=0.8)
     for side in ("top", "right", "left"):
         bottom.spines[side].set_visible(False)
     bottom.tick_params(length=0)
-    bottom.xaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    bottom.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v * 100:+.0f} pts" if v else "0"))
     bottom.set_xlabel("Arm B minus Arm A, precision at k pooled over the period, with 95% bootstrap interval")
     span = max(abs(v) for p, _ in periods for v in ev["comparisons_b_minus_a"][p]["p_at_k"]["interval_95"].values()
                if isinstance(v, float))
-    bottom.set_xlim(-span * 1.6, span * 2.6)
+    bottom.set_xlim(-span * 1.0, span * 2.3)
 
     fig.suptitle("Precision at k by test step, Arms A and B", x=0.07, y=0.985, ha="left", fontsize=13, color=TEXT,
                  fontweight="bold")
