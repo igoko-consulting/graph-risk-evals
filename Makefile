@@ -5,7 +5,8 @@ UV := $(shell command -v uv 2>/dev/null || ls $(HOME)/.local/bin/uv 2>/dev/null)
 EXCLUDE_NEWER ?= 2026-11-05
 # CPU-only PyTorch, consulted for PyTorch packages only, so a Linux clone does not pull CUDA libraries.
 TORCH_CPU_INDEX := https://download.pytorch.org/whl/cpu
-STAGES := compute_k class_balance day_one_checks build_graph_store leakage_gate run_arms evaluate_arms render_charts render_readme
+STAGES := compute_k class_balance day_one_checks build_graph_store leakage_gate run_arms evaluate_arms \
+	run_arm_d evaluate_phase3 render_charts render_readme run_label_budgets evaluate_label_budgets render_charts render_readme
 
 export PYTHONPATH := $(CURDIR):$(CURDIR)/00-build
 # Performance cores only: on Apple silicon, threads on efficiency cores make every fit wait for stragglers.

@@ -141,3 +141,7 @@ Written after the Phase 2 results for Arms A and B were known, and before any Ar
 - **Compute cost:** all recorded fit time for the arm, tuning included, times the threads used, at €0.05 per vCPU-hour. Shown separately so its scale is visible.
 - **Cost per true positive:** analyst plus compute cost, divided by true positives in the top k, pooled over the period. Reported for both periods.
 - **Build days per arm** are an author-time cost the code cannot measure. They are recorded in `03-the-margin/NOTES.md` by the author, not generated.
+
+### Phase 3 smoke run, before the official run
+
+The Phase 3 stages were run once in miniature: 2 trials, 2 seeds, Arm D capped at 20 epochs, one 5 percent budget. It printed test-period comparisons including Arm D, which is unavoidable when testing the evaluation end to end. Its numbers come from models far smaller than the protocol's and were discarded. Changes made afterwards were presentation only: README wording ("gnn" casing, the compute-share sentence, and a limitations line that asserted every arm collapses after the shift, which now states the measured falls instead) and chart label layout. No protocol rule, feature, model or evaluation step changed.
