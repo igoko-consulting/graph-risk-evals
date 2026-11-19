@@ -1,0 +1,72 @@
+{
+  "result": "k",
+  "provenance": {
+    "generated_by": "compute_k.py",
+    "generated_at": "2026-11-19T13:11:44+00:00",
+    "git": {
+      "commit": "6e382ac66ea72246380f7c3956f4852b1bb88e95",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": "not applicable: no model feature values are used or written",
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "definition": "Mean number of illicit labels per time step across steps 1 to 34, computed before any test step is read",
+    "steps": [
+      1,
+      34
+    ],
+    "illicit_labels_per_step": {
+      "1": 17,
+      "2": 18,
+      "3": 11,
+      "4": 30,
+      "5": 8,
+      "6": 5,
+      "7": 102,
+      "8": 67,
+      "9": 248,
+      "10": 18,
+      "11": 131,
+      "12": 16,
+      "13": 291,
+      "14": 43,
+      "15": 147,
+      "16": 128,
+      "17": 99,
+      "18": 52,
+      "19": 80,
+      "20": 260,
+      "21": 100,
+      "22": 158,
+      "23": 53,
+      "24": 137,
+      "25": 118,
+      "26": 96,
+      "27": 24,
+      "28": 85,
+      "29": 329,
+      "30": 83,
+      "31": 106,
+      "32": 342,
+      "33": 23,
+      "34": 37
+    },
+    "illicit_labels_total": 3462,
+    "k_mean": 101.82352941176471,
+    "integer_rule": "not pre-registered; open, to be fixed before any arm is evaluated (see change_log.md)"
+  }
+}
