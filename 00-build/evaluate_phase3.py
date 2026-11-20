@@ -59,14 +59,15 @@ def h1(metrics: dict, d: dict) -> dict:
     else:
         ci = interval(per)
         outcome = ("supported" if ci["low"] >= H1_THRESHOLD else
-                   "rejected" if ci["high"] < H1_THRESHOLD else "not separable from the 0.5 threshold")
+                   "rejected" if ci["high"] < H1_THRESHOLD else f"not separable from the {H1_THRESHOLD:g} threshold")
     return {"definition": "(B - A) / (max(B, D) - A), PR-AUC pooled over the pre-shift period", "point": point,
             "interval_95": ci, "resamples_undefined": int(np.isnan(per).sum()), "outcome": outcome}
 
 
 def h2(comp_d_b: dict) -> dict:
     rejected = comp_d_b["difference"] >= H2_MARGIN and comp_d_b["interval_95"]["low"] > 0
-    return {"definition": "Rejected only if D - B, precision at k pooled pre-shift, is at least 5 points and its 95% interval excludes zero",
+    return {"definition": f"Rejected only if D - B, precision at k pooled pre-shift, is at least {H2_MARGIN * 100:g} "
+                          "points and its 95% interval excludes zero",
             "difference": comp_d_b["difference"], "interval_95": comp_d_b["interval_95"],
             "outcome": "rejected: the GNN justifies its cost on this test" if rejected else "stands: the GNN does not clear the bar"}
 

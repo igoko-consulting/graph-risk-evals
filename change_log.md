@@ -251,3 +251,12 @@ The audit's lower-severity findings. Wording, generated text and checks only; no
 ## 2026-11-20, Gate 2 tightened to the PRD's rule
 
 The audit fix above let a score aggregate that moved under any of the three leakage tests be dropped. The PRD's Gate 2 row says a failure of either the future-edge or the label-shuffle test fails the build, and red line 2 says no result is written while either fails. The pre-registration's remedy, dropping rather than adjusting, covers the two-stage aggregation leak, which is what the own-label flip tests. At the author's request, `leakage_gate.py` now fails the gate if any feature moves under the future-edge or label-shuffle test, and drops a score aggregate only if it moves under the own-label flip alone. The published gate moved no feature under any test, so it passes this rule as well; no result was regenerated and no outcome changes.
+
+## 2026-11-20, review of the audit follow-up
+
+A line-by-line review of the follow-up above found four small faults. All are fixed; no result was regenerated and no published figure changes.
+
+- **H1's rule restated.** The README said H1 needs "a majority". The rule is that the whole interval lies at or above half, so exactly half counts and a majority on the point estimate alone does not. The text now says so.
+- **H1 and H2 bars built from their constants.** `evaluate_phase3.py` typed "0.5" and "5 points" into its outcome and definition text, apart from the constants its decisions use. The text is now built from those constants. It comes out word for word as published, so the results still match the code.
+- **Queue table divider.** The divider row counted every table size, so the table would have broken if k ever equalled one of them. It now counts the columns shown. With k at 102 the table is unchanged.
+- **Dropped-feature sentence.** It would have said a feature's "own training labels" were flipped. The labels belong to the transactions, and it now says so. It shows only if a feature is dropped, which has not happened.

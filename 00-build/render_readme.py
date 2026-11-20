@@ -258,7 +258,8 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
     ap = {a: ev["metrics"][a]["pre_shift_test"]["average_precision_pooled"] for a in ("A", "B", "D")}
     h1_ev = ("Undefined" if h1["interval_95"] is None else
              f"{h1['point']:.2f} ({h1['interval_95']['low']:.2f} to {h1['interval_95']['high']:.2f})")
-    h1_ev = f"Share of lift, PR-AUC pre-shift: {h1_ev}. Supported needs a majority, as the hypothesis states."
+    h1_ev = (f"Share of lift, PR-AUC pre-shift: {h1_ev}. Supported only if the whole interval is at or above half, "
+             "as pre-registered.")
     h1_outcome = sentence(h1["outcome"])
     if h1_by_construction(h1):
         h1_outcome += ", by construction"
@@ -349,7 +350,7 @@ def leakage_sentence(gate: dict) -> str:
     if not dropped:
         return f"No feature {moved} under {tests} (`results/leakage-tests.json`)."
     names = ", ".join(f"`{n}`" for n in dropped)
-    return (f"{names} moved when {'its' if len(dropped) == 1 else 'their'} own training labels were flipped and "
+    return (f"{names} moved for training transactions whose own labels were flipped, and "
             f"{'was' if len(dropped) == 1 else 'were'} dropped from Arm B, as pre-registered. No other feature {moved} "
             "(`results/leakage-tests.json`).")
 
@@ -448,7 +449,7 @@ def queue_block(ev: dict) -> str:
     rows = [
         "| Arm, period | " + " | ".join([f"{q} per step" for q in below] + [f"k = {k} per step, pre-committed"]
                                        + [f"{q} per step" for q in above]) + " |",
-        "|---" * (len(QUEUE_TABLE_SIZES) + 2) + "|",
+        "|---" * (len(below) + len(above) + 2) + "|",
     ]
     volumes = []
     for period, label in periods:
