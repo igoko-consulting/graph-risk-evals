@@ -14,7 +14,7 @@ Degree, two-hop reach, PageRank and community membership all count nodes. They i
 - **Over-merge** joins different entities into one node. A shared attribute such as a family address, a corporate device pool or a payment processor's account turns unrelated customers into a single hub. Degree and centrality inflate, false positives rise, and an innocent customer inherits a neighbour's risk.
 - **The costs are not symmetric.** Under-merge mostly costs recall, and it does so silently. Over-merge costs precision and investigator time, visibly, and can harm customers. In a regulated setting it is also an explainability problem: the evidence chain an investigator sees rests on a merge nobody can defend.
 
-The merge threshold is therefore a product decision with a cost on each side, not a data-cleaning detail. It should be set the way the alert budget is set in this lab: from an explicit cost per error, on held-out data, and revisited when the population shifts.
+The merge threshold is therefore a product decision with a cost on each side, not a data-cleaning detail. It should be set from an explicit cost per error, on held-out data, and revisited when the population shifts. Like the alert budget here, it should be fixed before anyone sees the result.
 
 ## What a working layer needs
 

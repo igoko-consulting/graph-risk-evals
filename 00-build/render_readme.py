@@ -15,6 +15,10 @@ generated leakage sentence were added after an audit, with every result already 
 After the same audit, protocol settings that generated text had typed in (feature count, resamples, shift step,
 hypothesis bars, label budgets, queue sizes, label steps) are read from results/, the Phase 3 ranking is labelled as
 one of point estimates, the published comparison is cited, and the results notes state the seed-by-seed spread.
+After a cold-reader review, with every result published: the answer block leads the README; the decision rules moved
+into matrix_applies unchanged, so the answer and the matrix read the same rules; tables mark separable differences in
+bold; post-shift cost, true positives, unlabelled shares and engine ratios are shown where a reader needs them; and
+the H1, H4 and evidence wording was reworded. None of it states or changes an outcome.
 """
 import functools
 import re
@@ -26,7 +30,7 @@ VALUE = re.compile(r"<!-- value:([a-z0-9-]+) -->.*?<!-- end value -->", re.DOTAL
 VALUE_NAMES = (
     "analyst-cost", "analyst-cost-low", "analyst-cost-high", "analyst-cost-basis", "compute-price",
     "trials-per-seed", "seeds", "arm-a-features", "aggregate-features", "resamples", "queue-smallest", "queue-largest",
-    "runtime-target-minutes", "k-first-step", "k-last-step", "shift-step",
+    "runtime-target-minutes", "k-first-step", "k-last-step", "shift-step", "k", "engine-ratio-min", "engine-ratio-max",
 )
 PRIOR_WORK = "Weber et al., 2019"
 
@@ -160,13 +164,83 @@ def euro(x) -> str:
     return "n/a" if x is None else f"€{x:,.0f}" if x >= 100 else f"€{x:,.2f}"
 
 
-def cost_cell(cost: dict, arm: str) -> str:
-    c = cost["by_arm"][arm]["pre_shift_test"]["cost_per_true_positive_eur"]
-    return f"{euro(c['central'])} modelled; {euro(c['low'])} to {euro(c['high'])} across the analyst-cost range"
+def cost_cell(cost: dict, arm: str, period: str) -> str:
+    c = cost["by_arm"][arm][period]["cost_per_true_positive_eur"]
+    return f"{euro(c['central'])} ({euro(c['low'])} to {euro(c['high'])})"
 
 
 def outside(ci: dict) -> bool:
     return ci["low"] > 0 or ci["high"] < 0
+
+
+def diff_cell(c: dict) -> str:
+    """Table form: bold marks a difference whose interval excludes zero, stated once under the table."""
+    ci, d = c["interval_95"], signed(c["difference"])
+    return f"{f'**{d}**' if outside(ci) else d} ({signed(ci['low'])} to {signed(ci['high'])})"
+
+
+def joined(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
+MATRIX = (
+    ("comparable", "Tabular performs comparably to graph features", "Do not introduce graph complexity"),
+    ("economics", "Graph features improve detection economics", "Invest in graph-derived features, not graph models"),
+    ("gnn", "The GNN adds material value beyond graph features", "Investigate whether the operational burden is justified"),
+    ("similar", "All arms perform similarly", "Do not invest further on the basis of this dataset"),
+)
+
+
+def matrix_applies(ev: dict, cost: dict) -> dict:
+    """The decision rules, written before Arm D ran. Only their presentation has changed since."""
+    pre = "pre_shift_test"
+    ba, db, da = (ev["comparisons"][p][pre]["p_at_k"] for p in ("B minus A", "D minus B", "D minus A"))
+    c = {arm: cost["by_arm"][arm][pre]["cost_per_true_positive_eur"]["central"] for arm in ("A", "B")}
+    b_beats_a = ba["interval_95"]["low"] > 0
+    cheaper_b = c["B"] is not None and c["A"] is not None and c["B"] < c["A"]
+    h2_rejected = ev["hypotheses"]["H2"]["outcome"].startswith("rejected")
+    return {
+        "comparable": not b_beats_a,
+        "economics": b_beats_a and cheaper_b and not h2_rejected,
+        "gnn": h2_rejected,
+        "similar": all(x["interval_95"]["low"] <= 0 <= x["interval_95"]["high"] for x in (ba, db, da)),
+    }
+
+
+def answer_block(ev: dict, cost: dict) -> str:
+    pre, post = "pre_shift_test", "post_shift_test"
+    m, cmp = ev["metrics"], ev["comparisons"]
+    ba, db = cmp["B minus A"][pre]["p_at_k"], cmp["D minus B"][pre]["p_at_k"]
+    found = {a: cost["by_arm"][a][pre]["true_positives"] for a in ("A", "B", "D")}
+    alerts = cost["by_arm"]["A"][pre]["alerts"]
+    ci = lambda c: f"{signed(c['difference'])} ({signed(c['interval_95']['low'])} to {signed(c['interval_95']['high'])})"
+    if outside(ba["interval_95"]):
+        lift = (f"Before the regime shift, adding graph features to a tuned tabular model "
+                f"{'raised' if ba['difference'] > 0 else 'lowered'} precision at k by {ci(ba)}: {found['B']:,} illicit "
+                f"transactions found in {alerts:,} alerts, against {found['A']:,} without them.")
+    else:
+        lift = (f"Before the regime shift, adding graph features to a tuned tabular model made no difference this test "
+                f"can detect: B minus A was {ci(ba)}, within the noise band.")
+    place = "below" if db["interval_95"]["high"] < 0 else "above" if db["interval_95"]["low"] > 0 else "level with"
+    gnn = f"The graph neural network ranked {place} the graph features, at {ci(db)}."
+    p_pre = {a: m[a][pre]["precision_at_k_pooled"] for a in ("A", "B", "D")}
+    p_post = {a: m[a][post]["precision_at_k_pooled"] for a in ("A", "B", "D")}
+    moved = "fell" if all(p_post[a] < p_pre[a] for a in p_pre) else "was"
+    shift = (f"After the shift, every arm's precision at k {moved} to between {pct(min(p_post.values()))} and "
+             f"{pct(max(p_post.values()))}.")
+    by_precision = sorted(p_pre, key=lambda a: -p_pre[a])
+    cpt = {a: cost["by_arm"][a][pre]["cost_per_true_positive_eur"]["central"] for a in ("A", "B", "D")}
+    same_order = by_precision == sorted(cpt, key=lambda a: cpt[a])
+    cost_line = ("Modelled cost per true positive ranks the arms in the same order as precision at k, because every arm "
+                 "works the same number of alerts." if same_order else
+                 "Modelled cost per true positive: " + ", ".join(f"{a} {euro(cpt[a])}" for a in ("A", "B", "D")) + ".")
+    applies = matrix_applies(ev, cost)
+    decisions = [d for key, _, d in MATRIX if applies[key]]
+    decision = ("Decision, for this Bitcoin dataset only: " + "; ".join(d[:1].lower() + d[1:] for d in decisions) + "."
+                if decisions else "None of the decisions written in advance applies.")
+    return (f"{lift} {gnn} {shift} {cost_line}\n\n**{decision}** Costs are modelled, not measured. Nothing here "
+            "transfers to payments without the account-level data this dataset lacks. Sources: "
+            "`results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.")
 
 
 def h1_by_construction(h1: dict) -> bool:
@@ -191,13 +265,6 @@ def finding_phase3(ev: dict) -> str:
             "Given A's local features plus the transaction graph, the GNN still ranked below A. "
             f"That matches the direction of the published comparison ({PRIOR_WORK})."
         )
-    u = {a: m[a][pre]["unlabelled_share_of_top_k_all_nodes"] for a in ("A", "B", "D")}
-    parts.append(
-        f"Ranked over every transaction in a step, labelled or not, unlabelled transactions would fill {pct(u['D'])} of "
-        f"D's top {k} before the shift, against {pct(u['A'])} for A and {pct(u['B'])} for B."
-        + (" Precision at k counts labelled transactions only, so it describes less of D's real queue than of A's or B's."
-           if u["D"] > max(u["A"], u["B"]) else "")
-    )
     q = {a: m[a][post]["precision_at_k_pooled"] for a in ("A", "B", "D")}
     parts.append(
         f"After the shift at step {recorded()['shift_step']}, precision at k was {pct(q['A'])} for A, {pct(q['B'])} for B "
@@ -215,37 +282,45 @@ def results_block_phase3(ev: dict, cost: dict) -> str:
     m, ci, cmp = ev["metrics"], ev["intervals"], ev["comparisons"]
     pre, post = "pre_shift_test", "post_shift_test"
     rows = [
-        "| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive, pre-shift |",
-        "|---|---|---|---|---|---|",
+        "| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift "
+        "| Cost per true positive, pre-shift | Cost per true positive, post-shift |",
+        "|---|---|---|---|---|---|---|",
     ]
     for arm in ("A", "B", "D"):
         rows.append(
             f"| {arm_label(arm)} | {with_ci(m[arm][pre]['precision_at_k_pooled'], ci[pre][arm]['p_at_k'])} "
             f"| {with_ci(m[arm][post]['precision_at_k_pooled'], ci[post][arm]['p_at_k'])} "
             f"| {with_ci(m[arm][pre]['average_precision_pooled'], ci[pre][arm]['ap_pooled'])} "
-            f"| {with_ci(m[arm][post]['average_precision_pooled'], ci[post][arm]['ap_pooled'])} | {cost_cell(cost, arm)} |"
+            f"| {with_ci(m[arm][post]['average_precision_pooled'], ci[post][arm]['ap_pooled'])} "
+            f"| {cost_cell(cost, arm, pre)} | {cost_cell(cost, arm, post)} |"
         )
     for pair in ("B minus A", "D minus B", "D minus A"):
         c = cmp[pair]
-        rows.append(f"| {pair} | {diff_with_ci(c[pre]['p_at_k'])} | {diff_with_ci(c[post]['p_at_k'])} "
-                    f"| {diff_with_ci(c[pre]['ap_pooled'])} | {diff_with_ci(c[post]['ap_pooled'])} | |")
+        rows.append(f"| {pair} | {diff_cell(c[pre]['p_at_k'])} | {diff_cell(c[post]['p_at_k'])} "
+                    f"| {diff_cell(c[pre]['ap_pooled'])} | {diff_cell(c[post]['ap_pooled'])} | | |")
     a = cost["assumptions"]["analyst_cost_per_alert_eur"]
     seeds = ev["per_seed"]
     by_seed = [b[pre]["precision_at_k_pooled"] - a_[pre]["precision_at_k_pooled"] for a_, b in zip(seeds["A"], seeds["B"])]
+    u = {x: m[x][pre]["unlabelled_share_of_top_k_all_nodes"] for x in ("A", "B", "D")}
     notes = [
         "",
-        f"k = {ev['k']} alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled "
-        f"transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, "
-        f"{ev['bootstrap']['resamples']:,} resamples stratified by time step; a difference is called only when its "
-        "interval excludes zero. Each arm's scores are the mean of its "
-        f"{len(seeds['A'])} seeds' models, each tuned on its own; a deployment would run one model. The intervals hold "
-        "those scores fixed and treat transactions within a step as independent, so they leave out retraining with "
-        "other seeds and may be too narrow where linked transactions move together. Seed by seed, B minus A on "
-        f"pre-shift precision at k ran from {signed(min(by_seed))} to {signed(max(by_seed))}. Labelled transactions only; "
-        f"unlabelled is not licit. **Cost is modelled, not measured:** analyst cost of €{a['central']:.0f} per alert, "
-        f"with a range of €{a['low']:.2f} to €{a['high']:.2f}, plus measured tuning time priced at "
-        f"€{cost['assumptions']['compute_eur_per_vcpu_hour']:.2f} per vCPU-hour. The cost range is that assumption's "
-        "range, not a confidence interval. Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.",
+        f"- **Reading the table.** k = {ev['k']} alerts per time step (`results/k.json`). PR-AUC is average precision "
+        f"pooled over labelled transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, "
+        f"{ev['bootstrap']['resamples']:,} resamples stratified by time step. A difference in **bold** is outside the "
+        "noise band: its interval excludes zero. The others are not separable.",
+        f"- **Labelled transactions only.** Unlabelled transactions are left out, not counted as licit. Ranked over every "
+        f"transaction in a step, unlabelled ones would fill {pct(u['A'])} of A's top {ev['k']} before the shift, "
+        f"{pct(u['B'])} of B's and {pct(u['D'])} of D's. Precision at k describes only the labelled rest of the queue.",
+        f"- **What the intervals leave out.** Each arm's scores are the mean of its {len(seeds['A'])} seeds' models, each "
+        "tuned on its own; a deployment would run one model. The intervals hold those scores fixed and treat "
+        "transactions within a step as independent, so they leave out retraining with other seeds and may be too "
+        "narrow where linked transactions move together. Seed by seed, B minus A on pre-shift precision at k ran from "
+        f"{signed(min(by_seed))} to {signed(max(by_seed))}.",
+        f"- **Cost is modelled, not measured.** Analyst cost of {money(a['central'])} per alert, plus measured tuning time "
+        f"priced at {money(cost['assumptions']['compute_eur_per_vcpu_hour'])} per vCPU-hour. The bracket is the "
+        f"analyst-cost range of {money(a['low'])} to {money(a['high'])}, not a confidence interval.",
+        "",
+        "Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.",
         "",
         "![Precision at k by test step, all arms](site/charts/precision-at-k-all-arms.svg)",
     ]
@@ -262,11 +337,13 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
              "as pre-registered.")
     h1_outcome = sentence(h1["outcome"])
     if h1_by_construction(h1):
-        h1_outcome += ", by construction"
-        h1_ev += " The ratio is 1 whenever B beats D, as it did in every resample, so the available lift is B's own."
+        h1_outcome += ", but trivially"
+        h1_ev = (f"Share of lift, PR-AUC pre-shift: {h1['point']:.0f} in every resample, because B beat D each time, so "
+                 "all the available lift was B's own.")
         if ap["D"] < ap["A"]:
-            h1_ev += (f" D's PR-AUC was also below A's ({pct(ap['D'])} against {pct(ap['A'])}), so the GNN added no "
-                      "lift for graph features to capture.")
+            h1_ev += (f" D's PR-AUC was also below A's ({pct(ap['D'])} against {pct(ap['A'])}): the GNN added no lift "
+                      "for graph features to capture.")
+        h1_ev += " The rule needs the whole interval at or above half."
     pairs = "; ".join(
         f"{name} {signed(v['difference'])} ({signed(v['interval_95']['low'])} to {signed(v['interval_95']['high'])}), "
         + ("outside" if outside(v["interval_95"]) else "within") + " the noise band"
@@ -294,11 +371,14 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
                  f"{diff_with_ci(pre_lo['B minus A'])}; at {budget_label(hi)}, {diff_with_ci(pre_hi['B minus A'])}. "
                  f"Change from {budget_label(hi)} to {budget_label(lo)}, positive if the advantage "
                  f"widened: {signed(b['widening'])} ({signed(b['interval_95']['low'])} to {signed(b['interval_95']['high'])}), "
-                 + ("outside" if outside(b["interval_95"]) else "within") + " the noise band. "
-                 f"Reported alongside, D minus A changed by {signed(d['widening'])} "
-                 f"({signed(d['interval_95']['low'])} to {signed(d['interval_95']['high'])}), {d['outcome']}")
+                 + ("outside" if outside(b["interval_95"]) else "within") + " the noise band. ")
+        d_ci = f"{signed(d['widening'])} ({signed(d['interval_95']['low'])} to {signed(d['interval_95']['high'])})"
         if d["interval_95"]["high"] < 0:
-            h4_ev += ": D fell further behind A as labels shrank"
+            h4_ev += f"Alongside: the GNN fell further behind A as labels shrank, by {d_ci}, outside the noise band"
+        elif d["interval_95"]["low"] > 0:
+            h4_ev += f"Alongside: the GNN closed on A as labels shrank, by {d_ci}, outside the noise band"
+        else:
+            h4_ev += f"Alongside, D minus A changed by {d_ci}, within the noise band"
         rows.append(
             f"| **H4.** The graph-feature advantage widens as labels get scarcer | {sentence(h4['outcome'])} | {h4_ev}. |"
         )
@@ -314,26 +394,27 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
 def decision_block(ev: dict, cost: dict) -> str:
     cmp = ev["comparisons"]
     pre = "pre_shift_test"
-    ba, db, da = (cmp[p][pre]["p_at_k"] for p in ("B minus A", "D minus B", "D minus A"))
-    c = {arm: cost["by_arm"][arm][pre]["cost_per_true_positive_eur"]["central"] for arm in ("A", "B", "D")}
-    b_beats_a = ba["interval_95"]["low"] > 0
-    cheaper_b = c["B"] is not None and c["A"] is not None and c["B"] < c["A"]
-    h2_rejected = ev["hypotheses"]["H2"]["outcome"].startswith("rejected")
-    all_similar = all(x["interval_95"]["low"] <= 0 <= x["interval_95"]["high"] for x in (ba, db, da))
+    pairs = ("B minus A", "D minus B", "D minus A")
+    ba, db = cmp["B minus A"][pre]["p_at_k"], cmp["D minus B"][pre]["p_at_k"]
+    c = {arm: cost["by_arm"][arm][pre]["cost_per_true_positive_eur"]["central"] for arm in ("A", "B")}
+    found = {arm: cost["by_arm"][arm][pre]["true_positives"] for arm in ("A", "B")}
+    alerts = cost["by_arm"]["A"][pre]["alerts"]
+    applies = matrix_applies(ev, cost)
+    separable = [p for p in pairs if outside(cmp[p][pre]["p_at_k"]["interval_95"])]
     yes = lambda flag: "**Yes**" if flag else "No"
+    evidence = {
+        "comparable": f"B minus A, precision at k pre-shift: {diff_with_ci(ba)}",
+        "economics": (f"B beats A outside the noise band: {'yes' if ba['interval_95']['low'] > 0 else 'no'}. Before the "
+                      f"shift, B found {found['B']:,} illicit transactions in {alerts:,} alerts, against A's "
+                      f"{found['A']:,}. Modelled cost per true positive: A {euro(c['A'])}, B {euro(c['B'])}"),
+        "gnn": f"D minus B: {diff_with_ci(db)}. H2 {ev['hypotheses']['H2']['outcome']}",
+        "similar": ("Yes: every pairwise interval on pre-shift precision at k includes zero" if applies["similar"] else
+                    f"No: {joined(separable)} {'is' if len(separable) == 1 else 'are'} outside the noise band"),
+    }
     rows = [
         "| Finding | Product decision | Applies here | Evidence |",
         "|---|---|---|---|",
-        f"| Tabular performs comparably to graph features | Do not introduce graph complexity | {yes(not b_beats_a)} "
-        f"| B minus A, precision at k pre-shift: {diff_with_ci(ba)} |",
-        f"| Graph features improve detection economics | Invest in graph-derived features, not graph models "
-        f"| {yes(b_beats_a and cheaper_b and not h2_rejected)} | B beats A outside the noise band: {'yes' if b_beats_a else 'no'}. "
-        f"Modelled cost per true positive, pre-shift: A {euro(c['A'])}, B {euro(c['B'])} |",
-        f"| The GNN adds material value beyond graph features | Investigate whether the operational burden is justified "
-        f"| {yes(h2_rejected)} | D minus B: {diff_with_ci(db)}. H2 is "
-        f"{ev['hypotheses']['H2']['definition'][:1].lower() + ev['hypotheses']['H2']['definition'][1:]} |",
-        f"| All arms perform similarly | Do not invest further on the basis of this dataset | {yes(all_similar)} "
-        f"| Every pairwise interval on pre-shift precision at k includes zero: {'yes' if all_similar else 'no'} |",
+        *[f"| {finding} | {decision} | {yes(applies[key])} | {evidence[key]} |" for key, finding, decision in MATRIX],
         "",
         "_Draft for the author to edit. Which row applies is decided by code from `results/`, using rules written before "
         "Arm D ran. The product decisions are the PRD's; they are about this dataset and do not transfer to payments "
@@ -399,7 +480,7 @@ def evidence_block(e: dict) -> str:
         "| Transactions queued by Arm B | " + " | ".join(str(c["flagged"]) for c in cols) + " |",
         "| With a chain: at least one same-step link | " + " | ".join(share(c["with_chain"]) for c in cols) + " |",
         "| With a two-hop chain | " + " | ".join(share(c["with_two_hop_chain"]) for c in cols) + " |",
-        f"| Strongest link also in Arm A's top {k} for its step | "
+        "| Highest-scoring neighbour also in Arm A's queue for its step | "
         + " | ".join(share(c["strongest_link_in_stage_one_top_k"]) for c in cols) + " |",
         "| Also queued by Arm A, without graph features | " + " | ".join(share(c["also_queued_by_arm_a"]) for c in cols) + " |",
         "| Median transactions within two hops | " + " | ".join(f"{c['median_two_hop_size']:.0f}" for c in cols) + " |",
@@ -418,8 +499,9 @@ def evidence_block(e: dict) -> str:
            f"and {known} links reach {known_steps}. ")
         + "On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.",
         "",
-        f"**Arm D cannot produce a chain.** Its score depends on a median of {d['receptive_field_median_transactions']:.0f} "
-        "transactions within two hops, through learned weights. The traversal can list them but not say which mattered, "
+        f"**Arm D cannot produce a chain.** Across the {d['flagged']:,} transactions Arm D queued in both periods, its "
+        f"score depends on a median of {d['receptive_field_median_transactions']:.0f} transactions within two hops, "
+        "through learned weights. The traversal can list them but not say which mattered, "
         "and a post-hoc explainer would add an approximation, not a fact about the graph.",
         "",
         f"Whether a chain is sufficient and actionable needs a human. A seeded sample of {e['review']['sample']} sits in "
@@ -500,7 +582,19 @@ def engine_block(e: dict) -> str:
         )
     engines = cfg["engines"]
     memory = f"{int(m['memory_bytes']) / 2**30:.0f} GB" if m.get("memory_bytes") else "memory not recorded"
+    ratios = {name: x["ratio_ladybug_to_duckdb"] for name, x in w.items()}
+    widest = [WORKLOAD_NAMES.get(n, n) for n in sorted(ratios, key=lambda n: -ratios[n])[:2]]
+    if min(ratios.values()) > 1:
+        learnt = (f"**What it showed.** On every workload here the columnar store was faster, by {min(ratios.values()):.1f} "
+                  f"to {max(ratios.values()):.1f} times, with the widest gaps on {widest[0]} and {widest[1].lower()}.")
+    elif max(ratios.values()) < 1:
+        learnt = (f"**What it showed.** On every workload here the graph store was faster, by "
+                  f"{1 / max(ratios.values()):.1f} to {1 / min(ratios.values()):.1f} times.")
+    else:
+        learnt = "**What it showed.** Neither engine was faster on every workload; the ratio column gives each."
     notes = [
+        "",
+        learnt,
         "",
         f"{g['nodes']:,} transactions, {g['edges']:,} edges, {g['time_steps']} time steps. {engines['ladybug']['name']} "
         f"{engines['ladybug']['version']}; {engines['duckdb']['name']} {engines['duckdb']['version']}. "
@@ -547,8 +641,12 @@ def prose_values() -> dict:
         v |= {"aggregate-features": str(checks["feature_groups_used"]["aggregate"]),
               "shift-step": str(checks["periods"]["post_shift_test"][0])}
     if is_result("k"):
-        first, last = read_result("k")["data"]["steps"]
-        v |= {"k-first-step": str(first), "k-last-step": str(last)}
+        k = read_result("k")["data"]
+        first, last = k["steps"]
+        v |= {"k": str(k["k"]), "k-first-step": str(first), "k-last-step": str(last)}
+    if is_result("engine-comparison"):
+        ratios = [x["ratio_ladybug_to_duckdb"] for x in read_result("engine-comparison")["data"]["workloads"].values()]
+        v |= {"engine-ratio-min": f"{min(ratios):.1f}", "engine-ratio-max": f"{max(ratios):.1f}"}
     if is_result("evaluation-phase-3"):
         ev = read_result("evaluation-phase-3")["data"]
         sizes = [r["queue_per_step"] for r in ev["metrics"]["A"]["pre_shift_test"]["queue_curve"]]
@@ -586,6 +684,7 @@ def main() -> None:
         text = replace_block(text, "hypotheses", hypotheses_block(ev, budget))
         text = replace_block(text, "queue-volume", queue_block(ev))
         text = replace_block(text, "decision-matrix", decision_block(ev, cost))
+        text = replace_block(text, "answer", answer_block(ev, cost))
         text = replace_block(text, "limitations", limitations_block(ev, cost, budget, read_result("leakage-tests")["data"]))
     elif (RESULTS / "evaluation-arms-a-b.json").is_file():
         text = replace_block(text, "results", results_block(read_result("evaluation-arms-a-b")["data"]))

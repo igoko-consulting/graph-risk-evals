@@ -1,6 +1,6 @@
 # Change log
 
-Dated decisions. Figures live in `results/`; this file points to them rather than repeating them.
+Dated decisions. Results live in `results/`; this file records the settings fixed before them and points to results rather than repeating them.
 
 ## 2026-11-19, session 1
 
@@ -261,3 +261,17 @@ A line-by-line review of the follow-up above found four small faults. All are fi
 - **Queue table divider.** The divider row counted every table size, so the table would have broken if k ever equalled one of them. It now counts the columns shown. With k at 102 the table is unchanged.
 - **Dropped-feature sentence.** It would have said a feature's "own training labels" were flipped. The labels belong to the transactions, and it now says so. It shows only if a feature is dropped, which has not happened.
 - **Leakage-test limits restated.** The README said the tests use a reference model "trained on every training label". Training steps are scored out of fold, so the README now says the tests run one reference configuration at the full training-label budget. The same line had the own-label wording above, and now matches it.
+
+## 2026-11-20, write-up revised after a cold-reader review
+
+An independent read-only review, made as a hiring manager and then a technical reviewer would read the repository, found the method clear but the answer late: it first appeared in the decision matrix, well down the page. These are presentation changes, made after every result was published. No result file was regenerated, no decision rule changed and no outcome changes.
+
+**The answer leads.** A generated block under the title states the pre-shift lift from graph features with its interval, the illicit transactions found against alerts, where the GNN ranked, the post-shift fall, and the decision row that applies, all from `results/`. It reads the same rules as the decision matrix: they moved into one function, `matrix_applies`, unchanged. The status block follows it and says the investment decision partly depends on build days, which the author has still to record.
+
+**Figures shown where a reader needs them.** Each was already in `results/`, and none decides anything: true positives against alerts in the answer and the matrix; post-shift cost per true positive as a reported column beside the pre-registered pre-shift one; each arm's unlabelled share of its queue, moved from the Phase 3 finding into the notes under the results table; the engine comparison's range of speed ratios, in its appendix and beside the graph-store decision; and k's value where k is first defined.
+
+**Tables and wording.** Separable differences are in bold, with the rule stated once, instead of the same verdict in every cell. H1 reads as supported but trivially. H4's alongside comparison no longer borrows "contradicted". The decision matrix's last row says which pairs are outside the noise band. The evidence-chain row names Arm A's queue, and the Arm D sentence says which queue its median comes from.
+
+**Hand-written text.** The commercial case says losses prevented are not modelled, because the dataset carries no transaction values. The ladder explains why there is no Arm C and why rung 4 is skipped. The 93 local features are reconciled with the 94 in the pre-registration, the PRD and the diagrams. "The same random search" now says D's search space differs. Keeping Arm D's search space after its result is listed as a decision. The scikit-learn reason adds the system library that LightGBM and XGBoost need. The leakage and interval caveats are shortened to one clause each, with the detail in the results notes. The three payments features are named, the mule-network sentence no longer reads as a payments claim, and the journeys' priorities are spelt out. `docs/entity-resolution.md` no longer says k came from a cost per error.
+
+**Left for the author.** The review also flagged tone in the PRD ("theatre", and self-praise of the governance note), which is versioned and not edited here, and the draft marker under the decision matrix, which is the author's to remove.
