@@ -47,7 +47,7 @@ def main() -> None:
     validation = frame.mask("validation") & frame.labelled
     everything = np.ones(len(y), dtype=bool)
     X_a, names_a = arm_a(frame)
-    scores = {"A": np.zeros((len(SEEDS), len(y))), "B": np.zeros((len(SEEDS), len(y)))}
+    scores = {name: np.zeros((len(SEEDS), len(y))) for name in ("A", "B", "stage_one")}
     logs = {"A": [], "B": []}
     stage_one_seconds = 0.0
     names_b = ()
@@ -69,6 +69,7 @@ def main() -> None:
         started = time.perf_counter()
         stage_one = stage_one_scores(frame, lambda tr, sc: fit_predict(config_a, seed, X_a, y, tr, sc))
         stage_one_seconds += time.perf_counter() - started
+        scores["stage_one"][i] = stage_one
         aggregates = graph_store.score_aggregates(conn, frame.node_ids, stage_one, STAGING)
         X_b, names_b = arm_b(frame, structural, aggregates, dropped)
 

@@ -108,13 +108,17 @@ def structural_features(conn, node_ids: np.ndarray, steps) -> tuple[dict, dict]:
     return {name: features[name] for name in STRUCTURAL}, {"pagerank_final_max_change": final_delta}
 
 
-def score_aggregates(conn, node_ids: np.ndarray, scores: np.ndarray, staging: Path) -> dict:
+def load_scores(conn, node_ids: np.ndarray, scores: np.ndarray, staging: Path) -> None:
     staging.mkdir(parents=True, exist_ok=True)
     path = staging / "scores.csv"
     np.savetxt(path, np.column_stack([node_ids, scores]), delimiter=",", header="node_id,score",
                comments="", fmt=["%d", "%.17g"])
     conn.execute(f"LOAD WITH HEADERS (node_id INT64, score DOUBLE) FROM '{path}' (header=true) "
                  "MATCH (t:Tx {node_id: node_id}) SET t.score = score")
+
+
+def score_aggregates(conn, node_ids: np.ndarray, scores: np.ndarray, staging: Path) -> dict:
+    load_scores(conn, node_ids, scores, staging)
     rows = conn.execute(query("neighbour-scores")).get_all()
     ids = np.array([r[0] for r in rows])
     assert np.array_equal(ids, node_ids), "graph store nodes differ from the columnar store"
