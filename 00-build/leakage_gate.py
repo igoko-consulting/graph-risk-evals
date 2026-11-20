@@ -13,6 +13,7 @@ import graph_store
 from features import ILLICIT, LICIT, STAGE_ONE_BLOCKS, Frame, load_frame, stage_one_scores
 from paths import COLUMNAR_STORE, STORE
 from tuning import REFERENCE_CONFIG, fit_predict
+from protocol import require
 from results_io import write_result
 
 TOLERANCE = 1e-12
@@ -38,6 +39,18 @@ def max_diff(a: np.ndarray, b: np.ndarray, where: np.ndarray) -> float:
     if (np.isnan(x) != np.isnan(y)).any():
         return float("inf")
     return float(np.max(np.abs(x[~both_nan] - y[~both_nan]), initial=0.0))
+
+
+def gate_decision(per_feature: dict, tests_valid: bool, arm_d_passed: bool) -> dict:
+    """The pre-registration allows one remedy for a leak: dropping a two-stage score aggregate. Any other leak fails."""
+    failed = sorted(n for n, r in per_feature.items() if not r["passed"])
+    dropped = [n for n in failed if n in graph_store.SCORE_AGGREGATES]
+    leaking = [n for n in failed if n not in graph_store.SCORE_AGGREGATES]
+    return {
+        "dropped_features": dropped,
+        "leaking_features_not_droppable": leaking,
+        "gate_passed": tests_valid and arm_d_passed and not leaking,
+    }
 
 
 def pick_future_edges(con, frame: Frame) -> list[tuple[int, int]]:
@@ -108,7 +121,7 @@ def main() -> None:
     evaluation = frame.steps > 29
     shuffled = frame.labels.copy()
     shuffled[evaluation] = rng.permutation(shuffled[evaluation])
-    assert (shuffled != frame.labels).any()
+    require((shuffled != frame.labels).any(), "the label shuffle changed no label, so it tests nothing")
     shuffled_values, _ = feature_values(frame.with_labels(shuffled), base, structural)
     everywhere = np.ones(len(frame.node_ids), dtype=bool)
     for n in names:
@@ -138,11 +151,13 @@ def main() -> None:
 
     for n, r in results.items():
         r["passed"] = all(v <= TOLERANCE for v in r.values())
-    tests_valid = future_effect_visible and flip_effect_visible and arm_d_checks["passed"]
-    dropped = sorted(n for n, r in results.items() if not r["passed"])
+    tests_valid = future_effect_visible and flip_effect_visible
+    decision = gate_decision(results, tests_valid, arm_d_checks["passed"])
     write_result("leakage-tests", {
         "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its "
-                       "unperturbed value. A feature that moves is dropped, not adjusted.",
+                       "unperturbed value. A two-stage score aggregate that moves is dropped, not adjusted, as the "
+                       "pre-registration allows. Any other feature that moves, or any movement in Arm D's reference "
+                       "scores, fails the gate.",
         "tests": {
             "future_edge": {
                 "what": "Inject edges dated to the last time step, including two that cross back to step 10. "
@@ -165,14 +180,22 @@ def main() -> None:
         "tolerance": TOLERANCE,
         "per_feature": results,
         "tests_valid": tests_valid,
-        "dropped_features": dropped,
-        "gate_passed": tests_valid,
+        **decision,
         "pagerank": {"damping": graph_store.DAMPING, "iterations": graph_store.PAGERANK_ITERATIONS, **structural_meta},
         "seconds": round(time.perf_counter() - started, 1),
     })
-    print(f"leakage gate: {'passed' if tests_valid else 'INVALID'}; dropped features: {dropped or 'none'}")
+    print(f"leakage gate: {'passed' if decision['gate_passed'] else 'FAILED'}; "
+          f"dropped features: {decision['dropped_features'] or 'none'}")
     if not tests_valid:
         raise SystemExit("leakage tests had no visible effect, so they test nothing; halting")
+    if not decision["gate_passed"]:
+        reasons = []
+        if decision["leaking_features_not_droppable"]:
+            reasons.append("features moved that the pre-registration does not allow to be dropped: "
+                           + ", ".join(decision["leaking_features_not_droppable"]))
+        if not arm_d_checks["passed"]:
+            reasons.append("Arm D's reference scores moved, or the future edge had no visible effect on them")
+        raise SystemExit("leakage gate failed: " + "; ".join(reasons) + "; halting")
 
 
 if __name__ == "__main__":

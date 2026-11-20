@@ -8,6 +8,7 @@ import numpy as np
 
 import graph_store
 from paths import COLUMNAR_STORE, GRAPH_STORE, STORE
+from protocol import require
 from results_io import write_result
 
 
@@ -37,8 +38,8 @@ def main() -> None:
     disagreements = int(sum(in_degree[i] != reference[n] for i, n in enumerate(node_ids)))
     shutil.rmtree(staging)
 
-    assert graph_nodes == len(reference) and graph_edges == n_edges, "graph store counts differ from the columnar store"
-    assert disagreements == 0, f"in-degree disagrees with the columnar store for {disagreements} nodes"
+    require(graph_nodes == len(reference) and graph_edges == n_edges, "graph store counts differ from the columnar store")
+    require(disagreements == 0, f"in-degree disagrees with the columnar store for {disagreements} nodes")
     path = write_result("graph-store-check", {
         "engine": f"LadybugDB {ladybug.__version__}",
         "store": "one database; node property time_step scopes each per-step graph",

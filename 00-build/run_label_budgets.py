@@ -10,7 +10,7 @@ import graph_store
 from features import BUDGETS, arm_a, arm_b, budget_labels, load_frame, stage_one_scores
 from leakage_gate import BASE_GRAPH, STAGING, STRUCTURAL_CACHE
 from paths import COLUMNAR_STORE, RESULTS, ROOT, RUNS
-from protocol import require_k_first
+from protocol import require, require_k_first
 from results_io import leakage_gate_status, write_result
 from tuning import SEEDS, TRIALS, fit_predict, search, tune
 
@@ -35,7 +35,7 @@ def main() -> None:
         frame = load_frame(con)
         graph = arm_d.build_graph(frame, *arm_d.load_edges(con))
     cache = np.load(STRUCTURAL_CACHE)
-    assert np.array_equal(cache["node_ids"], frame.node_ids)
+    require(np.array_equal(cache["node_ids"], frame.node_ids), "the structural feature cache covers different nodes")
     structural = {name: cache[name] for name in graph_store.STRUCTURAL}
     db = ladybug.Database(str(BASE_GRAPH))
     conn = ladybug.Connection(db)

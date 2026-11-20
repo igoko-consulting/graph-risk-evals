@@ -221,3 +221,29 @@ A clean clone at `edc58a2` ran `make all` to completion. Every result file recor
 **Runtime line.** The README now reports the measured runtime from `results/pipeline-runtime.json`. It is rendered again after `record_runtime.py`, so the line reports the run that produced it rather than the one before.
 
 **Write-up, PRD v2.5, requirement 21.** At the author's request the README is restructured for a reader arriving cold: what kind of project this is, the decision matrix, then the key decisions with their reasoning, cost and alternatives, then results and limitations. It states that this is a learning project run as a two-day discovery sprint, as the author described it, and adds the critical user journeys appendix that the PRD places in the README. Two limitations are added: what a longer project would test, and that the evidence-chain review is not yet scored. Only hand-written text changed; no generated number did.
+
+## 2026-11-20, audit fixes: the leakage gate's remedy and figures typed by hand
+
+An independent read-only audit of the red lines, made after every result was published, found two gaps. Both are fixed in code and text. No result file was regenerated and no outcome changes.
+
+**Gate 2 dropped more than the pre-registration allows.** Any Arm B feature that moved under a leakage test was dropped, and the gate still passed. The pre-registration allows dropping only for the two-stage score aggregates, and red line 2 says no result is written while a leakage test fails. `leakage_gate.py` now drops only a score aggregate that moves. Any structural feature that moves, or any movement in Arm D's reference scores, fails the gate and halts the build. The README had said no result is written if any test fails, which overstated the old code; it now states the rule. The published gate, run under the old rule at `edc58a2`, moved no feature and dropped nothing, so it passes the new rule too.
+
+**Figures typed by hand.** The README quoted the analyst-cost assumption, feature counts, trials, seeds, resamples, queue sizes and the runtime target in hand-written prose, and `03-the-margin/NOTES.md` repeated the cost assumptions. They now sit in value spans that `render_readme.py` fills from `results/`, so they cannot drift from the run. The renderer refuses to say the arms were tuned equally if their trial or seed counts differ. The leakage line under the README's limitations is now generated from `results/leakage-tests.json`. Figures with no source in `results/` were removed rather than typed: the unsourced payments-margin figure, the Phase 5 dataset size, which stays in the PRD, and the user-journey RICE scores, which are the author's estimates and also stay in the PRD. The README's status line now says what is generated. `03-the-margin/NOTES.md` joins the pipeline outputs that do not count as uncommitted code, now listed once in `paths.py`.
+
+## 2026-11-20, audit follow-up: disclosures, citation and caveats
+
+The audit's lower-severity findings. Wording, generated text and checks only; no result file was regenerated and no outcome changes.
+
+**The evidence-chain sentence was written knowing the real share.** The Phase 4 entry on smoke runs says their numbers were discarded. They were, but the evidence-chain smoke run used scores from an earlier full build, which regenerate identically, so the share it printed was the share later published. The "more than half" condition on that README sentence was written knowing it would hold. The sentence describes the published share and decides nothing, but the earlier entry understated what was known when it was written.
+
+**Prior work cited.** The README and the generated Phase 3 finding now cite the published comparison (Weber et al., 2019). The finding had said the comparison was cited in the pre-registration; the pre-registration describes it without a citation, and it cannot be edited without breaking its hash.
+
+**k described correctly.** The README said k was the mean per training step, and the queue-size notes said k was fixed from training steps. It is computed over the training and validation steps, as `results/k.json` and the pre-registration say.
+
+**Caveats beside the claims.** The README now states, next to each claim: the bootstrap holds each arm's scores fixed and treats transactions within a step as independent, so it leaves out seed-to-seed variation and may be too narrow; each arm's scores are the mean of its seeds' models, which a deployment would not run; cost per true positive counts labelled transactions only; the leakage tests use one reference model on every training label; and the Phase 2 kill criterion is reported, not enforced by the pipeline. The notes under the results gain the seed-by-seed range of B minus A. That range was added after every result was published and decides nothing.
+
+**Settings typed into generated text.** Arm A's feature count, the resamples, the shift step, the H2 bar, the label budgets shown, the queue grid and the steps with known labels are now read from `results/` rather than typed in `render_readme.py`. The H1 evidence no longer types its threshold; it says a majority is needed, as the hypothesis states. The Phase 3 ranking sentence now says it ranks point estimates. No generated number changed.
+
+**Checks that survive `python -O`.** Bare `assert` statements in `00-build/` are now `require()` calls, which Python does not strip, and the two module-level checks in `loaders/elliptic.py` now raise the loader's `ContractError`.
+
+**PRD v2.5 was written in place.** It went into `prds/prd-v2.md` (f55b090) rather than a new file. Versions v2 to v2.4 were drafted before the repository existed and first committed together; v2.5 is the first change to the file after it was committed, and git keeps v2.4 at `0511c14`. Moving v2.5 to its own file would change which file `CLAUDE.md` names as the working specification, so it is left for the author to decide.

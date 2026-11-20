@@ -9,13 +9,46 @@ The Phase 4 evidence-chain and engine wording was written after a local smoke ru
 discarded; its one conditional sentence depends on the share of the queue Arm A also queues. The queue-volume block
 and the runtime line were written after their results were published; they state no outcome. Outcomes are computed in
 evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
+
+Hand-written prose quotes figures through value spans, filled here from results/ like the blocks. The spans and the
+generated leakage sentence were added after an audit, with every result already published; they state no outcome.
+After the same audit, protocol settings that generated text had typed in (feature count, resamples, shift step,
+hypothesis bars, label budgets, queue sizes, label steps) are read from results/, the Phase 3 ranking is labelled as
+one of point estimates, the published comparison is cited, and the results notes state the seed-by-seed spread.
 """
+import functools
 import re
 
-from paths import RESULTS, ROOT
+from paths import ENGINE_DOC, MARGIN_NOTES, README, RESULTS
 from results_io import read_result
 
-README = ROOT / "README.md"
+VALUE = re.compile(r"<!-- value:([a-z0-9-]+) -->.*?<!-- end value -->", re.DOTALL)
+VALUE_NAMES = (
+    "analyst-cost", "analyst-cost-low", "analyst-cost-high", "analyst-cost-basis", "compute-price",
+    "trials-per-seed", "seeds", "arm-a-features", "aggregate-features", "resamples", "queue-smallest", "queue-largest",
+    "runtime-target-minutes", "k-first-step", "k-last-step", "shift-step",
+)
+PRIOR_WORK = "Weber et al., 2019"
+
+
+@functools.cache
+def recorded() -> dict:
+    """Protocol settings quoted in generated text, read from results/ rather than typed here."""
+    periods = read_result("day-one-checks")["data"]["periods"]
+    return {
+        "shift_step": periods["post_shift_test"][0],
+        "known_labels": (periods["training"][0], periods["validation"][1]),
+        "arm_a_features": read_result("arm-a-tuning")["data"]["feature_count"],
+    }
+
+
+def arm_label(arm: str) -> str:
+    return {"A": f"A, {recorded()['arm_a_features']} local features", "B": "B, plus graph features",
+            "D": "D, GraphSAGE on local features"}[arm]
+
+
+def budget_label(key: str) -> str:
+    return f"{int(key)}%"
 
 
 def pct(x: float) -> str:
@@ -42,7 +75,7 @@ def results_block(ev: dict) -> str:
         "| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive |",
         "|---|---|---|---|---|---|",
     ]
-    for arm, label in (("A", "A, 93 local features"), ("B", "B, plus graph features")):
+    for arm, label in (("A", arm_label("A")), ("B", arm_label("B"))):
         rows.append(
             f"| {label} | {with_ci(m[arm][pre]['precision_at_k_pooled'], ci[pre][arm]['p_at_k'])} "
             f"| {with_ci(m[arm][post]['precision_at_k_pooled'], ci[post][arm]['p_at_k'])} "
@@ -58,8 +91,8 @@ def results_block(ev: dict) -> str:
     notes = [
         "",
         f"k = {ev['k']} alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled "
-        "transactions in the period. Brackets are 95% paired bootstrap intervals, 1,000 resamples stratified by time "
-        "step. A difference is called only when its interval excludes zero. Labelled transactions only; unlabelled is "
+        f"transactions in the period. Brackets are 95% paired bootstrap intervals, {ev['bootstrap']['resamples']:,} "
+        "resamples stratified by time step. A difference is called only when its interval excludes zero. Labelled transactions only; unlabelled is "
         "not licit. Source: `results/evaluation-arms-a-b.json`.",
         "",
         "![Precision at k by test step](site/charts/precision-at-k-arms-a-b.svg)",
@@ -91,8 +124,8 @@ def finding(ev: dict) -> str:
             "Arm D is built in Phase 3 to test whether learned message passing adds more than hand-built graph features."
         )
     shift = (
-        f"After the shift at step 43, precision at k was {pct(m['A']['post_shift_test']['precision_at_k_pooled'])} for A "
-        f"and {pct(m['B']['post_shift_test']['precision_at_k_pooled'])} for B; B minus A {diff_with_ci(post)}. "
+        f"After the shift at step {recorded()['shift_step']}, precision at k was "
+        f"{pct(m['A']['post_shift_test']['precision_at_k_pooled'])} for A and {pct(m['B']['post_shift_test']['precision_at_k_pooled'])} for B; B minus A {diff_with_ci(post)}. "
         f"There are fewer illicit labels than alerts after the shift, so no model could exceed "
         f"{pct(m['A']['post_shift_test']['precision_at_k_ceiling'])} there (before the shift the ceiling is "
         f"{pct(m['A']['pre_shift_test']['precision_at_k_ceiling'])}). "
@@ -113,9 +146,6 @@ def replace_block(text: str, name: str, content: str) -> str:
     if not pattern.search(text):
         raise SystemExit(f"README.md has no generated:{name} block")
     return pattern.sub(lambda mt: mt.group(1) + content + mt.group(2), text)
-
-
-ARM_LABELS = {"A": "A, 93 local features", "B": "B, plus graph features", "D": "D, GraphSAGE on local features"}
 
 
 def sentence(s: str) -> str:
@@ -152,13 +182,14 @@ def finding_phase3(ev: dict) -> str:
     ranked = sorted(p, key=lambda a: -p[a])
     ba, db, da = (cmp[name][pre]["p_at_k"] for name in ("B minus A", "D minus B", "D minus A"))
     parts = [
-        f"Before the regime shift, the arms ranked {ranked[0]}, then {ranked[1]}, then {ranked[2]} on precision at k. "
+        f"Before the regime shift, on point estimates, the arms ranked {ranked[0]}, then {ranked[1]}, then {ranked[2]} "
+        "on precision at k. "
         f"B minus A was {diff_with_ci(ba)}; D minus B {diff_with_ci(db)}; D minus A {diff_with_ci(da)}."
     ]
     if da["interval_95"]["high"] < 0:
         parts.append(
             "Given A's local features plus the transaction graph, the GNN still ranked below A. "
-            "That matches the direction of the published comparison cited in the pre-registration."
+            f"That matches the direction of the published comparison ({PRIOR_WORK})."
         )
     u = {a: m[a][pre]["unlabelled_share_of_top_k_all_nodes"] for a in ("A", "B", "D")}
     parts.append(
@@ -169,7 +200,8 @@ def finding_phase3(ev: dict) -> str:
     )
     q = {a: m[a][post]["precision_at_k_pooled"] for a in ("A", "B", "D")}
     parts.append(
-        f"After the shift at step 43, precision at k was {pct(q['A'])} for A, {pct(q['B'])} for B and {pct(q['D'])} for D, "
+        f"After the shift at step {recorded()['shift_step']}, precision at k was {pct(q['A'])} for A, {pct(q['B'])} for B "
+        f"and {pct(q['D'])} for D, "
         f"against a ceiling of {pct(m['A'][post]['precision_at_k_ceiling'])} set by the number of illicit labels."
     )
     parts.append(
@@ -188,7 +220,7 @@ def results_block_phase3(ev: dict, cost: dict) -> str:
     ]
     for arm in ("A", "B", "D"):
         rows.append(
-            f"| {ARM_LABELS[arm]} | {with_ci(m[arm][pre]['precision_at_k_pooled'], ci[pre][arm]['p_at_k'])} "
+            f"| {arm_label(arm)} | {with_ci(m[arm][pre]['precision_at_k_pooled'], ci[pre][arm]['p_at_k'])} "
             f"| {with_ci(m[arm][post]['precision_at_k_pooled'], ci[post][arm]['p_at_k'])} "
             f"| {with_ci(m[arm][pre]['average_precision_pooled'], ci[pre][arm]['ap_pooled'])} "
             f"| {with_ci(m[arm][post]['average_precision_pooled'], ci[post][arm]['ap_pooled'])} | {cost_cell(cost, arm)} |"
@@ -198,11 +230,18 @@ def results_block_phase3(ev: dict, cost: dict) -> str:
         rows.append(f"| {pair} | {diff_with_ci(c[pre]['p_at_k'])} | {diff_with_ci(c[post]['p_at_k'])} "
                     f"| {diff_with_ci(c[pre]['ap_pooled'])} | {diff_with_ci(c[post]['ap_pooled'])} | |")
     a = cost["assumptions"]["analyst_cost_per_alert_eur"]
+    seeds = ev["per_seed"]
+    by_seed = [b[pre]["precision_at_k_pooled"] - a_[pre]["precision_at_k_pooled"] for a_, b in zip(seeds["A"], seeds["B"])]
     notes = [
         "",
         f"k = {ev['k']} alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled "
-        "transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, 1,000 resamples stratified "
-        "by time step; a difference is called only when its interval excludes zero. Labelled transactions only; "
+        f"transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, "
+        f"{ev['bootstrap']['resamples']:,} resamples stratified by time step; a difference is called only when its "
+        "interval excludes zero. Each arm's scores are the mean of its "
+        f"{len(seeds['A'])} seeds' models, each tuned on its own; a deployment would run one model. The intervals hold "
+        "those scores fixed and treat transactions within a step as independent, so they leave out retraining with "
+        "other seeds and may be too narrow where linked transactions move together. Seed by seed, B minus A on "
+        f"pre-shift precision at k ran from {signed(min(by_seed))} to {signed(max(by_seed))}. Labelled transactions only; "
         f"unlabelled is not licit. **Cost is modelled, not measured:** analyst cost of €{a['central']:.0f} per alert, "
         f"with a range of €{a['low']:.2f} to €{a['high']:.2f}, plus measured tuning time priced at "
         f"€{cost['assumptions']['compute_eur_per_vcpu_hour']:.2f} per vCPU-hour. The cost range is that assumption's "
@@ -219,7 +258,7 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
     ap = {a: ev["metrics"][a]["pre_shift_test"]["average_precision_pooled"] for a in ("A", "B", "D")}
     h1_ev = ("Undefined" if h1["interval_95"] is None else
              f"{h1['point']:.2f} ({h1['interval_95']['low']:.2f} to {h1['interval_95']['high']:.2f})")
-    h1_ev = f"Share of lift, PR-AUC pre-shift: {h1_ev}. Threshold 0.5."
+    h1_ev = f"Share of lift, PR-AUC pre-shift: {h1_ev}. Supported needs a majority, as the hypothesis states."
     h1_outcome = sentence(h1["outcome"])
     if h1_by_construction(h1):
         h1_outcome += ", by construction"
@@ -241,16 +280,18 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
         f"| **H1.** Graph-derived features capture the majority of available lift | {h1_outcome} | {h1_ev} |",
         f"| **H2.** The GNN does not justify its cost | {sentence(h2['outcome'])} "
         f"| D minus B, precision at k pre-shift: {diff_with_ci(ev['comparisons']['D minus B']['pre_shift_test']['p_at_k'])}. "
-        "Bar: +5.0 pts and excluding zero. |",
+        f"{sentence(h2['definition'])}. |",
         f"| **H3.** Simpler arms degrade less after the regime shift | {sentence(h3['outcome'])} "
         f"| {h3_ev} |",
     ]
     if budget:
         h4 = budget["H4"]
         b, d = h4["B minus A"], h4["D minus A, reported alongside"]
-        pre5, pre100 = budget["curve"]["005"]["pre_shift_test"], budget["curve"]["100"]["pre_shift_test"]
-        h4_ev = (f"B minus A, precision at k pre-shift: at 5% of training labels, {diff_with_ci(pre5['B minus A'])}; "
-                 f"at 100%, {diff_with_ci(pre100['B minus A'])}. Change from 100% to 5%, positive if the advantage "
+        lo, hi = min(budget["curve"]), max(budget["curve"])
+        pre_lo, pre_hi = budget["curve"][lo]["pre_shift_test"], budget["curve"][hi]["pre_shift_test"]
+        h4_ev = (f"B minus A, precision at k pre-shift: at {budget_label(lo)} of training labels, "
+                 f"{diff_with_ci(pre_lo['B minus A'])}; at {budget_label(hi)}, {diff_with_ci(pre_hi['B minus A'])}. "
+                 f"Change from {budget_label(hi)} to {budget_label(lo)}, positive if the advantage "
                  f"widened: {signed(b['widening'])} ({signed(b['interval_95']['low'])} to {signed(b['interval_95']['high'])}), "
                  + ("outside" if outside(b["interval_95"]) else "within") + " the noise band. "
                  f"Reported alongside, D minus A changed by {signed(d['widening'])} "
@@ -288,7 +329,8 @@ def decision_block(ev: dict, cost: dict) -> str:
         f"| {yes(b_beats_a and cheaper_b and not h2_rejected)} | B beats A outside the noise band: {'yes' if b_beats_a else 'no'}. "
         f"Modelled cost per true positive, pre-shift: A {euro(c['A'])}, B {euro(c['B'])} |",
         f"| The GNN adds material value beyond graph features | Investigate whether the operational burden is justified "
-        f"| {yes(h2_rejected)} | D minus B: {diff_with_ci(db)}. H2 bar: +5.0 pts and excluding zero |",
+        f"| {yes(h2_rejected)} | D minus B: {diff_with_ci(db)}. H2 is "
+        f"{ev['hypotheses']['H2']['definition'][:1].lower() + ev['hypotheses']['H2']['definition'][1:]} |",
         f"| All arms perform similarly | Do not invest further on the basis of this dataset | {yes(all_similar)} "
         f"| Every pairwise interval on pre-shift precision at k includes zero: {'yes' if all_similar else 'no'} |",
         "",
@@ -299,7 +341,19 @@ def decision_block(ev: dict, cost: dict) -> str:
     return "\n".join(rows)
 
 
-def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
+def leakage_sentence(gate: dict) -> str:
+    dropped = gate["dropped_features"]
+    kept = [v for name, r in gate["per_feature"].items() if name not in dropped for key, v in r.items() if key != "passed"]
+    moved = "moved" if max(kept, default=0.0) == 0 else f"moved by more than {gate['tolerance']:g}"
+    tests = "the future-edge, label-shuffle or own-label tests"
+    if not dropped:
+        return f"No feature {moved} under {tests} (`results/leakage-tests.json`)."
+    names = ", ".join(f"`{n}`" for n in dropped)
+    return (f"{names} moved under {tests} and {'was' if len(dropped) == 1 else 'were'} dropped from Arm B, as "
+            f"pre-registered. No other feature {moved} (`results/leakage-tests.json`).")
+
+
+def limitations_block(ev: dict, cost: dict, budget: dict | None, gate: dict) -> str:
     cmp, h = ev["comparisons"], ev["hypotheses"]
     pre = "pre_shift_test"
     ba, db, da = (cmp[name][pre]["p_at_k"] for name in ("B minus A", "D minus B", "D minus A"))
@@ -309,9 +363,9 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
         f"precision at k by {diff_with_ci(ba)}.",
         f"A two-layer GraphSAGE on the same local features, against graph features: D minus B {diff_with_ci(db)}. "
         f"Against the local-feature model alone: D minus A {diff_with_ci(da)}.",
-        "After the regime shift at step 43, mean per-step PR-AUC fell by "
+        f"After the regime shift at step {recorded()['shift_step']}, mean per-step PR-AUC fell by "
         + ", ".join(f"{pct(v)} for {a}" for a, v in h["H3"]["relative_fall"].items()) + ".",
-        "No feature moved under the future-edge, label-shuffle or own-label tests (`results/leakage-tests.json`).",
+        leakage_sentence(gate),
     ]
     suggested = [
         f"H1, whether hand-built graph features capture most of the available lift: {h['H1']['outcome']}"
@@ -321,11 +375,13 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
         "so the decision turns on alert quality, not on compute.",
     ]
     if budget:
-        a5 = budget["curve"]["005"]["pre_shift_test"]["A"]["precision_at_k_pooled"]
-        a100 = budget["curve"]["100"]["pre_shift_test"]["A"]["precision_at_k_pooled"]
+        lo, hi = min(budget["curve"]), max(budget["curve"])
+        a_lo = budget["curve"][lo]["pre_shift_test"]["A"]["precision_at_k_pooled"]
+        a_hi = budget["curve"][hi]["pre_shift_test"]["A"]["precision_at_k_pooled"]
         suggested.append(f"H4, whether the graph-feature advantage widens as labels get scarcer: {budget['H4']['outcome']}. "
                          "Validation labels were kept in full at every budget, so small-budget results are somewhat optimistic. "
-                         f"A's precision at k was {pct(a5)} at 5% of training labels and {pct(a100)} at 100%.")
+                         f"A's precision at k was {pct(a_lo)} at {budget_label(lo)} of training labels and {pct(a_hi)} "
+                         f"at {budget_label(hi)}.")
     return ("**What this demonstrates.** _Draft for the author to edit._\n\n" + "\n".join(f"- {x}" for x in demonstrated)
             + "\n\n**What this suggests.**\n\n" + "\n".join(f"- {x}" for x in suggested))
 
@@ -348,6 +404,7 @@ def evidence_block(e: dict) -> str:
     ]
     t, known, d = e["truth_check"], e["links_to_a_known_label"]["count"], e["arm_d"]
     a_share = cols[0]["also_queued_by_arm_a"]
+    known_steps = "steps {} to {}".format(*recorded()["known_labels"])
     notes = [
         f"**Draft for the author to edit.** Every chain is built with `graph/queries/`, and all {t['facts_checked']:,} "
         f"facts in them were recomputed in SQL from the columnar store; "
@@ -355,8 +412,8 @@ def evidence_block(e: dict) -> str:
         + (f"{pct(a_share)} of the queue would have been queued by Arm A without any graph feature, so for most queued "
            "transactions the chain is context rather than the reason they were queued. " if a_share > 0.5 else "")
         + "A chain can never cite a counterparty whose label was known at scoring time: edges never cross time steps, "
-        + ("and there are no links from a queued transaction to steps 1 to 34. " if known == 0 else
-           f"and {known} links reach steps 1 to 34. ")
+        + (f"and there are no links from a queued transaction to {known_steps}. " if known == 0 else
+           f"and {known} links reach {known_steps}. ")
         + "On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.",
         "",
         f"**Arm D cannot produce a chain.** Its score depends on a median of {d['receptive_field_median_transactions']:.0f} "
@@ -385,9 +442,12 @@ QUEUE_TABLE_SIZES = (50, 200, 500)
 def queue_block(ev: dict) -> str:
     k = ev["k"]
     periods = (("pre_shift_test", "Before the shift"), ("post_shift_test", "After the shift"))
+    below, above = [q for q in QUEUE_TABLE_SIZES if q < k], [q for q in QUEUE_TABLE_SIZES if q > k]
+    grid = [r["queue_per_step"] for r in ev["metrics"]["A"]["pre_shift_test"]["queue_curve"]]
     rows = [
-        f"| Arm, period | 50 per step | k = {k} per step, pre-committed | 200 per step | 500 per step |",
-        "|---|---|---|---|---|",
+        "| Arm, period | " + " | ".join([f"{q} per step" for q in below] + [f"k = {k} per step, pre-committed"]
+                                       + [f"{q} per step" for q in above]) + " |",
+        "|---" * (len(QUEUE_TABLE_SIZES) + 2) + "|",
     ]
     volumes = []
     for period, label in periods:
@@ -398,8 +458,9 @@ def queue_block(ev: dict) -> str:
             curve = {r["queue_per_step"]: r for r in m["queue_curve"]}
             cell = lambda p, r: f"{pct(p)} / {pct(r)}"
             at = {q: cell(curve[q]["precision"], curve[q]["recall"]) for q in QUEUE_TABLE_SIZES}
-            rows.append(f"| {arm}, {label.lower()} | {at[50]} | "
-                        f"{cell(m['precision_at_k_pooled'], m['recall_at_k_pooled'])} | {at[200]} | {at[500]} |")
+            rows.append(f"| {arm}, {label.lower()} | " + " | ".join(
+                [at[q] for q in below] + [cell(m["precision_at_k_pooled"], m["recall_at_k_pooled"])] + [at[q] for q in above])
+                + " |")
     notes = [
         "",
         "Each cell is precision / recall, pooled over the period, from seed-averaged scores. "
@@ -407,10 +468,10 @@ def queue_block(ev: dict) -> str:
         "",
         "**What this does not establish.** Which arm is better at any queue size other than k: the curve has no "
         f"intervals, and arms are compared only at k = {k}, on paired resamples (H2 to H4 above). Nor does it choose a "
-        "queue size: k was fixed from training steps before any test step was read. The other sizes are round numbers "
-        "for reading the table, picked after the curve was published, and decide nothing. Labelled transactions only; "
-        "unlabelled is not licit. "
-        "Every 10 alerts from 10 to 500 is in `results/evaluation-phase-3.json`.",
+        "queue size: k was fixed from the training and validation steps before any test step was read. The other sizes "
+        "are round numbers for reading the table, picked after the curve was published, and decide nothing. Labelled "
+        "transactions only; unlabelled is not licit. "
+        f"Every {grid[1] - grid[0]} alerts from {min(grid)} to {max(grid)} is in `results/evaluation-phase-3.json`.",
         "",
         "![Precision and recall across queue sizes](site/charts/queue-volume-across-operating-points.svg)",
     ]
@@ -456,13 +517,63 @@ def engine_block(e: dict) -> str:
     return "\n".join(rows + notes)
 
 
+def money(x: float) -> str:
+    return f"€{x:,.0f}" if x == int(x) else f"€{x:,.2f}"
+
+
+def is_result(name: str) -> bool:
+    return (RESULTS / f"{name}.json").is_file()
+
+
+def prose_values() -> dict:
+    v = {}
+    if is_result("cost-per-true-positive"):
+        a = read_result("cost-per-true-positive")["data"]["assumptions"]
+        analyst = a["analyst_cost_per_alert_eur"]
+        v |= {"analyst-cost": money(analyst["central"]), "analyst-cost-low": money(analyst["low"]),
+              "analyst-cost-high": money(analyst["high"]), "analyst-cost-basis": a["basis"],
+              "compute-price": money(a["compute_eur_per_vcpu_hour"])}
+    if all(is_result(f"arm-{arm}-tuning") for arm in "abd"):
+        tuning = [read_result(f"arm-{arm}-tuning")["data"] for arm in "abd"]
+        trials, seeds = {t["trials_per_seed"] for t in tuning}, {len(t["seeds"]) for t in tuning}
+        if len(trials) != 1 or len(seeds) != 1:
+            raise SystemExit("Arms A, B and D were not tuned with the same trials and seeds, as the README says they were")
+        v |= {"trials-per-seed": str(trials.pop()), "seeds": str(seeds.pop()),
+              "arm-a-features": str(tuning[0]["feature_count"])}
+    if is_result("day-one-checks"):
+        checks = read_result("day-one-checks")["data"]
+        v |= {"aggregate-features": str(checks["feature_groups_used"]["aggregate"]),
+              "shift-step": str(checks["periods"]["post_shift_test"][0])}
+    if is_result("k"):
+        first, last = read_result("k")["data"]["steps"]
+        v |= {"k-first-step": str(first), "k-last-step": str(last)}
+    if is_result("evaluation-phase-3"):
+        ev = read_result("evaluation-phase-3")["data"]
+        sizes = [r["queue_per_step"] for r in ev["metrics"]["A"]["pre_shift_test"]["queue_curve"]]
+        v |= {"resamples": f"{ev['bootstrap']['resamples']:,}", "queue-smallest": str(min(sizes)),
+              "queue-largest": str(max(sizes))}
+    if is_result("pipeline-runtime"):
+        v["runtime-target-minutes"] = str(read_result("pipeline-runtime")["data"]["specification_target_minutes"])
+    return v
+
+
+def fill_values(text: str, values: dict, doc: str) -> str:
+    """A span whose source result does not exist yet keeps its last generated value."""
+    def fill(m: re.Match) -> str:
+        name = m.group(1)
+        if name not in VALUE_NAMES:
+            raise SystemExit(f"{doc} asks for an unknown value {name!r}")
+        return f"<!-- value:{name} -->{values[name]}<!-- end value -->" if name in values else m.group(0)
+    return VALUE.sub(fill, text)
+
+
 def main() -> None:
-    text = README.read_text()
+    values = prose_values()
+    text = fill_values(README.read_text(), values, "README.md")
     if (RESULTS / "evidence-chains.json").is_file():
         text = replace_block(text, "evidence-chains", evidence_block(read_result("evidence-chains")["data"]))
-    engine_doc = ROOT / "docs" / "engine-comparison.md"
-    if (RESULTS / "engine-comparison.json").is_file() and engine_doc.is_file():
-        engine_doc.write_text(replace_block(engine_doc.read_text(), "engine-comparison",
+    if (RESULTS / "engine-comparison.json").is_file() and ENGINE_DOC.is_file():
+        ENGINE_DOC.write_text(replace_block(ENGINE_DOC.read_text(), "engine-comparison",
                                             engine_block(read_result("engine-comparison")["data"])))
     phase3 = (RESULTS / "evaluation-phase-3.json").is_file() and (RESULTS / "cost-per-true-positive.json").is_file()
     if phase3:
@@ -473,13 +584,14 @@ def main() -> None:
         text = replace_block(text, "hypotheses", hypotheses_block(ev, budget))
         text = replace_block(text, "queue-volume", queue_block(ev))
         text = replace_block(text, "decision-matrix", decision_block(ev, cost))
-        text = replace_block(text, "limitations", limitations_block(ev, cost, budget))
+        text = replace_block(text, "limitations", limitations_block(ev, cost, budget, read_result("leakage-tests")["data"]))
     elif (RESULTS / "evaluation-arms-a-b.json").is_file():
         text = replace_block(text, "results", results_block(read_result("evaluation-arms-a-b")["data"]))
     if (RESULTS / "pipeline-runtime.json").is_file():
         text = replace_block(text, "runtime", runtime_block(read_result("pipeline-runtime")["data"]))
     README.write_text(text)
-    print("README.md generated blocks updated")
+    MARGIN_NOTES.write_text(fill_values(MARGIN_NOTES.read_text(), values, "03-the-margin/NOTES.md"))
+    print("README.md generated blocks and quoted values updated")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from evaluate_arms import TEST_PERIODS, interval, period_metrics, step_index
 from evaluate_phase3 import draws, named_verdict
 from features import BUDGETS
 from paths import RUNS
-from protocol import require_k_first
+from protocol import require, require_k_first
 from results_io import write_result
 
 ARMS = ("A", "B", "D")
@@ -23,7 +23,7 @@ def load_scores() -> tuple[dict, np.ndarray, np.ndarray]:
             run = {"A": main["A"], "B": main["B"], "D": main_d["D"]}
         else:
             budget = np.load(RUNS / f"scores-budget-{label(fraction)}.npz")
-            assert np.array_equal(budget["node_ids"], main["node_ids"])
+            require(np.array_equal(budget["node_ids"], main["node_ids"]), "label-budget scores cover different nodes from the main run")
             run = {arm: budget[arm] for arm in ARMS}
         for arm in ARMS:
             scores[(label(fraction), arm)] = run[arm].mean(axis=0)

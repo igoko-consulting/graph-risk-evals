@@ -16,8 +16,8 @@ For each arm and each test period:
 
 | Assumption | Value | Basis |
 |---|---|---|
-| Analyst cost per alert | €25, sensitivity €12.50 to €37.50 | Author assumption: about 20 minutes of first-line review at about €75 an hour fully loaded. Not a sourced benchmark |
-| Compute price | €0.05 per vCPU-hour | Order of magnitude for on-demand general-purpose cloud CPU. Its exact value does not matter; see the compute share in the results |
+| Analyst cost per alert | <!-- value:analyst-cost -->€25<!-- end value -->, sensitivity <!-- value:analyst-cost-low -->€12.50<!-- end value --> to <!-- value:analyst-cost-high -->€37.50<!-- end value --> | <!-- value:analyst-cost-basis -->Author assumption: about 20 minutes of first-line review at about €75 an hour fully loaded. Not sourced.<!-- end value --> |
+| Compute price | <!-- value:compute-price -->€0.05<!-- end value --> per vCPU-hour | Order of magnitude for on-demand general-purpose cloud CPU. Its exact value does not matter; see the compute share in the results |
 
 ## What the model leaves out
 

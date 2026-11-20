@@ -3,7 +3,7 @@ import math
 import duckdb
 
 from paths import COLUMNAR_STORE
-from protocol import K_STEPS
+from protocol import K_STEPS, require
 from results_io import write_result
 
 
@@ -22,8 +22,8 @@ def main() -> None:
             [first, last],
         ).fetchall()
     steps = [r[0] for r in rows]
-    assert steps == list(range(first, last + 1)), "k must cover every step from 1 to 34"
-    assert all(r[1] > 0 for r in rows), "a step in 1 to 34 has no nodes"
+    require(steps == list(range(first, last + 1)), "k must cover every step from 1 to 34")
+    require(all(r[1] > 0 for r in rows), "a step in 1 to 34 has no nodes")
     illicit = {r[0]: r[2] for r in rows}
     k_mean = sum(illicit.values()) / len(illicit)
     k = math.floor(k_mean + 0.5)

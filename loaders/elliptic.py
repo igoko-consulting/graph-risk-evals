@@ -37,8 +37,11 @@ RAW_AGGREGATE_COLUMNS = tuple(range(95, 167))
 LOCAL = tuple(f"local_{i:02d}" for i in range(1, len(RAW_LOCAL_COLUMNS) + 1))
 AGGREGATE = tuple(f"agg_{i:02d}" for i in range(1, len(RAW_AGGREGATE_COLUMNS) + 1))
 
-assert len(LOCAL) == 93 and len(AGGREGATE) == 72
-assert RAW_TIME_STEP_COLUMN not in RAW_LOCAL_COLUMNS + RAW_AGGREGATE_COLUMNS
+# Raised rather than asserted, so `python -O` cannot strip the red line 3 split.
+if len(LOCAL) != 93 or len(AGGREGATE) != 72:
+    raise ContractError(f"expected 93 local and 72 aggregate features, got {len(LOCAL)} and {len(AGGREGATE)}")
+if RAW_TIME_STEP_COLUMN in RAW_LOCAL_COLUMNS + RAW_AGGREGATE_COLUMNS:
+    raise ContractError("the raw time-step column is inside a feature group")
 
 
 def _sha256(path: Path) -> str:

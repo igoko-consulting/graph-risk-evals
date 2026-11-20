@@ -10,6 +10,12 @@ PERIODS = {
 K_STEPS = (PERIODS["training"][0], PERIODS["validation"][1])
 
 
+def require(condition, message: str) -> None:
+    """For checks that enforce the protocol: `python -O` strips assert statements, not these."""
+    if not condition:
+        raise SystemExit(message)
+
+
 def period_of(step: int) -> str:
     for name, (first, last) in PERIODS.items():
         if first <= step <= last:

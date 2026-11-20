@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import prereg_gate
-from paths import RAW, RESULTS, ROOT, DATASET
+from paths import GENERATED_DOCS, RAW, RESULTS, ROOT, DATASET
 
 NO_FEATURES = "not applicable: no model feature values are used or written"
 
@@ -18,7 +18,7 @@ class ResultRefused(RuntimeError):
 def _git_state(root: Path) -> dict:
     head = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True)
     # The pipeline rewrites its own outputs mid-run, so they must not count as uncommitted code.
-    outputs = [":!results", ":!site/charts", ":!04-the-data/NOTES.md", ":!README.md", ":!docs/engine-comparison.md"]
+    outputs = [":!results", ":!site/charts", *(f":!{p.relative_to(ROOT)}" for p in GENERATED_DOCS)]
     dirty = subprocess.run(["git", "-C", str(root), "status", "--porcelain", "--untracked-files=no", "--", ".", *outputs],
                            capture_output=True, text=True)
     return {"commit": head.stdout.strip(), "uncommitted_changes": bool(dirty.stdout.strip())}

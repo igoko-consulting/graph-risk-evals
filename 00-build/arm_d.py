@@ -7,7 +7,7 @@ import torch
 from torch_geometric.nn import SAGEConv
 
 from features import Frame
-from protocol import PERIODS
+from protocol import PERIODS, require
 from tuning import TRIALS
 
 torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", "4")))
@@ -80,7 +80,7 @@ class SAGE(torch.nn.Module):
 
 def fit_predict(config: dict, seed: int, graph: Graph, labels: np.ndarray, train: np.ndarray, score: np.ndarray) -> np.ndarray:
     """Trains on the training-step subgraph only, then scores score-mask nodes on the full graph."""
-    assert not (train & ~graph.train_nodes).any(), "Arm D may only train on training-step nodes"
+    require(not (train & ~graph.train_nodes).any(), "Arm D may only train on training-step nodes")
     torch.manual_seed(seed)
     positions = np.flatnonzero(graph.train_nodes)
     local_index = -np.ones(len(labels), dtype=int)

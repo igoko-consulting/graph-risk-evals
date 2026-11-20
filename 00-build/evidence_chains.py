@@ -16,7 +16,7 @@ import graph_store
 from evaluate_arms import TEST_PERIODS
 from leakage_gate import BASE_GRAPH, STAGING, STRUCTURAL_CACHE
 from paths import COLUMNAR_STORE, RUNS
-from protocol import PERIODS, period_of, require_k_first
+from protocol import PERIODS, period_of, require, require_k_first
 from results_io import write_result
 
 REVIEW_SAMPLE = 30
@@ -108,10 +108,10 @@ def main() -> None:
     run = np.load(RUNS / "scores.npz")
     run_d = np.load(RUNS / "scores-d.npz")
     node_ids, steps, labels = run["node_ids"], run["steps"], run["labels"]
-    assert np.array_equal(run_d["node_ids"], node_ids)
+    require(np.array_equal(run_d["node_ids"], node_ids), "Arm D's scores cover different nodes from Arms A and B")
     b, a, d, s1 = (x.mean(axis=0) for x in (run["B"], run["A"], run_d["D"], run["stage_one"]))
     cache = np.load(STRUCTURAL_CACHE)
-    assert np.array_equal(cache["node_ids"], node_ids)
+    require(np.array_equal(cache["node_ids"], node_ids), "the structural feature cache covers different nodes")
     labelled = labels != -1
     position = {int(n): i for i, n in enumerate(node_ids)}
 

@@ -9,7 +9,7 @@ import graph_store
 from features import arm_a, arm_b, load_frame, stage_one_scores
 from leakage_gate import BASE_GRAPH, STAGING, STRUCTURAL_CACHE
 from paths import COLUMNAR_STORE, RESULTS, ROOT, RUNS
-from protocol import require_k_first
+from protocol import require, require_k_first
 from results_io import leakage_gate_status, write_result
 from tuning import SEEDS, TRIALS, fit_predict, tune
 
@@ -37,7 +37,7 @@ def main() -> None:
     with duckdb.connect(str(COLUMNAR_STORE), read_only=True) as con:
         frame = load_frame(con)
     cache = np.load(STRUCTURAL_CACHE)
-    assert np.array_equal(cache["node_ids"], frame.node_ids)
+    require(np.array_equal(cache["node_ids"], frame.node_ids), "the structural feature cache covers different nodes")
     structural = {name: cache[name] for name in graph_store.STRUCTURAL}
     db = ladybug.Database(str(BASE_GRAPH))
     conn = ladybug.Connection(db)

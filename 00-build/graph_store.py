@@ -3,6 +3,7 @@ from pathlib import Path
 
 import duckdb
 import ladybug
+from protocol import require
 import numpy as np
 
 from paths import QUERIES
@@ -93,7 +94,7 @@ def pagerank(conn, node_ids: np.ndarray) -> tuple[np.ndarray, float]:
         conn.execute(commit)
     rows = conn.execute("MATCH (t:Tx) RETURN t.node_id, t.pr ORDER BY t.node_id").get_all()
     ids = np.array([r[0] for r in rows])
-    assert np.array_equal(ids, node_ids), "graph store nodes differ from the columnar store"
+    require(np.array_equal(ids, node_ids), "graph store nodes differ from the columnar store")
     return np.array([r[1] for r in rows], dtype=float), float(delta)
 
 
@@ -121,6 +122,6 @@ def score_aggregates(conn, node_ids: np.ndarray, scores: np.ndarray, staging: Pa
     load_scores(conn, node_ids, scores, staging)
     rows = conn.execute(query("neighbour-scores")).get_all()
     ids = np.array([r[0] for r in rows])
-    assert np.array_equal(ids, node_ids), "graph store nodes differ from the columnar store"
+    require(np.array_equal(ids, node_ids), "graph store nodes differ from the columnar store")
     values = np.array([[np.nan if v is None else v for v in r[1:]] for r in rows], dtype=float)
     return {name: values[:, i] for i, name in enumerate(SCORE_AGGREGATES)}

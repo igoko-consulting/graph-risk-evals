@@ -3,7 +3,7 @@ import numpy as np
 from evaluate_arms import (BOOTSTRAP_SEED, RESAMPLES, TEST_PERIODS, ap, interval, period_metrics, pr_curve,
                            queue_curve, step_index, tp_at, unlabelled_share, verdict)
 from paths import RUNS
-from protocol import require_k_first
+from protocol import require, require_k_first
 from results_io import read_result, write_result
 
 ANALYST_COST = {"central": 25.0, "low": 12.5, "high": 37.5}
@@ -143,7 +143,7 @@ def main() -> None:
     k = require_k_first()["data"]["k"]
     run = np.load(RUNS / "scores.npz")
     run_d = np.load(RUNS / "scores-d.npz")
-    assert np.array_equal(run["node_ids"], run_d["node_ids"])
+    require(np.array_equal(run["node_ids"], run_d["node_ids"]), "Arm D's scores cover different nodes from Arms A and B")
     steps, labels = run["steps"], run["labels"]
     labelled, positives = labels != -1, labels == 1
     arms = {"A": run["A"].mean(axis=0), "B": run["B"].mean(axis=0), "D": run_d["D"].mean(axis=0)}

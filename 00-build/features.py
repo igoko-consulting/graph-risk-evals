@@ -4,7 +4,7 @@ import duckdb
 import numpy as np
 
 from loaders import ELLIPTIC
-from protocol import PERIODS
+from protocol import PERIODS, require
 
 LOCAL = ELLIPTIC.feature_groups["local"]
 AGGREGATE = ELLIPTIC.feature_groups["aggregate"]
@@ -56,9 +56,9 @@ def load_frame(con: duckdb.DuckDBPyConnection) -> Frame:
 def arm_a(frame: Frame) -> tuple[np.ndarray, tuple]:
     """Red line 3: the 93 local features, never the time step, never anything from the graph store."""
     names = tuple(LOCAL)
-    assert len(names) == 93 and "time_step" not in names
-    assert frame.local.shape[1] == len(names)
-    assert not any(np.array_equal(frame.local[:, i], frame.steps) for i in range(frame.local.shape[1]))
+    require(len(names) == 93 and "time_step" not in names, "Arm A must use the 93 local features and never the time step")
+    require(frame.local.shape[1] == len(names), "Arm A's feature matrix does not match its feature names")
+    require(not any(np.array_equal(frame.local[:, i], frame.steps) for i in range(frame.local.shape[1])), "a column of Arm A's features is a copy of the time step")
     return frame.local, names
 
 
@@ -69,7 +69,7 @@ def arm_b(frame: Frame, structural: dict, aggregates: dict, dropped: set) -> tup
         if name not in dropped:
             blocks.append(values[:, None])
             names.append(name)
-    assert "time_step" not in names
+    require("time_step" not in names, "Arm B's features may not include the time step")
     return np.hstack(blocks), tuple(names)
 
 
@@ -85,7 +85,7 @@ def stage_one_scores(frame: Frame, fit_predict) -> np.ndarray:
         scores[block] = fit_predict(training & ~block, block)
     evaluation = frame.steps > PERIODS["training"][1]
     scores[evaluation] = fit_predict(training, evaluation)
-    assert not np.isnan(scores).any()
+    require(not np.isnan(scores).any(), "stage-one scores contain NaN")
     return scores
 
 
