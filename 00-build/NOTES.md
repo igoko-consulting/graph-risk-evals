@@ -30,7 +30,7 @@
 13. `render_charts.py` and `render_readme.py`: charts and README blocks from `results/` only. They run twice, so the headline is published before the label-budget curve finishes.
 14. `run_label_budgets.py`: every arm re-tuned at 5, 10, 25 and 50 percent of training labels.
 15. `evaluate_label_budgets.py`: the curve and H4, on the same resamples again.
-16. `record_runtime.py`: total elapsed time of `make all`, from a clock started before the tests, to `results/pipeline-runtime.json`.
+16. `record_runtime.py`: total elapsed time of `make all`, from a clock started before the tests, to `results/pipeline-runtime.json`. The README is rendered once more afterwards, so its runtime line reports this run rather than the previous one.
 
 ## The two gates
 

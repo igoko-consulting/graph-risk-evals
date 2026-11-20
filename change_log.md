@@ -209,3 +209,15 @@ A clean clone at `edc58a2` ran `make all` to completion. Every result file recor
 - **First attempt lost to the network.** The dataset mirror reset the connection during the download. The run was restarted from a fresh clone at the same commit, with no code change.
 
 **Presentation change after the results were seen; outcomes untouched.** The engine table now names its workloads "Two-hop size" and "PageRank" rather than generating "Two hop" and "Pagerank" from code names, and prints an output difference of zero as 0. `README.md` and `docs/engine-comparison.md` were re-rendered from the copied results; no result file was regenerated.
+
+## 2026-11-20, queue-size chart and the write-up
+
+**Queue-size chart, deliverable 16.** Precision and recall at every queue size from 10 to 500 per step, for each arm, before and after the shift. It is drawn from the queue curve already in `results/evaluation-phase-3.json`, so no result was regenerated. The curve had been published, and seen, before the chart was designed.
+
+- **No intervals.** The published curve has point estimates only, so the chart and its table say they do not compare arms; comparisons stay at k, on paired resamples. Bootstrap bands at every queue size were considered and not added, because they need a new evaluation stage and a full clean-clone rerun of several hours. Decided by the author.
+- **Both periods shown.** Showing only the pre-shift period would have left out the collapse after the shift. Decided by the author.
+- **Table sizes.** The round sizes in the README table, 50, 200 and 500 per step, were picked after the curve had been seen. They are for reading and decide nothing.
+
+**Runtime line.** The README now reports the measured runtime from `results/pipeline-runtime.json`. It is rendered again after `record_runtime.py`, so the line reports the run that produced it rather than the one before.
+
+**Write-up, PRD v2.5, requirement 21.** At the author's request the README is restructured for a reader arriving cold: what kind of project this is, the decision matrix, then the key decisions with their reasoning, cost and alternatives, then results and limitations. It states that this is a learning project run as a two-day discovery sprint, as the author described it, and adds the critical user journeys appendix that the PRD places in the README. Two limitations are added: what a longer project would test, and that the evidence-chain review is not yet scored. Only hand-written text changed; no generated number did.

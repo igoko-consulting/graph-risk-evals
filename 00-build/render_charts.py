@@ -282,6 +282,79 @@ def label_budget_curve() -> None:
     _save(fig, "label-budget-curve.svg")
 
 
+def queue_series(metrics: dict, k: int, field: str) -> tuple[list, list]:
+    # The queue grid runs in tens, so k itself comes from the headline metrics and is placed in order.
+    points = {r["queue_per_step"]: r[field] for r in metrics["queue_curve"]}
+    points[k] = metrics["precision_at_k_pooled" if field == "precision" else "recall_at_k_pooled"]
+    sizes = sorted(points)
+    return sizes, [points[q] for q in sizes]
+
+
+def best_possible(per_step: list, sizes: list, field: str) -> list:
+    illicit = [r["illicit"] for r in per_step]
+    found = [sum(min(i, q) for i in illicit) for q in sizes]
+    if field == "precision":
+        return [f / (q * len(illicit)) for f, q in zip(found, sizes)]
+    return [f / sum(illicit) for f in found]
+
+
+def queue_volume() -> None:
+    ev = read_result("evaluation-phase-3")["data"]
+    k = ev["k"]
+    periods = ("pre_shift_test", "post_shift_test")
+    rows = (("precision", "Precision"), ("recall", "Recall"))
+    fig, axes = plt.subplots(2, 2, figsize=(10, 7.4), sharex=True, sharey="row",
+                             gridspec_kw={"hspace": 0.16, "wspace": 0.08})
+    fig.patch.set_facecolor(SURFACE)
+    for col, period in enumerate(periods):
+        first, last = PERIODS[period]
+        steps = last - first + 1
+        for row, (field, label) in enumerate(rows):
+            ax = axes[row][col]
+            sizes = None
+            for arm, colour, name in ARMS:
+                m = ev["metrics"][arm][period]
+                sizes, y = queue_series(m, k, field)
+                ax.plot(sizes, y, color=colour, linewidth=2, label=name if row == col == 0 else None)
+                ax.plot([k], [y[sizes.index(k)]], marker="o", markersize=6, color=colour, markeredgecolor=SURFACE,
+                        markeredgewidth=1.5)
+            ax.plot(sizes, best_possible(ev["metrics"]["A"][period]["per_step"], sizes, field), color=TEXT_SECONDARY,
+                    linewidth=1, linestyle=(0, (3, 2)), label="Best possible" if row == col == 0 else None)
+            ax.axvline(k, color=TEXT_SECONDARY, linewidth=0.8, linestyle=(0, (1, 2)))
+            ax.set_facecolor(SURFACE)
+            ax.grid(axis="y", color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+            for side in ("top", "right", "left"):
+                ax.spines[side].set_visible(False)
+            ax.tick_params(length=0)
+            ax.set_ylim(0, 1.04)
+            ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+            ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+            ax.set_xlim(0, max(sizes) + 10)
+            ax.set_xticks([0, 100, 200, 300, 400, 500])
+            if col == 0:
+                ax.set_ylabel(label)
+            if row == 0:
+                ax.set_title(f"{PERIOD_LABELS[period]}, steps {first} to {last}: k = {k} is {k * steps:,} alerts",
+                             loc="left", color=TEXT, fontsize=9)
+            if row == 1:
+                ax.set_xlabel("Alerts per time step")
+        axes[0][col].text(k + 6, 1.02, f"k = {k}", va="top", ha="left", color=TEXT_SECONDARY, fontsize=8)
+    fig.legend(loc="upper left", frameon=False, ncol=4, labelcolor=TEXT, bbox_to_anchor=(0.062, 0.935),
+               handlelength=1.6, columnspacing=1.4)
+    fig.suptitle("Precision and recall across queue sizes", x=0.07, y=0.985, ha="left", fontsize=13, color=TEXT,
+                 fontweight="bold")
+    fig.text(0.07, 0.945, "Pooled over each test period, scores averaged over five seeds. Dots mark the pre-committed "
+             f"k = {k}. Dashed: the best any ranking could do.", ha="left", color=TEXT_SECONDARY, fontsize=8.5)
+    fig.text(0.07, 0.012, "Point estimates without intervals: read the shape, not the gaps between arms. Arms are compared "
+             f"only at k = {k}, on paired bootstrap resamples (H2 to H4 in the README).\nk was fixed from training steps "
+             "before any test step was read; this chart chose nothing. Labelled transactions only; unlabelled is not "
+             "licit.\nCryptocurrency data, not payments data. Source: results/evaluation-phase-3.json.",
+             ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
+    fig.subplots_adjust(left=0.08, right=0.985, top=0.86, bottom=0.16)
+    _save(fig, "queue-volume-across-operating-points.svg")
+
+
 if __name__ == "__main__":
     from paths import RESULTS
 
@@ -290,5 +363,6 @@ if __name__ == "__main__":
         precision_at_k_a_b()
     if (RESULTS / "evaluation-phase-3.json").is_file():
         precision_at_k_all_arms()
+        queue_volume()
     if (RESULTS / "label-budget-curve.json").is_file():
         label_budget_curve()

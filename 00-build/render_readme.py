@@ -6,7 +6,8 @@ the by-construction note on H1, the pair intervals behind H3, and finding_phase3
 was seen, H4's evidence gained the per-budget differences, its sign convention and the D minus A comparison
 the protocol said would be reported alongside, and the H4 limitation gained A's precision at both ends.
 The Phase 4 evidence-chain and engine wording was written after a local smoke run whose numbers were
-discarded; its one conditional sentence depends on the share of the queue Arm A also queues. Outcomes are computed in
+discarded; its one conditional sentence depends on the share of the queue Arm A also queues. The queue-volume block
+and the runtime line were written after their results were published; they state no outcome. Outcomes are computed in
 evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
 """
 import re
@@ -369,6 +370,53 @@ def evidence_block(e: dict) -> str:
     return "\n".join(rows + [""] + notes)
 
 
+def runtime_block(rt: dict) -> str:
+    m = rt["machine"]
+    return (f"The last clean-clone run of `make all` took {rt['elapsed_seconds'] / 3600:.1f} hours on an {m['cpu']} with "
+            f"{m['performance_cores']} performance cores, against the specification's target of "
+            f"{rt['specification_target_minutes']} minutes. The target gave way to full tuning: every arm is tuned in "
+            "full at every label budget, and that stage dominates. The figure includes install and download, which "
+            "depend on the network. Source: `results/pipeline-runtime.json`.")
+
+
+QUEUE_TABLE_SIZES = (50, 200, 500)
+
+
+def queue_block(ev: dict) -> str:
+    k = ev["k"]
+    periods = (("pre_shift_test", "Before the shift"), ("post_shift_test", "After the shift"))
+    rows = [
+        f"| Arm, period | 50 per step | k = {k} per step, pre-committed | 200 per step | 500 per step |",
+        "|---|---|---|---|---|",
+    ]
+    volumes = []
+    for period, label in periods:
+        steps = len(ev["metrics"]["A"][period]["per_step"])
+        volumes.append(f"{k * steps:,} alerts {label.lower()} ({steps} steps)")
+        for arm in ("A", "B", "D"):
+            m = ev["metrics"][arm][period]
+            curve = {r["queue_per_step"]: r for r in m["queue_curve"]}
+            cell = lambda p, r: f"{pct(p)} / {pct(r)}"
+            at = {q: cell(curve[q]["precision"], curve[q]["recall"]) for q in QUEUE_TABLE_SIZES}
+            rows.append(f"| {arm}, {label.lower()} | {at[50]} | "
+                        f"{cell(m['precision_at_k_pooled'], m['recall_at_k_pooled'])} | {at[200]} | {at[500]} |")
+    notes = [
+        "",
+        "Each cell is precision / recall, pooled over the period, from seed-averaged scores. "
+        f"At the pre-committed k = {k} per step the queue holds {' and '.join(volumes)}.",
+        "",
+        "**What this does not establish.** Which arm is better at any queue size other than k: the curve has no "
+        f"intervals, and arms are compared only at k = {k}, on paired resamples (H2 to H4 above). Nor does it choose a "
+        "queue size: k was fixed from training steps before any test step was read. The other sizes are round numbers "
+        "for reading the table, picked after the curve was published, and decide nothing. Labelled transactions only; "
+        "unlabelled is not licit. "
+        "Every 10 alerts from 10 to 500 is in `results/evaluation-phase-3.json`.",
+        "",
+        "![Precision and recall across queue sizes](site/charts/queue-volume-across-operating-points.svg)",
+    ]
+    return "\n".join(rows + notes)
+
+
 WORKLOAD_NAMES = {"degree": "Degree", "two_hop": "Two-hop size", "neighbour_scores": "Neighbour scores",
                   "pagerank": "PageRank"}
 
@@ -423,10 +471,13 @@ def main() -> None:
         budget = read_result("label-budget-curve")["data"] if (RESULTS / "label-budget-curve.json").is_file() else None
         text = replace_block(text, "results", results_block_phase3(ev, cost) + "\n\n" + finding_phase3(ev))
         text = replace_block(text, "hypotheses", hypotheses_block(ev, budget))
+        text = replace_block(text, "queue-volume", queue_block(ev))
         text = replace_block(text, "decision-matrix", decision_block(ev, cost))
         text = replace_block(text, "limitations", limitations_block(ev, cost, budget))
     elif (RESULTS / "evaluation-arms-a-b.json").is_file():
         text = replace_block(text, "results", results_block(read_result("evaluation-arms-a-b")["data"]))
+    if (RESULTS / "pipeline-runtime.json").is_file():
+        text = replace_block(text, "runtime", runtime_block(read_result("pipeline-runtime")["data"]))
     README.write_text(text)
     print("README.md generated blocks updated")
 
