@@ -20,5 +20,24 @@ Both reviews of the specification recommended cutting this appendix, because at 
 ## Results
 
 <!-- generated:engine-comparison by 00-build/render_readme.py from results/; do not edit by hand -->
-_Populated when the engine-comparison stage runs._
+| Workload | What it does | LadybugDB, median (first run) | DuckDB, median (first run) | LadybugDB time ÷ DuckDB time | Largest output difference |
+|---|---|---|---|---|---|
+| Degree | Aggregation: in- and out-degree, same-step neighbours only, one query per step for each | 4.13s (4.16s) | 0.41s (0.42s) | 10.0 | 0 |
+| Two-hop size | Traversal: distinct transactions within two hops, ignoring direction, one query per step | 10.85s (10.79s) | 0.41s (0.42s) | 26.8 | 0 |
+| Neighbour scores | Aggregation over a join: mean and maximum neighbour score, both directions, whole graph | 0.51s (0.51s) | 0.23s (0.23s) | 2.2 | 5e-16 |
+| PageRank | Iterative: PageRank within each step, 100 fixed iterations, whole graph | 125.87s (125.38s) | 2.63s (2.62s) | 47.9 | 6e-17 |
+
+203,769 transactions, 234,355 edges, 49 time steps. LadybugDB (graph store, Cypher) 0.18.3; DuckDB (columnar store, SQL) 2.0.0. 6 threads in both, 3 repeats after a first run, engine order alternated between repeats. Both file-based and on the same disk, loaded from the same Parquet export; default settings. Rows fetched as Python tuples in both engines; fetch time is included. Machine: Apple M3 Pro, 6 performance cores, 36 GB, macOS-27.0.1-arm64-arm-64bit-Mach-O, Python 3.13.18.
+
+**Confounds.**
+
+- The graph is small, so start-up, query planning and Python-side fetching are a large share of each time.
+- Repeats run in the same process after a first run, so caches are warm; first runs are reported separately.
+- Each query was written once, in the plainest form for its language, and was not tuned for either engine.
+- PageRank in the graph store writes node properties with four statements per iteration; in SQL each iteration replaces one table. The shapes differ because the languages do.
+- Per-step workloads issue one query per step in both engines, as Arm B does.
+
+**What this does not establish.** Anything about production economics, concurrency, ingest, larger graphs or other engines. It records how these query shapes behaved on one small static graph, on one laptop.
+
+Source: `results/engine-comparison.json`.
 <!-- end generated:engine-comparison -->

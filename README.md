@@ -113,7 +113,20 @@ Outcomes follow the rules fixed in `change_log.md` before Arm D or any label bud
 For each transaction Arm B queues, the graph store builds a structural reason an investigator could check: its links, its two-hop neighbourhood, and the path to its highest-scoring neighbour. Only aggregates are published, because the dataset's licence rules out per-transaction outputs.
 
 <!-- generated:evidence-chains by 00-build/render_readme.py from results/; do not edit by hand -->
-_Populated when the evidence-chain stage runs._
+| Before the shift | All queued | Queued and illicit | Queued and licit |
+|---|---|---|---|
+| Transactions queued by Arm B | 816 | 630 | 186 |
+| With a chain: at least one same-step link | 100.0% | 100.0% | 100.0% |
+| With a two-hop chain | 86.5% | 89.7% | 75.8% |
+| Strongest link also in Arm A's top 102 for its step | 4.5% | 4.6% | 4.3% |
+| Also queued by Arm A, without graph features | 83.1% | 93.2% | 48.9% |
+| Median transactions within two hops | 9 | 10 | 7 |
+
+**Draft for the author to edit.** Every chain is built with `graph/queries/`, and all 8,950 facts in them were recomputed in SQL from the columnar store; none disagreed. 83.1% of the queue would have been queued by Arm A without any graph feature, so for most queued transactions the chain is context rather than the reason they were queued. A chain can never cite a counterparty whose label was known at scoring time: edges never cross time steps, and there are no links from a queued transaction to steps 1 to 34. On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.
+
+**Arm D cannot produce a chain.** Its score depends on a median of 5 transactions within two hops, through learned weights. The traversal can list them but not say which mattered, and a post-hoc explainer would add an approximation, not a fact about the graph.
+
+Whether a chain is sufficient and actionable needs a human. A seeded sample of 30 sits in `data/store/runs/evidence-chain-review.csv` for the author to score: true, sufficient, actionable. Not yet scored. Source: `results/evidence-chains.json`.
 <!-- end generated:evidence-chains -->
 
 ---

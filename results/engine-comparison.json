@@ -1,0 +1,167 @@
+{
+  "result": "engine-comparison",
+  "provenance": {
+    "generated_by": "engine_comparison.py",
+    "generated_at": "2026-11-20T02:14:59+00:00",
+    "git": {
+      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": "not applicable: no model feature values are used or written",
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "workloads": {
+      "degree": {
+        "description": "Aggregation: in- and out-degree, same-step neighbours only, one query per step for each",
+        "max_difference_between_engines": 0.0,
+        "seconds": {
+          "ladybug": {
+            "first_run": 4.161,
+            "median_of_repeats": 4.13,
+            "repeats": [
+              4.13,
+              4.134,
+              4.113
+            ]
+          },
+          "duckdb": {
+            "first_run": 0.418,
+            "median_of_repeats": 0.412,
+            "repeats": [
+              0.408,
+              0.412,
+              0.413
+            ]
+          }
+        },
+        "ratio_ladybug_to_duckdb": 10.032991879621287
+      },
+      "two_hop": {
+        "description": "Traversal: distinct transactions within two hops, ignoring direction, one query per step",
+        "max_difference_between_engines": 0.0,
+        "seconds": {
+          "ladybug": {
+            "first_run": 10.785,
+            "median_of_repeats": 10.847,
+            "repeats": [
+              10.895,
+              10.847,
+              10.82
+            ]
+          },
+          "duckdb": {
+            "first_run": 0.421,
+            "median_of_repeats": 0.405,
+            "repeats": [
+              0.405,
+              0.399,
+              0.41
+            ]
+          }
+        },
+        "ratio_ladybug_to_duckdb": 26.805378461985587
+      },
+      "neighbour_scores": {
+        "description": "Aggregation over a join: mean and maximum neighbour score, both directions, whole graph",
+        "max_difference_between_engines": 4.996003610813204e-16,
+        "seconds": {
+          "ladybug": {
+            "first_run": 0.512,
+            "median_of_repeats": 0.509,
+            "repeats": [
+              0.509,
+              0.505,
+              0.516
+            ]
+          },
+          "duckdb": {
+            "first_run": 0.231,
+            "median_of_repeats": 0.228,
+            "repeats": [
+              0.223,
+              0.228,
+              0.231
+            ]
+          }
+        },
+        "ratio_ladybug_to_duckdb": 2.2301343281881607
+      },
+      "pagerank": {
+        "description": "Iterative: PageRank within each step, 100 fixed iterations, whole graph",
+        "max_difference_between_engines": 5.898059818321144e-17,
+        "seconds": {
+          "ladybug": {
+            "first_run": 125.381,
+            "median_of_repeats": 125.873,
+            "repeats": [
+              125.873,
+              124.907,
+              126.056
+            ]
+          },
+          "duckdb": {
+            "first_run": 2.621,
+            "median_of_repeats": 2.629,
+            "repeats": [
+              2.629,
+              2.601,
+              2.649
+            ]
+          }
+        },
+        "ratio_ladybug_to_duckdb": 47.87948067755762
+      }
+    },
+    "graph": {
+      "nodes": 203769,
+      "edges": 234355,
+      "time_steps": 49
+    },
+    "configuration": {
+      "engines": {
+        "ladybug": {
+          "name": "LadybugDB (graph store, Cypher)",
+          "version": "0.18.3"
+        },
+        "duckdb": {
+          "name": "DuckDB (columnar store, SQL)",
+          "version": "2.0.0"
+        }
+      },
+      "threads": 6,
+      "repeats": 3,
+      "storage": "Both file-based and on the same disk, loaded from the same Parquet export; default settings",
+      "result_format": "Rows fetched as Python tuples in both engines; fetch time is included",
+      "queries": "graph/queries/*.cypher and graph/sql/*.sql"
+    },
+    "machine": {
+      "cpu": "Apple M3 Pro",
+      "performance_cores": "6",
+      "memory_bytes": "38654705664",
+      "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+      "python": "3.13.18"
+    },
+    "confounds": [
+      "The graph is small, so start-up, query planning and Python-side fetching are a large share of each time.",
+      "Repeats run in the same process after a first run, so caches are warm; first runs are reported separately.",
+      "Each query was written once, in the plainest form for its language, and was not tuned for either engine.",
+      "PageRank in the graph store writes node properties with four statements per iteration; in SQL each iteration replaces one table. The shapes differ because the languages do.",
+      "Per-step workloads issue one query per step in both engines, as Arm B does."
+    ],
+    "does_not_establish": "Anything about production economics, concurrency, ingest, larger graphs or other engines. It records how these query shapes behaved on one small static graph, on one laptop."
+  }
+}

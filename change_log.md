@@ -197,3 +197,15 @@ The Phase 3 gate passed with the clean-clone run above. Phase 4 builds the deliv
 ### Smoke runs before the official run
 
 Both stages were run once on local data from an earlier build. The evidence-chain smoke run printed test-period aggregates. One drafted README sentence depends on one of them: it says the chain is context rather than the reason only when more than half of Arm B's queue is also queued by Arm A. The smoke numbers were discarded. No definition above changed after either smoke run.
+
+## 2026-11-20, Phase 4 result
+
+A clean clone at `edc58a2` ran `make all` to completion. Every result file records that commit with no uncommitted changes, and the evidence-chain result also passed the leakage-gate check. The figures live in `results/` and the README; none is restated here.
+
+- **Evidence chains:** every fact in every chain matched the SQL recomputation. Most of Arm B's queue is also Arm A's queue, so the README says chains are context rather than the reason, as the rule fixed before the official run required.
+- **Engine comparison:** all four workloads returned matching outputs in both engines before any timing was kept.
+- **Earlier results reproduced.** Every Phase 2 and Phase 3 result regenerated identically apart from timings. Modelled cost per true positive moved only in its fourth decimal place or beyond, because it includes measured tuning time; the rounded figures are unchanged.
+- **Runtime** is now a result: `results/pipeline-runtime.json`.
+- **First attempt lost to the network.** The dataset mirror reset the connection during the download. The run was restarted from a fresh clone at the same commit, with no code change.
+
+**Presentation change after the results were seen; outcomes untouched.** The engine table now names its workloads "Two-hop size" and "PageRank" rather than generating "Two hop" and "Pagerank" from code names, and prints an output difference of zero as 0. `README.md` and `docs/engine-comparison.md` were re-rendered from the copied results; no result file was regenerated.

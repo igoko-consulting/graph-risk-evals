@@ -2,9 +2,9 @@
   "result": "cost-per-true-positive",
   "provenance": {
     "generated_by": "evaluate_phase3.py",
-    "generated_at": "2026-11-19T17:17:05+00:00",
+    "generated_at": "2026-11-20T02:05:07+00:00",
     "git": {
-      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
+      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -13,7 +13,7 @@
       "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
     },
     "leakage_gate": {
-      "passed_at": "2026-11-19T15:23:33+00:00",
+      "passed_at": "2026-11-20T00:24:22+00:00",
       "dropped_features": []
     },
     "dataset": {
@@ -38,9 +38,9 @@
       "compute_eur_per_vcpu_hour": 0.05,
       "compute": {
         "seconds": {
-          "A": 956.5,
-          "B": 2891.8,
-          "D": 3968.2
+          "A": 875.3,
+          "B": 2600.1,
+          "D": 3496.1
         },
         "threads": 6,
         "note": "B includes Arm A's tuning, because its stage one is Arm A's tuned model, and the graph-store structural feature build. Score aggregation time is not included."
@@ -49,7 +49,7 @@
     "formula": "(alerts x analyst cost per alert + compute cost) / true positives in the top k, pooled over the period",
     "by_arm": {
       "A": {
-        "compute_eur": 0.07970833333333334,
+        "compute_eur": 0.07294166666666667,
         "pre_shift_test": {
           "alerts": 816,
           "true_positives": 615,
@@ -59,11 +59,11 @@
             "high": 30600.0
           },
           "cost_per_true_positive_eur": {
-            "central": 33.170861314363144,
-            "low": 16.585495460704607,
-            "high": 49.75622716802168
+            "central": 33.17085031165311,
+            "low": 16.585484457994582,
+            "high": 49.75621616531165
           },
-          "compute_share_of_cost": 3.9072559751211595e-06
+          "compute_share_of_cost": 3.5755591107561703e-06
         },
         "post_shift_test": {
           "alerts": 714,
@@ -74,15 +74,15 @@
             "high": 26775.0
           },
           "cost_per_true_positive_eur": {
-            "central": 510.0022773809524,
-            "low": 255.00227738095236,
-            "high": 765.0022773809524
+            "central": 510.002084047619,
+            "low": 255.00208404761906,
+            "high": 765.0020840476191
           },
-          "compute_share_of_cost": 4.465432907625695e-06
+          "compute_share_of_cost": 4.0863511821513086e-06
         }
       },
       "B": {
-        "compute_eur": 0.24098333333333338,
+        "compute_eur": 0.216675,
         "pre_shift_test": {
           "alerts": 816,
           "true_positives": 630,
@@ -92,11 +92,11 @@
             "high": 30600.0
           },
           "cost_per_true_positive_eur": {
-            "central": 32.38133489417989,
-            "low": 16.190858703703704,
-            "high": 48.57181108465608
+            "central": 32.38129630952381,
+            "low": 16.19082011904762,
+            "high": 48.5717725
           },
-          "compute_share_of_cost": 1.1812768953573287e-05
+          "compute_share_of_cost": 1.0621210718096454e-05
         },
         "post_shift_test": {
           "alerts": 714,
@@ -107,15 +107,15 @@
             "high": 26775.0
           },
           "cost_per_true_positive_eur": {
-            "central": 228.8492433760684,
-            "low": 114.42616645299145,
-            "high": 343.2723202991453
+            "central": 228.84893173076924,
+            "low": 114.4258548076923,
+            "high": 343.27200865384617
           },
-          "compute_share_of_cost": 1.350028459326337e-05
+          "compute_share_of_cost": 1.2138508117017016e-05
         }
       },
       "D": {
-        "compute_eur": 0.33068333333333333,
+        "compute_eur": 0.29134166666666667,
         "pre_shift_test": {
           "alerts": 816,
           "true_positives": 522,
@@ -125,11 +125,11 @@
             "high": 30600.0
           },
           "cost_per_true_positive_eur": {
-            "central": 39.08109326309068,
-            "low": 19.540863378033205,
-            "high": 58.62132314814815
+            "central": 39.081017895913156,
+            "low": 19.540788010855685,
+            "high": 58.62124778097063
           },
-          "compute_share_of_cost": 1.6209704561480224e-05
+          "compute_share_of_cost": 1.4281250291343367e-05
         },
         "post_shift_test": {
           "alerts": 714,
@@ -140,11 +140,11 @@
             "high": 26775.0
           },
           "cost_per_true_positive_eur": {
-            "central": 595.0110227777778,
-            "low": 297.5110227777778,
-            "high": 892.5110227777778
+            "central": 595.009711388889,
+            "low": 297.5097113888889,
+            "high": 892.509711388889
           },
-          "compute_share_of_cost": 1.852533374309356e-05
+          "compute_share_of_cost": 1.632139560583017e-05
         }
       }
     }

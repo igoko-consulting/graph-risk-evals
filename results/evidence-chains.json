@@ -1,0 +1,110 @@
+{
+  "result": "evidence-chains",
+  "provenance": {
+    "generated_by": "evidence_chains.py",
+    "generated_at": "2026-11-20T02:05:18+00:00",
+    "git": {
+      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": {
+      "passed_at": "2026-11-20T00:24:22+00:00",
+      "dropped_features": []
+    },
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "k": 102,
+    "queue": "Arm B's top k labelled transactions per test step, from seed-averaged scores, as evaluated.",
+    "chain": "Degree and two-hop size of the flagged transaction, then its same-step link to the neighbour with the highest Arm A stage-one score, then that neighbour's strongest link onwards. Built with graph/queries/ only, from information available at scoring time.",
+    "truth_check": {
+      "facts_checked": 8950,
+      "facts_false": 0,
+      "method": "Every degree, two-hop size and link recomputed in SQL from the columnar store"
+    },
+    "links_to_a_known_label": {
+      "count": 0,
+      "counted": "Edges in either direction between a flagged transaction and any transaction in steps 1 to 34",
+      "why": "Edges never cross time steps, and test-step labels are not known at scoring time, so no chain can cite a counterparty whose label was known."
+    },
+    "by_period": {
+      "pre_shift_test": {
+        "all_flagged": {
+          "flagged": 816,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.8651960784313726,
+          "strongest_link_in_stage_one_top_k": 0.04534313725490196,
+          "also_queued_by_arm_a": 0.8308823529411765,
+          "median_two_hop_size": 9.0
+        },
+        "flagged_illicit": {
+          "flagged": 630,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.8968253968253969,
+          "strongest_link_in_stage_one_top_k": 0.046031746031746035,
+          "also_queued_by_arm_a": 0.9317460317460318,
+          "median_two_hop_size": 10.0
+        },
+        "flagged_licit": {
+          "flagged": 186,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.7580645161290323,
+          "strongest_link_in_stage_one_top_k": 0.043010752688172046,
+          "also_queued_by_arm_a": 0.489247311827957,
+          "median_two_hop_size": 7.0
+        }
+      },
+      "post_shift_test": {
+        "all_flagged": {
+          "flagged": 714,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.8319327731092437,
+          "strongest_link_in_stage_one_top_k": 0.046218487394957986,
+          "also_queued_by_arm_a": 0.6148459383753502,
+          "median_two_hop_size": 7.0
+        },
+        "flagged_illicit": {
+          "flagged": 78,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.9230769230769231,
+          "strongest_link_in_stage_one_top_k": 0.02564102564102564,
+          "also_queued_by_arm_a": 0.3974358974358974,
+          "median_two_hop_size": 65.0
+        },
+        "flagged_licit": {
+          "flagged": 636,
+          "with_chain": 1.0,
+          "with_two_hop_chain": 0.8207547169811321,
+          "strongest_link_in_stage_one_top_k": 0.04874213836477988,
+          "also_queued_by_arm_a": 0.6415094339622641,
+          "median_two_hop_size": 6.0
+        }
+      }
+    },
+    "arm_d": {
+      "flagged": 1530,
+      "receptive_field_median_transactions": 5.0,
+      "receptive_field_empty_share": 0.0,
+      "why_no_chain": "A two-layer GraphSAGE score depends on every transaction within two hops through learned weights. The traversal can list those transactions but not say which of them moved the score. A post-hoc explainer would add an approximation that is not a fact about the graph."
+    },
+    "review": {
+      "sample": 30,
+      "seed": 20261120,
+      "file": "data/store/runs/evidence-chain-review.csv",
+      "rubric": "Is the reason true, sufficient, and actionable by an investigator. Scored by the author."
+    }
+  }
+}

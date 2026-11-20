@@ -1,0 +1,38 @@
+{
+  "result": "pipeline-runtime",
+  "provenance": {
+    "generated_by": "record_runtime.py",
+    "generated_at": "2026-11-20T07:42:18+00:00",
+    "git": {
+      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": "not applicable: no model feature values are used or written",
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "elapsed_seconds": 26662,
+    "covers": "Everything `make all` runs: environment install, tests, data download, every stage. Install and download depend on the network and on caches.",
+    "specification_target_minutes": 30,
+    "machine": {
+      "cpu": "Apple M3 Pro",
+      "performance_cores": "6",
+      "logical_cpus": 12,
+      "omp_num_threads": "6",
+      "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O"
+    }
+  }
+}

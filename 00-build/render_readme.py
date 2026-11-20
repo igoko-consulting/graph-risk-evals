@@ -369,6 +369,10 @@ def evidence_block(e: dict) -> str:
     return "\n".join(rows + [""] + notes)
 
 
+WORKLOAD_NAMES = {"degree": "Degree", "two_hop": "Two-hop size", "neighbour_scores": "Neighbour scores",
+                  "pagerank": "PageRank"}
+
+
 def engine_block(e: dict) -> str:
     w, cfg, m, g = e["workloads"], e["configuration"], e["machine"], e["graph"]
     rows = [
@@ -378,10 +382,10 @@ def engine_block(e: dict) -> str:
     for name, x in w.items():
         s = x["seconds"]
         rows.append(
-            f"| {name.replace('_', ' ').capitalize()} | {x['description']} "
+            f"| {WORKLOAD_NAMES.get(name, name)} | {x['description']} "
             f"| {s['ladybug']['median_of_repeats']:.2f}s ({s['ladybug']['first_run']:.2f}s) "
             f"| {s['duckdb']['median_of_repeats']:.2f}s ({s['duckdb']['first_run']:.2f}s) "
-            f"| {x['ratio_ladybug_to_duckdb']:.1f} | {x['max_difference_between_engines']:.1e} |"
+            f"| {x['ratio_ladybug_to_duckdb']:.1f} | {x['max_difference_between_engines']:.1g} |"
         )
     engines = cfg["engines"]
     memory = f"{int(m['memory_bytes']) / 2**30:.0f} GB" if m.get("memory_bytes") else "memory not recorded"
