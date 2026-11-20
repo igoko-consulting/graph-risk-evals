@@ -173,3 +173,27 @@ The clean-clone build at commit `ef453b5` completed without error: the gates, ev
 No result file was regenerated for any of these.
 
 **Runtime.** The full protocol took hours on the clean clone, not the 30-minute target, as already accepted above. The run's own log is not a result file, so the figure is not quoted. A `record_runtime.py` stage now writes the measured total to `results/pipeline-runtime.json` on every `make all`.
+
+## 2026-11-20, Phase 4 build, fixed before its official run
+
+The Phase 3 gate passed with the clean-clone run above. Phase 4 builds the deliverables that need no production experience: evidence chains, the engine comparison appendix and a draft entity resolution note. The governance note and the decision log wait for the author.
+
+### Evidence chains
+
+- **Queue:** Arm B's top k labelled transactions per test step, from seed-averaged scores, as evaluated.
+- **Chain:** the queued transaction's in-degree, out-degree and two-hop size, then its same-step link to the neighbour with the highest Arm A stage-one score, then that neighbour's strongest link onwards. Ties go to the lower node id. Only structure and stage-one scores are used, both known at scoring time; no label is.
+- **Built in the graph store** with `graph/queries/evidence-neighbours.cypher` and the structural features Arm B already uses.
+- **Truth check in code:** every degree, two-hop size and link is recomputed in SQL from the columnar store, and the stage halts on any disagreement. Sufficiency and actionability need a human; a seeded sample of 30 is written for the author to score.
+- **Published as aggregates only.** The dataset's licence (CC BY-NC-ND 4.0) and `04-the-data/NOTES.md` rule out per-transaction outputs in `results/`. Full chains stay in `data/store/runs/`, which is git-ignored.
+- **Arm D:** recorded as unable to produce a chain, with the size of its two-hop receptive field. No post-hoc explainer is used.
+- **Stage-one scores** are now saved per seed by `run_arms.py`. For test steps they equal Arm A's scores, because stage one's last model is Arm A's tuned configuration trained on every training step; saving them makes that explicit rather than assumed.
+
+### Engine comparison
+
+- **Workloads:** Arm B's four, as queries. Degree and two-hop size run one query per step, neighbour-score aggregation and PageRank (100 fixed iterations) run over the whole graph.
+- **Same work:** Cypher from `graph/queries/`, SQL in `graph/sql/`, outputs checked equal to within 1e-9 before any timing is kept. Neighbour scores are seeded random numbers, so no model output is involved.
+- **Same conditions:** both stores file-based, built from one Parquet export, same process, same thread count, rows fetched as Python tuples in both. A first run, then 3 repeats with engine order alternated; medians reported.
+
+### Smoke runs before the official run
+
+Both stages were run once on local data from an earlier build. The evidence-chain smoke run printed test-period aggregates. One drafted README sentence depends on one of them: it says the chain is context rather than the reason only when more than half of Arm B's queue is also queued by Arm A. The smoke numbers were discarded. No definition above changed after either smoke run.

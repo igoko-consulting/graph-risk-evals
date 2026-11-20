@@ -108,6 +108,14 @@ Outcomes follow the rules fixed in `change_log.md` before Arm D or any label bud
 ![Label-budget curve](site/charts/label-budget-curve.svg)
 <!-- end generated:hypotheses -->
 
+### Evidence chains
+
+For each transaction Arm B queues, the graph store builds a structural reason an investigator could check: its links, its two-hop neighbourhood, and the path to its highest-scoring neighbour. Only aggregates are published, because the dataset's licence rules out per-transaction outputs.
+
+<!-- generated:evidence-chains by 00-build/render_readme.py from results/; do not edit by hand -->
+_Populated when the evidence-chain stage runs._
+<!-- end generated:evidence-chains -->
+
 ---
 
 ## Deliverables at a glance
@@ -124,11 +132,11 @@ Outcomes follow the rules fixed in `change_log.md` before Arm D or any label bud
 | 8 | Label-budget curve | 3 | Done | `results/` |
 | 9 | Cost per true positive | 3 | Done, modelled | `03-the-margin/` |
 | 10 | Decision matrix | 4 | Draft, generated | this README |
-| 11 | Evidence chains | 4 | — | `results/` |
-| 12 | Entity resolution note | 4 | — | `docs/entity-resolution.md` |
+| 11 | Evidence chains | 4 | Done; human review pending | `results/evidence-chains.json` |
+| 12 | Entity resolution note | 4 | Draft | [`docs/entity-resolution.md`](docs/entity-resolution.md) |
 | 13 | Governance and sovereignty note | 4 | — | `06-governance/` |
 | 14 | Decision log | 4 | — | `07-decision-log/` |
-| 15 | Engine comparison appendix | 4 | — | `docs/engine-comparison.md` |
+| 15 | Engine comparison appendix | 4 | Done | [`docs/engine-comparison.md`](docs/engine-comparison.md) |
 
 ---
 

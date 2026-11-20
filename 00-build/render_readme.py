@@ -4,7 +4,9 @@ The Phase 2 wording and the decision rules were written before any arm had run. 
 wording were added after the Phase 3 headline was seen, to state it accurately rather than to change it:
 the by-construction note on H1, the pair intervals behind H3, and finding_phase3. After the label-budget curve
 was seen, H4's evidence gained the per-budget differences, its sign convention and the D minus A comparison
-the protocol said would be reported alongside, and the H4 limitation gained A's precision at both ends. Outcomes are computed in
+the protocol said would be reported alongside, and the H4 limitation gained A's precision at both ends.
+The Phase 4 evidence-chain and engine wording was written after a local smoke run whose numbers were
+discarded; its one conditional sentence depends on the share of the queue Arm A also queues. Outcomes are computed in
 evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
 """
 import re
@@ -327,8 +329,89 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
             + "\n\n**What this suggests.**\n\n" + "\n".join(f"- {x}" for x in suggested))
 
 
+def evidence_block(e: dict) -> str:
+    k = e["k"]
+    pre = e["by_period"]["pre_shift_test"]
+    cols = (pre["all_flagged"], pre["flagged_illicit"], pre["flagged_licit"])
+    share = lambda x: "n/a" if x is None else pct(x)
+    rows = [
+        "| Before the shift | All queued | Queued and illicit | Queued and licit |",
+        "|---|---|---|---|",
+        "| Transactions queued by Arm B | " + " | ".join(str(c["flagged"]) for c in cols) + " |",
+        "| With a chain: at least one same-step link | " + " | ".join(share(c["with_chain"]) for c in cols) + " |",
+        "| With a two-hop chain | " + " | ".join(share(c["with_two_hop_chain"]) for c in cols) + " |",
+        f"| Strongest link also in Arm A's top {k} for its step | "
+        + " | ".join(share(c["strongest_link_in_stage_one_top_k"]) for c in cols) + " |",
+        "| Also queued by Arm A, without graph features | " + " | ".join(share(c["also_queued_by_arm_a"]) for c in cols) + " |",
+        "| Median transactions within two hops | " + " | ".join(f"{c['median_two_hop_size']:.0f}" for c in cols) + " |",
+    ]
+    t, known, d = e["truth_check"], e["links_to_a_known_label"]["count"], e["arm_d"]
+    a_share = cols[0]["also_queued_by_arm_a"]
+    notes = [
+        f"**Draft for the author to edit.** Every chain is built with `graph/queries/`, and all {t['facts_checked']:,} "
+        f"facts in them were recomputed in SQL from the columnar store; "
+        + ("none disagreed. " if t["facts_false"] == 0 else f"{t['facts_false']} disagreed. ")
+        + (f"{pct(a_share)} of the queue would have been queued by Arm A without any graph feature, so for most queued "
+           "transactions the chain is context rather than the reason they were queued. " if a_share > 0.5 else "")
+        + "A chain can never cite a counterparty whose label was known at scoring time: edges never cross time steps, "
+        + ("and there are no links from a queued transaction to steps 1 to 34. " if known == 0 else
+           f"and {known} links reach steps 1 to 34. ")
+        + "On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.",
+        "",
+        f"**Arm D cannot produce a chain.** Its score depends on a median of {d['receptive_field_median_transactions']:.0f} "
+        "transactions within two hops, through learned weights. The traversal can list them but not say which mattered, "
+        "and a post-hoc explainer would add an approximation, not a fact about the graph.",
+        "",
+        f"Whether a chain is sufficient and actionable needs a human. A seeded sample of {e['review']['sample']} sits in "
+        f"`{e['review']['file']}` for the author to score: true, sufficient, actionable. Not yet scored. "
+        "Source: `results/evidence-chains.json`.",
+    ]
+    return "\n".join(rows + [""] + notes)
+
+
+def engine_block(e: dict) -> str:
+    w, cfg, m, g = e["workloads"], e["configuration"], e["machine"], e["graph"]
+    rows = [
+        "| Workload | What it does | LadybugDB, median (first run) | DuckDB, median (first run) | LadybugDB time ÷ DuckDB time | Largest output difference |",
+        "|---|---|---|---|---|---|",
+    ]
+    for name, x in w.items():
+        s = x["seconds"]
+        rows.append(
+            f"| {name.replace('_', ' ').capitalize()} | {x['description']} "
+            f"| {s['ladybug']['median_of_repeats']:.2f}s ({s['ladybug']['first_run']:.2f}s) "
+            f"| {s['duckdb']['median_of_repeats']:.2f}s ({s['duckdb']['first_run']:.2f}s) "
+            f"| {x['ratio_ladybug_to_duckdb']:.1f} | {x['max_difference_between_engines']:.1e} |"
+        )
+    engines = cfg["engines"]
+    memory = f"{int(m['memory_bytes']) / 2**30:.0f} GB" if m.get("memory_bytes") else "memory not recorded"
+    notes = [
+        "",
+        f"{g['nodes']:,} transactions, {g['edges']:,} edges, {g['time_steps']} time steps. {engines['ladybug']['name']} "
+        f"{engines['ladybug']['version']}; {engines['duckdb']['name']} {engines['duckdb']['version']}. "
+        f"{cfg['threads']} threads in both, {cfg['repeats']} repeats after a first run, engine order alternated between "
+        f"repeats. {cfg['storage']}. {cfg['result_format']}. Machine: {m['cpu']}, {m['performance_cores']} performance "
+        f"cores, {memory}, {m['platform']}, Python {m['python']}.",
+        "",
+        "**Confounds.**",
+        "",
+        *[f"- {c}" for c in e["confounds"]],
+        "",
+        f"**What this does not establish.** {e['does_not_establish']}",
+        "",
+        "Source: `results/engine-comparison.json`.",
+    ]
+    return "\n".join(rows + notes)
+
+
 def main() -> None:
     text = README.read_text()
+    if (RESULTS / "evidence-chains.json").is_file():
+        text = replace_block(text, "evidence-chains", evidence_block(read_result("evidence-chains")["data"]))
+    engine_doc = ROOT / "docs" / "engine-comparison.md"
+    if (RESULTS / "engine-comparison.json").is_file() and engine_doc.is_file():
+        engine_doc.write_text(replace_block(engine_doc.read_text(), "engine-comparison",
+                                            engine_block(read_result("engine-comparison")["data"])))
     phase3 = (RESULTS / "evaluation-phase-3.json").is_file() and (RESULTS / "cost-per-true-positive.json").is_file()
     if phase3:
         ev = read_result("evaluation-phase-3")["data"]

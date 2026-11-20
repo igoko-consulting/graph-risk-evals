@@ -25,10 +25,12 @@
 8. `evaluate_arms.py`: precision at k, PR-AUC, paired bootstrap, the kill-criterion verdict.
 9. `run_arm_d.py`: two-layer GraphSAGE (`arm_d.py`) tuned per seed, trained on the training-step subgraph only.
 10. `evaluate_phase3.py`: all three arms on the same bootstrap resamples as Phase 2; H1, H2, H3; modelled cost per true positive.
-11. `render_charts.py` and `render_readme.py`: charts and README blocks from `results/` only. They run twice, so the headline is published before the label-budget curve finishes.
-12. `run_label_budgets.py`: every arm re-tuned at 5, 10, 25 and 50 percent of training labels.
-13. `evaluate_label_budgets.py`: the curve and H4, on the same resamples again.
-14. `record_runtime.py`: total elapsed time of `make all`, from a clock started before the tests, to `results/pipeline-runtime.json`.
+11. `evidence_chains.py`: a structural evidence chain for every transaction Arm B queues in a test step, built with `graph/queries/evidence-neighbours.cypher` and checked fact by fact against the columnar store. Aggregates go to `results/`; full chains and a review sample stay in `data/store/runs/`.
+12. `engine_comparison.py`: Arm B's four graph workloads timed in LadybugDB and DuckDB, outputs checked equal first. See `docs/engine-comparison.md`.
+13. `render_charts.py` and `render_readme.py`: charts and README blocks from `results/` only. They run twice, so the headline is published before the label-budget curve finishes.
+14. `run_label_budgets.py`: every arm re-tuned at 5, 10, 25 and 50 percent of training labels.
+15. `evaluate_label_budgets.py`: the curve and H4, on the same resamples again.
+16. `record_runtime.py`: total elapsed time of `make all`, from a clock started before the tests, to `results/pipeline-runtime.json`.
 
 ## The two gates
 
@@ -41,7 +43,7 @@
 - **Gradient-boosted trees on a stock Mac.** LightGBM and XGBoost need Homebrew's `libomp`. scikit-learn's histogram gradient boosting does not, so Arms A and B use it.
 - **Layout.** Pipeline code lives here as scripts with snake_case names, because Python cannot import a hyphenated module. `PYTHONPATH` is set by the Makefile and `pytest.ini`. Artefacts keep kebab-case names.
 - **Every traversal is scoped to the node's own step.** Without the `time_step` filters, a single injected cross-step edge would change an earlier node's degree, PageRank, two-hop size and score aggregates. The two-hop query filters intermediate nodes too, using LadybugDB's recursive-pattern predicate; filtering only the endpoints would let a path run through a future node.
-- **PageRank in Cypher is the slowest graph-store stage.** Four statements per iteration over every node, 100 fixed iterations, with no built-in algorithm used. Kept in the graph store as the PRD requires. Its cost against a library implementation is not measured here; that belongs to the engine comparison appendix in Phase 4. The gate's total time is in `results/leakage-tests.json`.
+- **PageRank in Cypher is the slowest graph-store stage.** Four statements per iteration over every node, 100 fixed iterations, with no built-in algorithm used. Kept in the graph store as the PRD requires. Its cost against the same algorithm written in SQL is measured in `results/engine-comparison.json` and discussed in `docs/engine-comparison.md`. The gate's total time is in `results/leakage-tests.json`.
 - **Two-hop size is the most expensive single query**, because it is a variable-length pattern.
 - **CPU-only PyTorch without dependency confusion.** Listing PyTorch's CPU index as an extra index for every package made `certifi` resolve to an older copy hosted there. `uv pip sync --torch-backend cpu` consults that index for PyTorch packages only. The pip fallback in the Makefile uses `--extra-index-url`, which picks the newest match across indexes, so it is unaffected. The Linux route has not been run on a Linux machine.
 - **Arm D is deterministic on CPU.** `torch.use_deterministic_algorithms(True)` costs nothing measurable here, and repeated fits give identical scores, so seed spread for D reflects tuning and initialisation only.
