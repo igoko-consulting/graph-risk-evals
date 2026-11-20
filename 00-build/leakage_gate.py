@@ -41,15 +41,19 @@ def max_diff(a: np.ndarray, b: np.ndarray, where: np.ndarray) -> float:
     return float(np.max(np.abs(x[~both_nan] - y[~both_nan]), initial=0.0))
 
 
+SCOPING_TESTS = ("future_edge_max_change_earlier_steps", "label_shuffle_max_change")
+
+
 def gate_decision(per_feature: dict, tests_valid: bool, arm_d_passed: bool) -> dict:
-    """The pre-registration allows one remedy for a leak: dropping a two-stage score aggregate. Any other leak fails."""
-    failed = sorted(n for n, r in per_feature.items() if not r["passed"])
-    dropped = [n for n in failed if n in graph_store.SCORE_AGGREGATES]
-    leaking = [n for n in failed if n not in graph_store.SCORE_AGGREGATES]
+    """The PRD fails the build if the future-edge or label-shuffle test moves any feature. The pre-registration's one
+    remedy, dropping rather than adjusting, covers the two-stage aggregation leak, which the own-label flip tests."""
+    failing = sorted(n for n, r in per_feature.items() if any(r[t] > TOLERANCE for t in SCOPING_TESTS))
+    dropped = sorted(n for n, r in per_feature.items()
+                     if n not in failing and r.get("own_label_flip_max_change", 0.0) > TOLERANCE)
     return {
         "dropped_features": dropped,
-        "leaking_features_not_droppable": leaking,
-        "gate_passed": tests_valid and arm_d_passed and not leaking,
+        "features_failing_future_edge_or_label_shuffle": failing,
+        "gate_passed": tests_valid and arm_d_passed and not failing,
     }
 
 
@@ -155,9 +159,9 @@ def main() -> None:
     decision = gate_decision(results, tests_valid, arm_d_checks["passed"])
     write_result("leakage-tests", {
         "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its "
-                       "unperturbed value. A two-stage score aggregate that moves is dropped, not adjusted, as the "
-                       "pre-registration allows. Any other feature that moves, or any movement in Arm D's reference "
-                       "scores, fails the gate.",
+                       "unperturbed value. Any feature that moves under the future-edge or label-shuffle test, or any "
+                       "movement in Arm D's reference scores, fails the gate. A score aggregate that moves only under "
+                       "the own-label flip is dropped, not adjusted, as the pre-registration allows.",
         "tests": {
             "future_edge": {
                 "what": "Inject edges dated to the last time step, including two that cross back to step 10. "
@@ -190,9 +194,9 @@ def main() -> None:
         raise SystemExit("leakage tests had no visible effect, so they test nothing; halting")
     if not decision["gate_passed"]:
         reasons = []
-        if decision["leaking_features_not_droppable"]:
-            reasons.append("features moved that the pre-registration does not allow to be dropped: "
-                           + ", ".join(decision["leaking_features_not_droppable"]))
+        if decision["features_failing_future_edge_or_label_shuffle"]:
+            reasons.append("features moved under the future-edge or label-shuffle test: "
+                           + ", ".join(decision["features_failing_future_edge_or_label_shuffle"]))
         if not arm_d_checks["passed"]:
             reasons.append("Arm D's reference scores moved, or the future edge had no visible effect on them")
         raise SystemExit("leakage gate failed: " + "; ".join(reasons) + "; halting")

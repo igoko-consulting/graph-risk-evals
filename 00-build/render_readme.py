@@ -349,8 +349,9 @@ def leakage_sentence(gate: dict) -> str:
     if not dropped:
         return f"No feature {moved} under {tests} (`results/leakage-tests.json`)."
     names = ", ".join(f"`{n}`" for n in dropped)
-    return (f"{names} moved under {tests} and {'was' if len(dropped) == 1 else 'were'} dropped from Arm B, as "
-            f"pre-registered. No other feature {moved} (`results/leakage-tests.json`).")
+    return (f"{names} moved when {'its' if len(dropped) == 1 else 'their'} own training labels were flipped and "
+            f"{'was' if len(dropped) == 1 else 'were'} dropped from Arm B, as pre-registered. No other feature {moved} "
+            "(`results/leakage-tests.json`).")
 
 
 def limitations_block(ev: dict, cost: dict, budget: dict | None, gate: dict) -> str:

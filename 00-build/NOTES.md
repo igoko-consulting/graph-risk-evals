@@ -35,7 +35,7 @@
 ## The two gates
 
 - **Gate 1, pre-registration.** `prereg_gate.py` hashes `01-the-bet/pre-registration.md` and compares it with the file in the commit tagged `prereg-v1`, which must be an annotated tag. Every write to `results/` goes through `results_io.write_result`, which runs the gate first. Tests in `tests/test_prereg_gate.py` prove it refuses an edited file, a whitespace change, a missing or lightweight tag and a deleted file, and that nothing is written when it refuses. A GitHub zip download has no tags, so the gate fails there by design.
-- **Gate 2, leakage.** `leakage_gate.py` writes `results/leakage-tests.json`. `write_result(..., uses_model_features=True)` refuses unless that file says the gate passed at the current commit on the current data. A two-stage score aggregate that moves under a perturbation is dropped from Arm B, the one remedy the pre-registration allows. Any other feature that moves, or any movement in Arm D's reference scores, fails the gate and halts the build. A perturbation with no visible effect anywhere invalidates the test and halts the build.
+- **Gate 2, leakage.** `leakage_gate.py` writes `results/leakage-tests.json`. `write_result(..., uses_model_features=True)` refuses unless that file says the gate passed at the current commit on the current data. Any feature that moves under the future-edge or label-shuffle test, or any movement in Arm D's reference scores, fails the gate and halts the build, as the PRD's Gate 2 row requires. A two-stage score aggregate that moves only under the own-label flip is dropped from Arm B, the one remedy the pre-registration allows for that leak. A perturbation with no visible effect anywhere invalidates the test and halts the build.
 
 ## Friction and findings
 

@@ -247,3 +247,7 @@ The audit's lower-severity findings. Wording, generated text and checks only; no
 **Checks that survive `python -O`.** Bare `assert` statements in `00-build/` are now `require()` calls, which Python does not strip, and the two module-level checks in `loaders/elliptic.py` now raise the loader's `ContractError`.
 
 **PRD v2.5 was written in place.** It went into `prds/prd-v2.md` (f55b090) rather than a new file. Versions v2 to v2.4 were drafted before the repository existed and first committed together; v2.5 is the first change to the file after it was committed, and git keeps v2.4 at `0511c14`. Moving v2.5 to its own file would change which file `CLAUDE.md` names as the working specification, so it is left for the author to decide.
+
+## 2026-11-20, Gate 2 tightened to the PRD's rule
+
+The audit fix above let a score aggregate that moved under any of the three leakage tests be dropped. The PRD's Gate 2 row says a failure of either the future-edge or the label-shuffle test fails the build, and red line 2 says no result is written while either fails. The pre-registration's remedy, dropping rather than adjusting, covers the two-stage aggregation leak, which is what the own-label flip tests. At the author's request, `leakage_gate.py` now fails the gate if any feature moves under the future-edge or label-shuffle test, and drops a score aggregate only if it moves under the own-label flip alone. The published gate moved no feature under any test, so it passes this rule as well; no result was regenerated and no outcome changes.
