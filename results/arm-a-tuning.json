@@ -2,9 +2,9 @@
   "result": "arm-a-tuning",
   "provenance": {
     "generated_by": "run_arms.py",
-    "generated_at": "2026-11-20T01:05:39+00:00",
+    "generated_at": "2026-11-20T15:55:39+00:00",
     "git": {
-      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -13,7 +13,7 @@
       "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
     },
     "leakage_gate": {
-      "passed_at": "2026-11-20T00:24:22+00:00",
+      "passed_at": "2026-11-20T15:02:17+00:00",
       "dropped_features": []
     },
     "dataset": {
@@ -133,7 +133,7 @@
       4
     ],
     "trials_total": 200,
-    "fit_seconds_total": 875.3,
+    "fit_seconds_total": 1120.8,
     "cpu_count": 12,
     "omp_num_threads": "6",
     "per_seed": [
@@ -149,8 +149,8 @@
           "class_weight": "balanced"
         },
         "best_validation_average_precision": 0.9887695509277091,
-        "tuning_fit_seconds": 190.13,
-        "final_fit_seconds": 5.56,
+        "tuning_fit_seconds": 225.95,
+        "final_fit_seconds": 6.43,
         "trials": [
           {
             "config": {
@@ -163,7 +163,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9873117456071943,
-            "fit_seconds": 1.7945786248892546
+            "fit_seconds": 2.2672827090136707
           },
           {
             "config": {
@@ -176,7 +176,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9864595134215143,
-            "fit_seconds": 5.966355415992439
+            "fit_seconds": 6.712660292163491
           },
           {
             "config": {
@@ -189,7 +189,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9884664867792874,
-            "fit_seconds": 5.461988708004355
+            "fit_seconds": 5.947937875054777
           },
           {
             "config": {
@@ -202,7 +202,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9826269305630049,
-            "fit_seconds": 4.989170582965016
+            "fit_seconds": 5.678086291998625
           },
           {
             "config": {
@@ -215,7 +215,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.976508715883483,
-            "fit_seconds": 4.501994125079364
+            "fit_seconds": 4.851509958039969
           },
           {
             "config": {
@@ -228,7 +228,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9884719281120861,
-            "fit_seconds": 5.647376541979611
+            "fit_seconds": 6.665417332900688
           },
           {
             "config": {
@@ -241,7 +241,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9856118295567294,
-            "fit_seconds": 2.3713492089882493
+            "fit_seconds": 3.057918000034988
           },
           {
             "config": {
@@ -254,7 +254,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9856687596189617,
-            "fit_seconds": 5.56069091707468
+            "fit_seconds": 6.239930541953072
           },
           {
             "config": {
@@ -267,7 +267,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9887695509277091,
-            "fit_seconds": 5.160411500139162
+            "fit_seconds": 5.810469291871414
           },
           {
             "config": {
@@ -280,7 +280,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9871920711909357,
-            "fit_seconds": 5.1862405829597265
+            "fit_seconds": 5.741251792060211
           },
           {
             "config": {
@@ -293,7 +293,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9881393671497245,
-            "fit_seconds": 5.290067457826808
+            "fit_seconds": 6.106059292098507
           },
           {
             "config": {
@@ -306,7 +306,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9874951607544734,
-            "fit_seconds": 6.755567166954279
+            "fit_seconds": 7.940608042059466
           },
           {
             "config": {
@@ -319,7 +319,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9864039757846815,
-            "fit_seconds": 2.7429145420901477
+            "fit_seconds": 3.517427083104849
           },
           {
             "config": {
@@ -332,7 +332,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.986889482004347,
-            "fit_seconds": 6.551192166982219
+            "fit_seconds": 7.581930208019912
           },
           {
             "config": {
@@ -345,7 +345,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858128489097729,
-            "fit_seconds": 2.8950311250519007
+            "fit_seconds": 3.7626900000032037
           },
           {
             "config": {
@@ -358,7 +358,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9860636580809707,
-            "fit_seconds": 7.675467582885176
+            "fit_seconds": 9.56329670897685
           },
           {
             "config": {
@@ -371,7 +371,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9861158215973591,
-            "fit_seconds": 5.860138833057135
+            "fit_seconds": 6.955902958987281
           },
           {
             "config": {
@@ -384,7 +384,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9859734816664988,
-            "fit_seconds": 6.552034416934475
+            "fit_seconds": 7.6472760839387774
           },
           {
             "config": {
@@ -397,7 +397,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858065551691055,
-            "fit_seconds": 2.4322272499557585
+            "fit_seconds": 3.9684871670324355
           },
           {
             "config": {
@@ -410,7 +410,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9857069007945815,
-            "fit_seconds": 5.3410475419368595
+            "fit_seconds": 5.918437791988254
           },
           {
             "config": {
@@ -423,7 +423,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9859600820550068,
-            "fit_seconds": 5.22579766693525
+            "fit_seconds": 6.463831665925682
           },
           {
             "config": {
@@ -436,7 +436,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9876448558739571,
-            "fit_seconds": 6.68586508394219
+            "fit_seconds": 7.849605082999915
           },
           {
             "config": {
@@ -449,7 +449,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9875418586898534,
-            "fit_seconds": 5.2215673751197755
+            "fit_seconds": 5.983224291121587
           },
           {
             "config": {
@@ -462,7 +462,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.985429728979387,
-            "fit_seconds": 3.654758708085865
+            "fit_seconds": 5.70059029199183
           },
           {
             "config": {
@@ -475,7 +475,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9867343441766794,
-            "fit_seconds": 5.050619249930605
+            "fit_seconds": 6.22751795896329
           },
           {
             "config": {
@@ -488,7 +488,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9848008151288532,
-            "fit_seconds": 1.233959874836728
+            "fit_seconds": 2.229421458207071
           },
           {
             "config": {
@@ -501,7 +501,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9869156915215536,
-            "fit_seconds": 7.150084124878049
+            "fit_seconds": 8.769659125013277
           },
           {
             "config": {
@@ -514,7 +514,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9862642048684548,
-            "fit_seconds": 5.655607209075242
+            "fit_seconds": 6.538545707939193
           },
           {
             "config": {
@@ -527,7 +527,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9884645789987835,
-            "fit_seconds": 5.41361974994652
+            "fit_seconds": 6.35204325011
           },
           {
             "config": {
@@ -540,7 +540,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9875799903481876,
-            "fit_seconds": 6.136117124930024
+            "fit_seconds": 6.672323625069112
           },
           {
             "config": {
@@ -553,7 +553,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9806292307166697,
-            "fit_seconds": 0.6255510000046343
+            "fit_seconds": 0.7503690419252962
           },
           {
             "config": {
@@ -566,7 +566,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9832205097089709,
-            "fit_seconds": 2.2952359998598695
+            "fit_seconds": 2.8922888750676066
           },
           {
             "config": {
@@ -579,7 +579,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9793084175964051,
-            "fit_seconds": 1.5706879999488592
+            "fit_seconds": 2.008906917180866
           },
           {
             "config": {
@@ -592,7 +592,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863292172832571,
-            "fit_seconds": 7.056730041978881
+            "fit_seconds": 7.912350540980697
           },
           {
             "config": {
@@ -605,7 +605,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9869533070346728,
-            "fit_seconds": 1.969116540858522
+            "fit_seconds": 2.5555065411608666
           },
           {
             "config": {
@@ -618,7 +618,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9849814656412024,
-            "fit_seconds": 5.397906083147973
+            "fit_seconds": 6.202212542062625
           },
           {
             "config": {
@@ -631,7 +631,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9861394900257974,
-            "fit_seconds": 2.9435124171432108
+            "fit_seconds": 3.8687679590657353
           },
           {
             "config": {
@@ -644,7 +644,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.987135683345591,
-            "fit_seconds": 6.1136102909222245
+            "fit_seconds": 7.155556624988094
           },
           {
             "config": {
@@ -657,7 +657,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9883929208946802,
-            "fit_seconds": 6.872674041893333
+            "fit_seconds": 8.021176957990974
           },
           {
             "config": {
@@ -670,7 +670,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.986624227136778,
-            "fit_seconds": 5.118217583978549
+            "fit_seconds": 5.858240500092506
           }
         ]
       },
@@ -686,8 +686,8 @@
           "class_weight": "balanced"
         },
         "best_validation_average_precision": 0.9888707184061978,
-        "tuning_fit_seconds": 153.56,
-        "final_fit_seconds": 6.62,
+        "tuning_fit_seconds": 203.83,
+        "final_fit_seconds": 8.05,
         "trials": [
           {
             "config": {
@@ -700,7 +700,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858422907769238,
-            "fit_seconds": 3.924498749896884
+            "fit_seconds": 6.187107499921694
           },
           {
             "config": {
@@ -713,7 +713,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9870680342333844,
-            "fit_seconds": 1.2882587080821395
+            "fit_seconds": 1.7375177079811692
           },
           {
             "config": {
@@ -726,7 +726,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9865577441812766,
-            "fit_seconds": 2.8176582080777735
+            "fit_seconds": 3.7505709170363843
           },
           {
             "config": {
@@ -739,7 +739,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9875137109467187,
-            "fit_seconds": 2.3585697079543024
+            "fit_seconds": 3.11844320804812
           },
           {
             "config": {
@@ -752,7 +752,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9809207253896769,
-            "fit_seconds": 0.47604629187844694
+            "fit_seconds": 0.6595234589185566
           },
           {
             "config": {
@@ -765,7 +765,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.988560722553529,
-            "fit_seconds": 1.2575457079801708
+            "fit_seconds": 1.6627240411471575
           },
           {
             "config": {
@@ -778,7 +778,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9881478167962073,
-            "fit_seconds": 5.1212519579567015
+            "fit_seconds": 5.7389405409339815
           },
           {
             "config": {
@@ -791,7 +791,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9880935450114653,
-            "fit_seconds": 5.174971542088315
+            "fit_seconds": 6.426411583088338
           },
           {
             "config": {
@@ -804,7 +804,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9866378620055515,
-            "fit_seconds": 7.3026325409300625
+            "fit_seconds": 10.442413917044178
           },
           {
             "config": {
@@ -817,7 +817,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9885919814404999,
-            "fit_seconds": 6.53952854196541
+            "fit_seconds": 9.606671332847327
           },
           {
             "config": {
@@ -830,7 +830,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858315107655387,
-            "fit_seconds": 2.5486601248849183
+            "fit_seconds": 3.9750375838484615
           },
           {
             "config": {
@@ -843,7 +843,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9838486562400464,
-            "fit_seconds": 4.924854208948091
+            "fit_seconds": 7.132090583909303
           },
           {
             "config": {
@@ -856,7 +856,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9866592739423748,
-            "fit_seconds": 5.863915250170976
+            "fit_seconds": 8.805503166047856
           },
           {
             "config": {
@@ -869,7 +869,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9873416392227063,
-            "fit_seconds": 5.551770750200376
+            "fit_seconds": 6.931188625050709
           },
           {
             "config": {
@@ -882,7 +882,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9792985400235968,
-            "fit_seconds": 4.725128166144714
+            "fit_seconds": 5.561476124916226
           },
           {
             "config": {
@@ -895,7 +895,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9838265185417238,
-            "fit_seconds": 5.750337624922395
+            "fit_seconds": 6.6718757909256965
           },
           {
             "config": {
@@ -908,7 +908,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9875708258970649,
-            "fit_seconds": 5.153674666071311
+            "fit_seconds": 6.595816457876936
           },
           {
             "config": {
@@ -921,7 +921,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.98486291810399,
-            "fit_seconds": 2.5654034588951617
+            "fit_seconds": 4.031758375000209
           },
           {
             "config": {
@@ -934,7 +934,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9875283828321835,
-            "fit_seconds": 2.024583833059296
+            "fit_seconds": 3.1867382910568267
           },
           {
             "config": {
@@ -947,7 +947,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9888707184061978,
-            "fit_seconds": 5.707189291948453
+            "fit_seconds": 8.106267874827608
           },
           {
             "config": {
@@ -960,7 +960,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9874759319531392,
-            "fit_seconds": 4.932887541828677
+            "fit_seconds": 5.4350532500538975
           },
           {
             "config": {
@@ -973,7 +973,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9844432061241734,
-            "fit_seconds": 2.7011148747988045
+            "fit_seconds": 3.1551920000929385
           },
           {
             "config": {
@@ -986,7 +986,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9814064782914764,
-            "fit_seconds": 0.8722367500886321
+            "fit_seconds": 1.0129942500498146
           },
           {
             "config": {
@@ -999,7 +999,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9848215378140313,
-            "fit_seconds": 0.7305482500232756
+            "fit_seconds": 1.1641852499451488
           },
           {
             "config": {
@@ -1012,7 +1012,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9882514663064654,
-            "fit_seconds": 5.882350709056482
+            "fit_seconds": 10.893714000005275
           },
           {
             "config": {
@@ -1025,7 +1025,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9852746237572899,
-            "fit_seconds": 0.5974555830471218
+            "fit_seconds": 0.9146612498443574
           },
           {
             "config": {
@@ -1038,7 +1038,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9864828159405818,
-            "fit_seconds": 7.794729332905263
+            "fit_seconds": 10.083477209089324
           },
           {
             "config": {
@@ -1051,7 +1051,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9868248199226775,
-            "fit_seconds": 7.104552624979988
+            "fit_seconds": 8.2836759169586
           },
           {
             "config": {
@@ -1064,7 +1064,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9801275902094125,
-            "fit_seconds": 0.6443608340341598
+            "fit_seconds": 1.0889130828436464
           },
           {
             "config": {
@@ -1077,7 +1077,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9865224312904665,
-            "fit_seconds": 7.044175999937579
+            "fit_seconds": 8.158299332950264
           },
           {
             "config": {
@@ -1090,7 +1090,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.984497569471228,
-            "fit_seconds": 1.7869837079197168
+            "fit_seconds": 2.2872212920337915
           },
           {
             "config": {
@@ -1103,7 +1103,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9871683643831244,
-            "fit_seconds": 1.9679115840699524
+            "fit_seconds": 2.497276790905744
           },
           {
             "config": {
@@ -1116,7 +1116,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9861369030901949,
-            "fit_seconds": 9.54758262494579
+            "fit_seconds": 12.590939249843359
           },
           {
             "config": {
@@ -1129,7 +1129,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9853630990416593,
-            "fit_seconds": 4.952887749997899
+            "fit_seconds": 5.600199375068769
           },
           {
             "config": {
@@ -1142,7 +1142,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9867469485130782,
-            "fit_seconds": 6.765860583866015
+            "fit_seconds": 8.042303832946345
           },
           {
             "config": {
@@ -1155,7 +1155,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.982845835290291,
-            "fit_seconds": 0.29588195821270347
+            "fit_seconds": 0.35701045813038945
           },
           {
             "config": {
@@ -1168,7 +1168,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9855415939506329,
-            "fit_seconds": 2.947812084108591
+            "fit_seconds": 3.8864087080582976
           },
           {
             "config": {
@@ -1181,7 +1181,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9846230758469874,
-            "fit_seconds": 1.549203250091523
+            "fit_seconds": 2.283063374925405
           },
           {
             "config": {
@@ -1194,7 +1194,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9859311032312348,
-            "fit_seconds": 2.7903549999464303
+            "fit_seconds": 3.663581207860261
           },
           {
             "config": {
@@ -1207,7 +1207,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9874252376986286,
-            "fit_seconds": 1.5792177501134574
+            "fit_seconds": 2.0995206250809133
           }
         ]
       },
@@ -1223,8 +1223,8 @@
           "class_weight": null
         },
         "best_validation_average_precision": 0.988981482344397,
-        "tuning_fit_seconds": 175.4,
-        "final_fit_seconds": 4.16,
+        "tuning_fit_seconds": 220.51,
+        "final_fit_seconds": 5.39,
         "trials": [
           {
             "config": {
@@ -1237,7 +1237,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9833956862609707,
-            "fit_seconds": 4.803080417215824
+            "fit_seconds": 5.941133250016719
           },
           {
             "config": {
@@ -1250,7 +1250,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9867312271638303,
-            "fit_seconds": 2.6339373751543462
+            "fit_seconds": 4.783277749782428
           },
           {
             "config": {
@@ -1263,7 +1263,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9849143494848929,
-            "fit_seconds": 0.8497945840936154
+            "fit_seconds": 1.3210560840088874
           },
           {
             "config": {
@@ -1276,7 +1276,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.987242017493373,
-            "fit_seconds": 7.311632415978238
+            "fit_seconds": 10.187853625044227
           },
           {
             "config": {
@@ -1289,7 +1289,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9879041393020846,
-            "fit_seconds": 6.06446741707623
+            "fit_seconds": 8.11316041694954
           },
           {
             "config": {
@@ -1302,7 +1302,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9867144667274705,
-            "fit_seconds": 5.2021476670634
+            "fit_seconds": 6.266273749992251
           },
           {
             "config": {
@@ -1315,7 +1315,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9868236658061389,
-            "fit_seconds": 5.594404708826914
+            "fit_seconds": 7.14241599990055
           },
           {
             "config": {
@@ -1328,7 +1328,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9869301882037773,
-            "fit_seconds": 6.132288207998499
+            "fit_seconds": 8.091535749845207
           },
           {
             "config": {
@@ -1341,7 +1341,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9862952519880765,
-            "fit_seconds": 6.237619249848649
+            "fit_seconds": 8.366522499825805
           },
           {
             "config": {
@@ -1354,7 +1354,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.988981482344397,
-            "fit_seconds": 3.0763579590711743
+            "fit_seconds": 5.202293749898672
           },
           {
             "config": {
@@ -1367,7 +1367,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9868049593962512,
-            "fit_seconds": 6.476117082871497
+            "fit_seconds": 8.060161540983245
           },
           {
             "config": {
@@ -1380,7 +1380,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863160665976373,
-            "fit_seconds": 6.490238291909918
+            "fit_seconds": 9.643589791841805
           },
           {
             "config": {
@@ -1393,7 +1393,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9870468239102744,
-            "fit_seconds": 5.571816334035248
+            "fit_seconds": 7.0552912089042366
           },
           {
             "config": {
@@ -1406,7 +1406,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9870054849940753,
-            "fit_seconds": 1.0640290421433747
+            "fit_seconds": 1.3242229169700295
           },
           {
             "config": {
@@ -1419,7 +1419,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9880214521443632,
-            "fit_seconds": 5.803670209133998
+            "fit_seconds": 8.132862249854952
           },
           {
             "config": {
@@ -1432,7 +1432,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9855815768027186,
-            "fit_seconds": 2.101055125007406
+            "fit_seconds": 3.074832458049059
           },
           {
             "config": {
@@ -1445,7 +1445,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9865815613640612,
-            "fit_seconds": 6.457957917125896
+            "fit_seconds": 7.531429916853085
           },
           {
             "config": {
@@ -1458,7 +1458,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9857728601551983,
-            "fit_seconds": 5.310658999951556
+            "fit_seconds": 6.11050737509504
           },
           {
             "config": {
@@ -1471,7 +1471,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9863391054400034,
-            "fit_seconds": 1.135119833983481
+            "fit_seconds": 1.4887163748499006
           },
           {
             "config": {
@@ -1484,7 +1484,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9879193506681189,
-            "fit_seconds": 2.89645424997434
+            "fit_seconds": 3.7260570409707725
           },
           {
             "config": {
@@ -1497,7 +1497,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9874282675975712,
-            "fit_seconds": 6.656829125015065
+            "fit_seconds": 7.817416166886687
           },
           {
             "config": {
@@ -1510,7 +1510,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9853734653409177,
-            "fit_seconds": 0.827836083015427
+            "fit_seconds": 1.000640416983515
           },
           {
             "config": {
@@ -1523,7 +1523,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9854129515433223,
-            "fit_seconds": 2.28195916605182
+            "fit_seconds": 3.001058999914676
           },
           {
             "config": {
@@ -1536,7 +1536,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9856450809946099,
-            "fit_seconds": 1.3265560830477625
+            "fit_seconds": 1.8099668340291828
           },
           {
             "config": {
@@ -1549,7 +1549,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9837504127371954,
-            "fit_seconds": 4.789335750043392
+            "fit_seconds": 5.544481125194579
           },
           {
             "config": {
@@ -1562,7 +1562,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863183508649614,
-            "fit_seconds": 7.141765249893069
+            "fit_seconds": 8.551929082954302
           },
           {
             "config": {
@@ -1575,7 +1575,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9856180114534042,
-            "fit_seconds": 5.343321084044874
+            "fit_seconds": 6.064143459079787
           },
           {
             "config": {
@@ -1588,7 +1588,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.984489989095948,
-            "fit_seconds": 0.6474621251691133
+            "fit_seconds": 0.8255452499724925
           },
           {
             "config": {
@@ -1601,7 +1601,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9853226004814374,
-            "fit_seconds": 5.44838483305648
+            "fit_seconds": 6.135417375015095
           },
           {
             "config": {
@@ -1614,7 +1614,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9834010398969033,
-            "fit_seconds": 5.119937208015472
+            "fit_seconds": 5.83199558313936
           },
           {
             "config": {
@@ -1627,7 +1627,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.986540683224499,
-            "fit_seconds": 5.999829249922186
+            "fit_seconds": 6.837878542020917
           },
           {
             "config": {
@@ -1640,7 +1640,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863884438761044,
-            "fit_seconds": 6.136891291942447
+            "fit_seconds": 7.036054750205949
           },
           {
             "config": {
@@ -1653,7 +1653,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9863599667695708,
-            "fit_seconds": 2.0528082081582397
+            "fit_seconds": 2.5781543340999633
           },
           {
             "config": {
@@ -1666,7 +1666,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9872934703747326,
-            "fit_seconds": 8.043948791921139
+            "fit_seconds": 9.696137582883239
           },
           {
             "config": {
@@ -1679,7 +1679,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9850833148531735,
-            "fit_seconds": 1.9778402498923242
+            "fit_seconds": 2.7559573331382126
           },
           {
             "config": {
@@ -1692,7 +1692,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9819468740467585,
-            "fit_seconds": 4.985259666107595
+            "fit_seconds": 5.567180125042796
           },
           {
             "config": {
@@ -1705,7 +1705,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9872267831064638,
-            "fit_seconds": 1.6994015420787036
+            "fit_seconds": 2.2431249171495438
           },
           {
             "config": {
@@ -1718,7 +1718,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9831324479378472,
-            "fit_seconds": 1.690770666114986
+            "fit_seconds": 2.1245958749204874
           },
           {
             "config": {
@@ -1731,7 +1731,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9866629863549137,
-            "fit_seconds": 6.506529791979119
+            "fit_seconds": 7.297823457978666
           },
           {
             "config": {
@@ -1744,7 +1744,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.985991605887154,
-            "fit_seconds": 5.5085485831368715
+            "fit_seconds": 6.230021332856268
           }
         ]
       },
@@ -1760,8 +1760,8 @@
           "class_weight": "balanced"
         },
         "best_validation_average_precision": 0.9886304601141835,
-        "tuning_fit_seconds": 142.15,
-        "final_fit_seconds": 5.19,
+        "tuning_fit_seconds": 197.64,
+        "final_fit_seconds": 6.31,
         "trials": [
           {
             "config": {
@@ -1774,7 +1774,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9852238336325371,
-            "fit_seconds": 4.946040249895304
+            "fit_seconds": 5.746153667103499
           },
           {
             "config": {
@@ -1787,7 +1787,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9849956676226688,
-            "fit_seconds": 2.338805084116757
+            "fit_seconds": 4.8559200840536505
           },
           {
             "config": {
@@ -1800,7 +1800,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9867541626131077,
-            "fit_seconds": 3.2276705419644713
+            "fit_seconds": 5.560394584201276
           },
           {
             "config": {
@@ -1813,7 +1813,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9873734251541486,
-            "fit_seconds": 6.713688625022769
+            "fit_seconds": 9.540594290941954
           },
           {
             "config": {
@@ -1826,7 +1826,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9695163645723258,
-            "fit_seconds": 0.514012583065778
+            "fit_seconds": 0.8738576250616461
           },
           {
             "config": {
@@ -1839,7 +1839,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9875173308171489,
-            "fit_seconds": 5.303662542020902
+            "fit_seconds": 6.660109000047669
           },
           {
             "config": {
@@ -1852,7 +1852,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863934406169675,
-            "fit_seconds": 4.956000916194171
+            "fit_seconds": 6.406641334062442
           },
           {
             "config": {
@@ -1865,7 +1865,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9878747919436628,
-            "fit_seconds": 5.184969374909997
+            "fit_seconds": 6.435705374926329
           },
           {
             "config": {
@@ -1878,7 +1878,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9878148709020387,
-            "fit_seconds": 8.044961499981582
+            "fit_seconds": 11.936658415943384
           },
           {
             "config": {
@@ -1891,7 +1891,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9859375167507298,
-            "fit_seconds": 1.6230358749162406
+            "fit_seconds": 2.299387332983315
           },
           {
             "config": {
@@ -1904,7 +1904,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.988294215507234,
-            "fit_seconds": 5.38361074985005
+            "fit_seconds": 6.8097355829086155
           },
           {
             "config": {
@@ -1917,7 +1917,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9863617111039654,
-            "fit_seconds": 1.8564609589520842
+            "fit_seconds": 2.612837999826297
           },
           {
             "config": {
@@ -1930,7 +1930,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9686886361465369,
-            "fit_seconds": 4.763739249901846
+            "fit_seconds": 6.1366284161340445
           },
           {
             "config": {
@@ -1943,7 +1943,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9817852106402664,
-            "fit_seconds": 0.8350591249763966
+            "fit_seconds": 1.5636668750084937
           },
           {
             "config": {
@@ -1956,7 +1956,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9869530713872264,
-            "fit_seconds": 6.05959325004369
+            "fit_seconds": 8.376637999899685
           },
           {
             "config": {
@@ -1969,7 +1969,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9840753979182268,
-            "fit_seconds": 0.396427416941151
+            "fit_seconds": 0.5316438749432564
           },
           {
             "config": {
@@ -1982,7 +1982,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9770500867143922,
-            "fit_seconds": 0.4815609168726951
+            "fit_seconds": 0.5992127498611808
           },
           {
             "config": {
@@ -1995,7 +1995,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9871428372386735,
-            "fit_seconds": 4.5277552080806345
+            "fit_seconds": 5.377300542080775
           },
           {
             "config": {
@@ -2008,7 +2008,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9870934927414092,
-            "fit_seconds": 6.4538294998928905
+            "fit_seconds": 8.476821124786511
           },
           {
             "config": {
@@ -2021,7 +2021,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9881235190756786,
-            "fit_seconds": 1.2101895418018103
+            "fit_seconds": 1.9578973748721182
           },
           {
             "config": {
@@ -2034,7 +2034,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9877128400608891,
-            "fit_seconds": 7.715946167008951
+            "fit_seconds": 10.513154000043869
           },
           {
             "config": {
@@ -2047,7 +2047,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9886304601141835,
-            "fit_seconds": 4.829612542176619
+            "fit_seconds": 5.889480750076473
           },
           {
             "config": {
@@ -2060,7 +2060,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9870729067930287,
-            "fit_seconds": 0.6922223749570549
+            "fit_seconds": 1.0872782079968601
           },
           {
             "config": {
@@ -2073,7 +2073,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9823310954608855,
-            "fit_seconds": 5.6422083338256925
+            "fit_seconds": 7.228666624985635
           },
           {
             "config": {
@@ -2086,7 +2086,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9883305692551537,
-            "fit_seconds": 4.717467665905133
+            "fit_seconds": 5.522077041910961
           },
           {
             "config": {
@@ -2099,7 +2099,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.985169159783186,
-            "fit_seconds": 1.7585987909696996
+            "fit_seconds": 3.049819082953036
           },
           {
             "config": {
@@ -2112,7 +2112,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9873545188004443,
-            "fit_seconds": 6.494745875010267
+            "fit_seconds": 8.85867120907642
           },
           {
             "config": {
@@ -2125,7 +2125,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9855277550680608,
-            "fit_seconds": 1.1810017910320312
+            "fit_seconds": 1.5528714579995722
           },
           {
             "config": {
@@ -2138,7 +2138,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9875234034654359,
-            "fit_seconds": 3.765764208044857
+            "fit_seconds": 7.120544500183314
           },
           {
             "config": {
@@ -2151,7 +2151,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9868225438541443,
-            "fit_seconds": 2.2661659999284893
+            "fit_seconds": 2.967441749991849
           },
           {
             "config": {
@@ -2164,7 +2164,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9875345587442554,
-            "fit_seconds": 2.272774084005505
+            "fit_seconds": 3.330470124958083
           },
           {
             "config": {
@@ -2177,7 +2177,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858884447565994,
-            "fit_seconds": 3.5506909999530762
+            "fit_seconds": 5.676117334049195
           },
           {
             "config": {
@@ -2190,7 +2190,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9849562397301441,
-            "fit_seconds": 3.524770291056484
+            "fit_seconds": 6.111536375014111
           },
           {
             "config": {
@@ -2203,7 +2203,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9864732364022315,
-            "fit_seconds": 0.8531390831340104
+            "fit_seconds": 0.9770223328378052
           },
           {
             "config": {
@@ -2216,7 +2216,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9803203182958404,
-            "fit_seconds": 0.6799475830048323
+            "fit_seconds": 0.8625037500169128
           },
           {
             "config": {
@@ -2229,7 +2229,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.988376737731158,
-            "fit_seconds": 6.86048962501809
+            "fit_seconds": 9.210998749826103
           },
           {
             "config": {
@@ -2242,7 +2242,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9853488411889351,
-            "fit_seconds": 1.590105083072558
+            "fit_seconds": 2.757116791792214
           },
           {
             "config": {
@@ -2255,7 +2255,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9844218386176256,
-            "fit_seconds": 1.0229420829564333
+            "fit_seconds": 1.2133338749408722
           },
           {
             "config": {
@@ -2268,7 +2268,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9883472507095507,
-            "fit_seconds": 5.824117999989539
+            "fit_seconds": 7.733870458090678
           },
           {
             "config": {
@@ -2281,7 +2281,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9861273658408141,
-            "fit_seconds": 2.090133541962132
+            "fit_seconds": 3.21628149994649
           }
         ]
       },
@@ -2297,8 +2297,8 @@
           "class_weight": "balanced"
         },
         "best_validation_average_precision": 0.989047779851151,
-        "tuning_fit_seconds": 185.62,
-        "final_fit_seconds": 6.89,
+        "tuning_fit_seconds": 238.38,
+        "final_fit_seconds": 8.3,
         "trials": [
           {
             "config": {
@@ -2311,7 +2311,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9858024853043218,
-            "fit_seconds": 6.161580374930054
+            "fit_seconds": 7.275625166017562
           },
           {
             "config": {
@@ -2324,7 +2324,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9852323406309121,
-            "fit_seconds": 2.0956236249767244
+            "fit_seconds": 3.422073292080313
           },
           {
             "config": {
@@ -2337,7 +2337,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9838483336305199,
-            "fit_seconds": 0.536918583093211
+            "fit_seconds": 0.6508481667842716
           },
           {
             "config": {
@@ -2350,7 +2350,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9882332588563414,
-            "fit_seconds": 6.99711550003849
+            "fit_seconds": 9.071471125120297
           },
           {
             "config": {
@@ -2363,7 +2363,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.986020071990621,
-            "fit_seconds": 6.21192262484692
+            "fit_seconds": 8.078754874877632
           },
           {
             "config": {
@@ -2376,7 +2376,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.987575917822403,
-            "fit_seconds": 7.369423666968942
+            "fit_seconds": 9.646650374867022
           },
           {
             "config": {
@@ -2389,7 +2389,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.988161397295315,
-            "fit_seconds": 6.180887166876346
+            "fit_seconds": 7.9404394591692835
           },
           {
             "config": {
@@ -2402,7 +2402,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9873303879563584,
-            "fit_seconds": 4.679014124907553
+            "fit_seconds": 5.159669416025281
           },
           {
             "config": {
@@ -2415,7 +2415,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9876679444084254,
-            "fit_seconds": 0.9834934170357883
+            "fit_seconds": 1.3644223748706281
           },
           {
             "config": {
@@ -2428,7 +2428,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9867362103930102,
-            "fit_seconds": 6.790230124955997
+            "fit_seconds": 8.404328707838431
           },
           {
             "config": {
@@ -2441,7 +2441,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9869022649938267,
-            "fit_seconds": 4.688230250030756
+            "fit_seconds": 5.380118583096191
           },
           {
             "config": {
@@ -2454,7 +2454,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9836472636949681,
-            "fit_seconds": 2.8728187908418477
+            "fit_seconds": 4.063952291151509
           },
           {
             "config": {
@@ -2467,7 +2467,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9855788397253276,
-            "fit_seconds": 4.7862424158956856
+            "fit_seconds": 5.68577712518163
           },
           {
             "config": {
@@ -2480,7 +2480,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9858914458090008,
-            "fit_seconds": 1.950487666996196
+            "fit_seconds": 2.699826499912888
           },
           {
             "config": {
@@ -2493,7 +2493,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9887985407808089,
-            "fit_seconds": 6.338586041936651
+            "fit_seconds": 7.925892208935693
           },
           {
             "config": {
@@ -2506,7 +2506,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9855287526258492,
-            "fit_seconds": 4.728234749985859
+            "fit_seconds": 5.315525749931112
           },
           {
             "config": {
@@ -2519,7 +2519,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.978904561619395,
-            "fit_seconds": 0.46190695790573955
+            "fit_seconds": 0.6789010828360915
           },
           {
             "config": {
@@ -2532,7 +2532,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9879219337912102,
-            "fit_seconds": 6.823428458999842
+            "fit_seconds": 8.940598333952948
           },
           {
             "config": {
@@ -2545,7 +2545,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9818837921555674,
-            "fit_seconds": 1.8849248338956386
+            "fit_seconds": 3.160081624984741
           },
           {
             "config": {
@@ -2558,7 +2558,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9870678684256059,
-            "fit_seconds": 6.040765665937215
+            "fit_seconds": 7.365416957996786
           },
           {
             "config": {
@@ -2571,7 +2571,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9863024089966184,
-            "fit_seconds": 5.8687171661295
+            "fit_seconds": 6.859607083024457
           },
           {
             "config": {
@@ -2584,7 +2584,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9879044523150542,
-            "fit_seconds": 6.524226790992543
+            "fit_seconds": 8.180386084131896
           },
           {
             "config": {
@@ -2597,7 +2597,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9866917922021223,
-            "fit_seconds": 5.0836866670288146
+            "fit_seconds": 5.766818708041683
           },
           {
             "config": {
@@ -2610,7 +2610,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9863805618573386,
-            "fit_seconds": 1.3522149580530822
+            "fit_seconds": 2.107735625002533
           },
           {
             "config": {
@@ -2623,7 +2623,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9869635554982661,
-            "fit_seconds": 5.6439987500198185
+            "fit_seconds": 7.752018749946728
           },
           {
             "config": {
@@ -2636,7 +2636,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9870422240024281,
-            "fit_seconds": 7.277651709038764
+            "fit_seconds": 12.986525291809812
           },
           {
             "config": {
@@ -2649,7 +2649,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.985589697105647,
-            "fit_seconds": 5.636282958090305
+            "fit_seconds": 7.925339166074991
           },
           {
             "config": {
@@ -2662,7 +2662,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.989047779851151,
-            "fit_seconds": 5.688164166873321
+            "fit_seconds": 6.820601125014946
           },
           {
             "config": {
@@ -2675,7 +2675,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9865742013873796,
-            "fit_seconds": 2.942986625013873
+            "fit_seconds": 4.350265790941194
           },
           {
             "config": {
@@ -2688,7 +2688,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9882497265089397,
-            "fit_seconds": 4.814965792000294
+            "fit_seconds": 5.95470912498422
           },
           {
             "config": {
@@ -2701,7 +2701,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9874799483492327,
-            "fit_seconds": 5.52549562510103
+            "fit_seconds": 6.386405625147745
           },
           {
             "config": {
@@ -2714,7 +2714,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9859320193889438,
-            "fit_seconds": 6.193749167025089
+            "fit_seconds": 8.259072749875486
           },
           {
             "config": {
@@ -2727,7 +2727,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.98762052561316,
-            "fit_seconds": 5.548531417036429
+            "fit_seconds": 6.7181751660536975
           },
           {
             "config": {
@@ -2740,7 +2740,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9855346156346501,
-            "fit_seconds": 1.7223658750299364
+            "fit_seconds": 2.3854215419851243
           },
           {
             "config": {
@@ -2753,7 +2753,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9873790934422911,
-            "fit_seconds": 5.165939457947388
+            "fit_seconds": 6.305015749996528
           },
           {
             "config": {
@@ -2766,7 +2766,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9860563376595615,
-            "fit_seconds": 5.784017332829535
+            "fit_seconds": 7.13283049990423
           },
           {
             "config": {
@@ -2779,7 +2779,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.987023035815927,
-            "fit_seconds": 5.019122957950458
+            "fit_seconds": 6.047371832886711
           },
           {
             "config": {
@@ -2792,7 +2792,7 @@
               "class_weight": null
             },
             "validation_average_precision": 0.9802968974599564,
-            "fit_seconds": 0.8012014171108603
+            "fit_seconds": 1.5580753330141306
           },
           {
             "config": {
@@ -2805,7 +2805,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.9883497109857808,
-            "fit_seconds": 5.6092057910282165
+            "fit_seconds": 6.731542041990906
           },
           {
             "config": {
@@ -2818,7 +2818,7 @@
               "class_weight": "balanced"
             },
             "validation_average_precision": 0.982916396658301,
-            "fit_seconds": 4.834446833003312
+            "fit_seconds": 5.9267005829606205
           }
         ]
       }

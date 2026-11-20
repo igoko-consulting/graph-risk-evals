@@ -2,9 +2,9 @@
   "result": "evaluation-arms-a-b",
   "provenance": {
     "generated_by": "evaluate_arms.py",
-    "generated_at": "2026-11-20T01:06:05+00:00",
+    "generated_at": "2026-11-20T15:56:06+00:00",
     "git": {
-      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -13,7 +13,7 @@
       "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
     },
     "leakage_gate": {
-      "passed_at": "2026-11-20T00:24:22+00:00",
+      "passed_at": "2026-11-20T15:02:17+00:00",
       "dropped_features": []
     },
     "dataset": {

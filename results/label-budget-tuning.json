@@ -2,9 +2,9 @@
   "result": "label-budget-tuning",
   "provenance": {
     "generated_by": "run_label_budgets.py",
-    "generated_at": "2026-11-20T07:41:58+00:00",
+    "generated_at": "2026-11-20T22:29:09+00:00",
     "git": {
-      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -13,7 +13,7 @@
       "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
     },
     "leakage_gate": {
-      "passed_at": "2026-11-20T00:24:22+00:00",
+      "passed_at": "2026-11-20T15:02:17+00:00",
       "dropped_features": []
     },
     "dataset": {
@@ -61,8 +61,8 @@
             },
             "best_validation_average_precision": 0.960955262312825,
             "trials": 40,
-            "tuning_fit_seconds": 66.26,
-            "final_fit_seconds": 2.48,
+            "tuning_fit_seconds": 68.13,
+            "final_fit_seconds": 2.38,
             "trial_validation_average_precision": [
               0.95889,
               0.92881,
@@ -120,8 +120,8 @@
             },
             "best_validation_average_precision": 0.9778088987413389,
             "trials": 40,
-            "tuning_fit_seconds": 47.5,
-            "final_fit_seconds": 1.68,
+            "tuning_fit_seconds": 85.51,
+            "final_fit_seconds": 4.56,
             "trial_validation_average_precision": [
               0.97781,
               0.97759,
@@ -179,8 +179,8 @@
             },
             "best_validation_average_precision": 0.967251675121794,
             "trials": 40,
-            "tuning_fit_seconds": 60.57,
-            "final_fit_seconds": 3.92,
+            "tuning_fit_seconds": 63.23,
+            "final_fit_seconds": 4.3,
             "trial_validation_average_precision": [
               0.82768,
               0.94837,
@@ -238,8 +238,8 @@
             },
             "best_validation_average_precision": 0.9817794314320023,
             "trials": 40,
-            "tuning_fit_seconds": 46.13,
-            "final_fit_seconds": 1.81,
+            "tuning_fit_seconds": 48.14,
+            "final_fit_seconds": 2.28,
             "trial_validation_average_precision": [
               0.96667,
               0.98034,
@@ -297,8 +297,8 @@
             },
             "best_validation_average_precision": 0.9445737078926487,
             "trials": 40,
-            "tuning_fit_seconds": 68.83,
-            "final_fit_seconds": 4.19,
+            "tuning_fit_seconds": 159.12,
+            "final_fit_seconds": 9.63,
             "trial_validation_average_precision": [
               0.92491,
               0.92406,
@@ -358,8 +358,8 @@
             },
             "best_validation_average_precision": 0.9685059399747372,
             "trials": 40,
-            "tuning_fit_seconds": 107.35,
-            "final_fit_seconds": 6.82,
+            "tuning_fit_seconds": 106.33,
+            "final_fit_seconds": 6.8,
             "trial_validation_average_precision": [
               0.95552,
               0.94967,
@@ -402,7 +402,7 @@
               0.89641,
               0.95757
             ],
-            "stage_one_fit_seconds": 2.88
+            "stage_one_fit_seconds": 2.68
           },
           {
             "seed": 1,
@@ -417,8 +417,8 @@
             },
             "best_validation_average_precision": 0.9807617129060453,
             "trials": 40,
-            "tuning_fit_seconds": 76.37,
-            "final_fit_seconds": 1.18,
+            "tuning_fit_seconds": 139.72,
+            "final_fit_seconds": 2.45,
             "trial_validation_average_precision": [
               0.97678,
               0.97817,
@@ -461,7 +461,7 @@
               0.97807,
               0.96748
             ],
-            "stage_one_fit_seconds": 3.12
+            "stage_one_fit_seconds": 13.22
           },
           {
             "seed": 2,
@@ -476,8 +476,8 @@
             },
             "best_validation_average_precision": 0.9764028277217327,
             "trials": 40,
-            "tuning_fit_seconds": 97.4,
-            "final_fit_seconds": 6.46,
+            "tuning_fit_seconds": 100.97,
+            "final_fit_seconds": 7.13,
             "trial_validation_average_precision": [
               0.85022,
               0.95941,
@@ -520,7 +520,7 @@
               0.96822,
               0.95455
             ],
-            "stage_one_fit_seconds": 15.28
+            "stage_one_fit_seconds": 16.16
           },
           {
             "seed": 3,
@@ -535,8 +535,8 @@
             },
             "best_validation_average_precision": 0.9860313115184047,
             "trials": 40,
-            "tuning_fit_seconds": 73.3,
-            "final_fit_seconds": 0.82,
+            "tuning_fit_seconds": 76.01,
+            "final_fit_seconds": 0.94,
             "trial_validation_average_precision": [
               0.9456,
               0.98397,
@@ -579,7 +579,7 @@
               0.98285,
               0.98323
             ],
-            "stage_one_fit_seconds": 2.97
+            "stage_one_fit_seconds": 3.47
           },
           {
             "seed": 4,
@@ -594,8 +594,8 @@
             },
             "best_validation_average_precision": 0.946761208631115,
             "trials": 40,
-            "tuning_fit_seconds": 111.44,
-            "final_fit_seconds": 5.83,
+            "tuning_fit_seconds": 142.39,
+            "final_fit_seconds": 6.2,
             "trial_validation_average_precision": [
               0.92619,
               0.93533,
@@ -638,7 +638,7 @@
               0.91642,
               0.92628
             ],
-            "stage_one_fit_seconds": 15.85
+            "stage_one_fit_seconds": 32.62
           }
         ],
         "D": [
@@ -654,8 +654,8 @@
             },
             "best_validation_average_precision": 0.8920923694944547,
             "trials": 40,
-            "tuning_fit_seconds": 741.21,
-            "final_fit_seconds": 23.07,
+            "tuning_fit_seconds": 693.73,
+            "final_fit_seconds": 26.31,
             "trial_validation_average_precision": [
               0.87632,
               0.84142,
@@ -711,8 +711,8 @@
             },
             "best_validation_average_precision": 0.9146625932329061,
             "trials": 40,
-            "tuning_fit_seconds": 648.32,
-            "final_fit_seconds": 15.47,
+            "tuning_fit_seconds": 616.47,
+            "final_fit_seconds": 16.24,
             "trial_validation_average_precision": [
               0.91466,
               0.87552,
@@ -768,8 +768,8 @@
             },
             "best_validation_average_precision": 0.9052308675804722,
             "trials": 40,
-            "tuning_fit_seconds": 655.44,
-            "final_fit_seconds": 18.84,
+            "tuning_fit_seconds": 666.77,
+            "final_fit_seconds": 18.99,
             "trial_validation_average_precision": [
               0.89475,
               0.89612,
@@ -825,8 +825,8 @@
             },
             "best_validation_average_precision": 0.8945743378334231,
             "trials": 40,
-            "tuning_fit_seconds": 621.47,
-            "final_fit_seconds": 22.62,
+            "tuning_fit_seconds": 638.96,
+            "final_fit_seconds": 23.71,
             "trial_validation_average_precision": [
               0.8529,
               0.85917,
@@ -882,8 +882,8 @@
             },
             "best_validation_average_precision": 0.8688110658619468,
             "trials": 40,
-            "tuning_fit_seconds": 734.81,
-            "final_fit_seconds": 38.74,
+            "tuning_fit_seconds": 733.1,
+            "final_fit_seconds": 38.77,
             "trial_validation_average_precision": [
               0.86881,
               0.82043,
@@ -944,8 +944,8 @@
             },
             "best_validation_average_precision": 0.979015617400238,
             "trials": 40,
-            "tuning_fit_seconds": 92.21,
-            "final_fit_seconds": 3.32,
+            "tuning_fit_seconds": 92.23,
+            "final_fit_seconds": 3.34,
             "trial_validation_average_precision": [
               0.96908,
               0.96663,
@@ -1003,8 +1003,8 @@
             },
             "best_validation_average_precision": 0.981700661541134,
             "trials": 40,
-            "tuning_fit_seconds": 67.65,
-            "final_fit_seconds": 5.29,
+            "tuning_fit_seconds": 73.34,
+            "final_fit_seconds": 6.18,
             "trial_validation_average_precision": [
               0.95647,
               0.9769,
@@ -1062,8 +1062,8 @@
             },
             "best_validation_average_precision": 0.9811236899167298,
             "trials": 40,
-            "tuning_fit_seconds": 85.09,
-            "final_fit_seconds": 4.41,
+            "tuning_fit_seconds": 85.11,
+            "final_fit_seconds": 4.44,
             "trial_validation_average_precision": [
               0.91791,
               0.97115,
@@ -1121,8 +1121,8 @@
             },
             "best_validation_average_precision": 0.9812643846937615,
             "trials": 40,
-            "tuning_fit_seconds": 64.66,
-            "final_fit_seconds": 1.93,
+            "tuning_fit_seconds": 64.93,
+            "final_fit_seconds": 2.03,
             "trial_validation_average_precision": [
               0.9771,
               0.98042,
@@ -1180,8 +1180,8 @@
             },
             "best_validation_average_precision": 0.9734760491303113,
             "trials": 40,
-            "tuning_fit_seconds": 91.84,
-            "final_fit_seconds": 4.78,
+            "tuning_fit_seconds": 92.43,
+            "final_fit_seconds": 4.74,
             "trial_validation_average_precision": [
               0.95239,
               0.96327,
@@ -1241,8 +1241,8 @@
             },
             "best_validation_average_precision": 0.9833700584290157,
             "trials": 40,
-            "tuning_fit_seconds": 153.55,
-            "final_fit_seconds": 4.49,
+            "tuning_fit_seconds": 153.99,
+            "final_fit_seconds": 4.6,
             "trial_validation_average_precision": [
               0.982,
               0.97728,
@@ -1285,7 +1285,7 @@
               0.95676,
               0.9759
             ],
-            "stage_one_fit_seconds": 17.15
+            "stage_one_fit_seconds": 17.46
           },
           {
             "seed": 1,
@@ -1300,8 +1300,8 @@
             },
             "best_validation_average_precision": 0.9880138824740712,
             "trials": 40,
-            "tuning_fit_seconds": 110.76,
-            "final_fit_seconds": 1.28,
+            "tuning_fit_seconds": 121.42,
+            "final_fit_seconds": 1.47,
             "trial_validation_average_precision": [
               0.98558,
               0.98419,
@@ -1344,7 +1344,7 @@
               0.98503,
               0.98478
             ],
-            "stage_one_fit_seconds": 22.27
+            "stage_one_fit_seconds": 25.89
           },
           {
             "seed": 2,
@@ -1359,8 +1359,8 @@
             },
             "best_validation_average_precision": 0.9886829854029656,
             "trials": 40,
-            "tuning_fit_seconds": 140.69,
-            "final_fit_seconds": 8.0,
+            "tuning_fit_seconds": 141.09,
+            "final_fit_seconds": 8.09,
             "trial_validation_average_precision": [
               0.94945,
               0.98661,
@@ -1403,7 +1403,7 @@
               0.98544,
               0.98505
             ],
-            "stage_one_fit_seconds": 18.92
+            "stage_one_fit_seconds": 19.04
           },
           {
             "seed": 3,
@@ -1418,8 +1418,8 @@
             },
             "best_validation_average_precision": 0.9887941539231876,
             "trials": 40,
-            "tuning_fit_seconds": 106.3,
-            "final_fit_seconds": 6.25,
+            "tuning_fit_seconds": 106.36,
+            "final_fit_seconds": 6.27,
             "trial_validation_average_precision": [
               0.97951,
               0.98467,
@@ -1462,7 +1462,7 @@
               0.97898,
               0.98435
             ],
-            "stage_one_fit_seconds": 4.62
+            "stage_one_fit_seconds": 4.58
           },
           {
             "seed": 4,
@@ -1477,7 +1477,7 @@
             },
             "best_validation_average_precision": 0.9762131799151467,
             "trials": 40,
-            "tuning_fit_seconds": 155.58,
+            "tuning_fit_seconds": 155.61,
             "final_fit_seconds": 5.64,
             "trial_validation_average_precision": [
               0.96907,
@@ -1521,7 +1521,7 @@
               0.96378,
               0.92089
             ],
-            "stage_one_fit_seconds": 21.04
+            "stage_one_fit_seconds": 20.93
           }
         ],
         "D": [
@@ -1537,8 +1537,8 @@
             },
             "best_validation_average_precision": 0.9121326907001841,
             "trials": 40,
-            "tuning_fit_seconds": 743.79,
-            "final_fit_seconds": 12.29,
+            "tuning_fit_seconds": 744.67,
+            "final_fit_seconds": 12.39,
             "trial_validation_average_precision": [
               0.9026,
               0.85295,
@@ -1594,8 +1594,8 @@
             },
             "best_validation_average_precision": 0.9415399999353471,
             "trials": 40,
-            "tuning_fit_seconds": 646.82,
-            "final_fit_seconds": 15.35,
+            "tuning_fit_seconds": 653.36,
+            "final_fit_seconds": 15.39,
             "trial_validation_average_precision": [
               0.94154,
               0.90526,
@@ -1651,8 +1651,8 @@
             },
             "best_validation_average_precision": 0.9167820595236931,
             "trials": 40,
-            "tuning_fit_seconds": 648.31,
-            "final_fit_seconds": 21.79,
+            "tuning_fit_seconds": 655.04,
+            "final_fit_seconds": 21.82,
             "trial_validation_average_precision": [
               0.90808,
               0.90984,
@@ -1708,8 +1708,8 @@
             },
             "best_validation_average_precision": 0.914463777645727,
             "trials": 40,
-            "tuning_fit_seconds": 624.1,
-            "final_fit_seconds": 22.62,
+            "tuning_fit_seconds": 624.88,
+            "final_fit_seconds": 22.81,
             "trial_validation_average_precision": [
               0.87921,
               0.87848,
@@ -1765,8 +1765,8 @@
             },
             "best_validation_average_precision": 0.9025546479511619,
             "trials": 40,
-            "tuning_fit_seconds": 733.87,
-            "final_fit_seconds": 32.12,
+            "tuning_fit_seconds": 735.75,
+            "final_fit_seconds": 32.24,
             "trial_validation_average_precision": [
               0.87707,
               0.87137,
@@ -1827,8 +1827,8 @@
             },
             "best_validation_average_precision": 0.9851258201932217,
             "trials": 40,
-            "tuning_fit_seconds": 119.41,
-            "final_fit_seconds": 5.44,
+            "tuning_fit_seconds": 119.65,
+            "final_fit_seconds": 5.42,
             "trial_validation_average_precision": [
               0.97996,
               0.98336,
@@ -1886,8 +1886,8 @@
             },
             "best_validation_average_precision": 0.982736791777003,
             "trials": 40,
-            "tuning_fit_seconds": 88.44,
-            "final_fit_seconds": 4.17,
+            "tuning_fit_seconds": 88.55,
+            "final_fit_seconds": 4.19,
             "trial_validation_average_precision": [
               0.97719,
               0.98192,
@@ -1945,8 +1945,8 @@
             },
             "best_validation_average_precision": 0.9838525458458934,
             "trials": 40,
-            "tuning_fit_seconds": 108.61,
-            "final_fit_seconds": 5.05,
+            "tuning_fit_seconds": 108.85,
+            "final_fit_seconds": 4.96,
             "trial_validation_average_precision": [
               0.98194,
               0.97794,
@@ -2004,8 +2004,8 @@
             },
             "best_validation_average_precision": 0.9853701381506984,
             "trials": 40,
-            "tuning_fit_seconds": 85.29,
-            "final_fit_seconds": 4.05,
+            "tuning_fit_seconds": 85.28,
+            "final_fit_seconds": 4.07,
             "trial_validation_average_precision": [
               0.97841,
               0.98345,
@@ -2063,8 +2063,8 @@
             },
             "best_validation_average_precision": 0.9836002606291643,
             "trials": 40,
-            "tuning_fit_seconds": 121.04,
-            "final_fit_seconds": 5.79,
+            "tuning_fit_seconds": 121.05,
+            "final_fit_seconds": 5.8,
             "trial_validation_average_precision": [
               0.97262,
               0.97853,
@@ -2124,8 +2124,8 @@
             },
             "best_validation_average_precision": 0.989348813989907,
             "trials": 40,
-            "tuning_fit_seconds": 203.71,
-            "final_fit_seconds": 10.31,
+            "tuning_fit_seconds": 203.88,
+            "final_fit_seconds": 10.13,
             "trial_validation_average_precision": [
               0.98882,
               0.9871,
@@ -2168,7 +2168,7 @@
               0.98721,
               0.98615
             ],
-            "stage_one_fit_seconds": 26.61
+            "stage_one_fit_seconds": 26.01
           },
           {
             "seed": 1,
@@ -2183,8 +2183,8 @@
             },
             "best_validation_average_precision": 0.9894195548449124,
             "trials": 40,
-            "tuning_fit_seconds": 154.34,
-            "final_fit_seconds": 8.18,
+            "tuning_fit_seconds": 148.54,
+            "final_fit_seconds": 8.22,
             "trial_validation_average_precision": [
               0.98614,
               0.98772,
@@ -2227,7 +2227,7 @@
               0.98538,
               0.98568
             ],
-            "stage_one_fit_seconds": 21.74
+            "stage_one_fit_seconds": 21.82
           },
           {
             "seed": 2,
@@ -2242,8 +2242,8 @@
             },
             "best_validation_average_precision": 0.9926524690467186,
             "trials": 40,
-            "tuning_fit_seconds": 184.24,
-            "final_fit_seconds": 11.13,
+            "tuning_fit_seconds": 184.49,
+            "final_fit_seconds": 11.09,
             "trial_validation_average_precision": [
               0.98591,
               0.98937,
@@ -2286,7 +2286,7 @@
               0.99066,
               0.99224
             ],
-            "stage_one_fit_seconds": 23.3
+            "stage_one_fit_seconds": 23.39
           },
           {
             "seed": 3,
@@ -2301,8 +2301,8 @@
             },
             "best_validation_average_precision": 0.9919316210773461,
             "trials": 40,
-            "tuning_fit_seconds": 142.61,
-            "final_fit_seconds": 9.7,
+            "tuning_fit_seconds": 143.02,
+            "final_fit_seconds": 9.73,
             "trial_validation_average_precision": [
               0.98711,
               0.99027,
@@ -2345,7 +2345,7 @@
               0.98988,
               0.98897
             ],
-            "stage_one_fit_seconds": 22.07
+            "stage_one_fit_seconds": 22.01
           },
           {
             "seed": 4,
@@ -2360,8 +2360,8 @@
             },
             "best_validation_average_precision": 0.9893171861460083,
             "trials": 40,
-            "tuning_fit_seconds": 207.3,
-            "final_fit_seconds": 10.51,
+            "tuning_fit_seconds": 207.29,
+            "final_fit_seconds": 10.25,
             "trial_validation_average_precision": [
               0.98588,
               0.9868,
@@ -2404,7 +2404,7 @@
               0.98715,
               0.96979
             ],
-            "stage_one_fit_seconds": 26.88
+            "stage_one_fit_seconds": 26.75
           }
         ],
         "D": [
@@ -2420,8 +2420,8 @@
             },
             "best_validation_average_precision": 0.9345000581280212,
             "trials": 40,
-            "tuning_fit_seconds": 745.55,
-            "final_fit_seconds": 8.03,
+            "tuning_fit_seconds": 745.97,
+            "final_fit_seconds": 8.07,
             "trial_validation_average_precision": [
               0.92942,
               0.9048,
@@ -2477,8 +2477,8 @@
             },
             "best_validation_average_precision": 0.9403972538248008,
             "trials": 40,
-            "tuning_fit_seconds": 650.61,
-            "final_fit_seconds": 15.48,
+            "tuning_fit_seconds": 648.06,
+            "final_fit_seconds": 15.38,
             "trial_validation_average_precision": [
               0.9404,
               0.90686,
@@ -2534,8 +2534,8 @@
             },
             "best_validation_average_precision": 0.9317267888101405,
             "trials": 40,
-            "tuning_fit_seconds": 656.98,
-            "final_fit_seconds": 15.52,
+            "tuning_fit_seconds": 656.5,
+            "final_fit_seconds": 15.5,
             "trial_validation_average_precision": [
               0.91074,
               0.92842,
@@ -2591,8 +2591,8 @@
             },
             "best_validation_average_precision": 0.9347193687577628,
             "trials": 40,
-            "tuning_fit_seconds": 620.98,
-            "final_fit_seconds": 31.18,
+            "tuning_fit_seconds": 624.35,
+            "final_fit_seconds": 31.27,
             "trial_validation_average_precision": [
               0.87902,
               0.87338,
@@ -2648,8 +2648,8 @@
             },
             "best_validation_average_precision": 0.9368247983687308,
             "trials": 40,
-            "tuning_fit_seconds": 730.04,
-            "final_fit_seconds": 31.92,
+            "tuning_fit_seconds": 735.7,
+            "final_fit_seconds": 32.02,
             "trial_validation_average_precision": [
               0.93278,
               0.90126,
@@ -2710,8 +2710,8 @@
             },
             "best_validation_average_precision": 0.9855782132567841,
             "trials": 40,
-            "tuning_fit_seconds": 149.24,
-            "final_fit_seconds": 6.31,
+            "tuning_fit_seconds": 148.86,
+            "final_fit_seconds": 6.33,
             "trial_validation_average_precision": [
               0.98403,
               0.98278,
@@ -2769,8 +2769,8 @@
             },
             "best_validation_average_precision": 0.9855834011180052,
             "trials": 40,
-            "tuning_fit_seconds": 114.89,
-            "final_fit_seconds": 5.68,
+            "tuning_fit_seconds": 115.23,
+            "final_fit_seconds": 5.71,
             "trial_validation_average_precision": [
               0.98098,
               0.98447,
@@ -2828,8 +2828,8 @@
             },
             "best_validation_average_precision": 0.9894865165172564,
             "trials": 40,
-            "tuning_fit_seconds": 136.07,
-            "final_fit_seconds": 2.62,
+            "tuning_fit_seconds": 135.88,
+            "final_fit_seconds": 2.61,
             "trial_validation_average_precision": [
               0.98381,
               0.98675,
@@ -2887,8 +2887,8 @@
             },
             "best_validation_average_precision": 0.9877802602500633,
             "trials": 40,
-            "tuning_fit_seconds": 109.21,
-            "final_fit_seconds": 2.53,
+            "tuning_fit_seconds": 109.44,
+            "final_fit_seconds": 2.54,
             "trial_validation_average_precision": [
               0.98203,
               0.9853,
@@ -2946,8 +2946,8 @@
             },
             "best_validation_average_precision": 0.9867089146748336,
             "trials": 40,
-            "tuning_fit_seconds": 147.07,
-            "final_fit_seconds": 6.55,
+            "tuning_fit_seconds": 146.73,
+            "final_fit_seconds": 6.52,
             "trial_validation_average_precision": [
               0.98185,
               0.98333,
@@ -3007,8 +3007,8 @@
             },
             "best_validation_average_precision": 0.9932907815459058,
             "trials": 40,
-            "tuning_fit_seconds": 247.69,
-            "final_fit_seconds": 10.76,
+            "tuning_fit_seconds": 250.42,
+            "final_fit_seconds": 10.89,
             "trial_validation_average_precision": [
               0.99262,
               0.99123,
@@ -3051,7 +3051,7 @@
               0.99081,
               0.99036
             ],
-            "stage_one_fit_seconds": 30.04
+            "stage_one_fit_seconds": 30.45
           },
           {
             "seed": 1,
@@ -3066,7 +3066,7 @@
             },
             "best_validation_average_precision": 0.9926378517181553,
             "trials": 40,
-            "tuning_fit_seconds": 186.65,
+            "tuning_fit_seconds": 187.21,
             "final_fit_seconds": 10.95,
             "trial_validation_average_precision": [
               0.99017,
@@ -3110,7 +3110,7 @@
               0.99186,
               0.99042
             ],
-            "stage_one_fit_seconds": 27.99
+            "stage_one_fit_seconds": 28.2
           },
           {
             "seed": 2,
@@ -3125,7 +3125,7 @@
             },
             "best_validation_average_precision": 0.9948510963141988,
             "trials": 40,
-            "tuning_fit_seconds": 226.64,
+            "tuning_fit_seconds": 225.81,
             "final_fit_seconds": 11.08,
             "trial_validation_average_precision": [
               0.9861,
@@ -3169,7 +3169,7 @@
               0.99453,
               0.9939
             ],
-            "stage_one_fit_seconds": 8.63
+            "stage_one_fit_seconds": 8.91
           },
           {
             "seed": 3,
@@ -3184,8 +3184,8 @@
             },
             "best_validation_average_precision": 0.9919402259590556,
             "trials": 40,
-            "tuning_fit_seconds": 177.23,
-            "final_fit_seconds": 8.53,
+            "tuning_fit_seconds": 177.43,
+            "final_fit_seconds": 8.36,
             "trial_validation_average_precision": [
               0.98917,
               0.98925,
@@ -3228,7 +3228,7 @@
               0.98865,
               0.9886
             ],
-            "stage_one_fit_seconds": 8.81
+            "stage_one_fit_seconds": 8.82
           },
           {
             "seed": 4,
@@ -3243,8 +3243,8 @@
             },
             "best_validation_average_precision": 0.9919255148863962,
             "trials": 40,
-            "tuning_fit_seconds": 247.18,
-            "final_fit_seconds": 8.39,
+            "tuning_fit_seconds": 246.73,
+            "final_fit_seconds": 8.43,
             "trial_validation_average_precision": [
               0.99104,
               0.98949,
@@ -3287,7 +3287,7 @@
               0.99114,
               0.9729
             ],
-            "stage_one_fit_seconds": 30.7
+            "stage_one_fit_seconds": 30.78
           }
         ],
         "D": [
@@ -3303,8 +3303,8 @@
             },
             "best_validation_average_precision": 0.9456466775519635,
             "trials": 40,
-            "tuning_fit_seconds": 742.72,
-            "final_fit_seconds": 11.02,
+            "tuning_fit_seconds": 745.38,
+            "final_fit_seconds": 10.97,
             "trial_validation_average_precision": [
               0.93407,
               0.92559,
@@ -3360,8 +3360,8 @@
             },
             "best_validation_average_precision": 0.9493163624852378,
             "trials": 40,
-            "tuning_fit_seconds": 648.07,
-            "final_fit_seconds": 15.34,
+            "tuning_fit_seconds": 652.38,
+            "final_fit_seconds": 15.39,
             "trial_validation_average_precision": [
               0.94932,
               0.89173,
@@ -3417,8 +3417,8 @@
             },
             "best_validation_average_precision": 0.9433632295299113,
             "trials": 40,
-            "tuning_fit_seconds": 654.59,
-            "final_fit_seconds": 16.13,
+            "tuning_fit_seconds": 656.46,
+            "final_fit_seconds": 16.15,
             "trial_validation_average_precision": [
               0.91967,
               0.94336,
@@ -3474,8 +3474,8 @@
             },
             "best_validation_average_precision": 0.9475633850778433,
             "trials": 40,
-            "tuning_fit_seconds": 618.18,
-            "final_fit_seconds": 20.23,
+            "tuning_fit_seconds": 620.0,
+            "final_fit_seconds": 20.35,
             "trial_validation_average_precision": [
               0.89195,
               0.89525,
@@ -3531,8 +3531,8 @@
             },
             "best_validation_average_precision": 0.9480985456246608,
             "trials": 40,
-            "tuning_fit_seconds": 733.13,
-            "final_fit_seconds": 31.96,
+            "tuning_fit_seconds": 735.03,
+            "final_fit_seconds": 32.0,
             "trial_validation_average_precision": [
               0.93669,
               0.90483,

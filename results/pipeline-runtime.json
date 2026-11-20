@@ -2,9 +2,9 @@
   "result": "pipeline-runtime",
   "provenance": {
     "generated_by": "record_runtime.py",
-    "generated_at": "2026-11-20T07:42:18+00:00",
+    "generated_at": "2026-11-20T22:29:29+00:00",
     "git": {
-      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -24,7 +24,7 @@
     }
   },
   "data": {
-    "elapsed_seconds": 26662,
+    "elapsed_seconds": 27245,
     "covers": "Everything `make all` runs: environment install, tests, data download, every stage. Install and download depend on the network and on caches.",
     "specification_target_minutes": 30,
     "machine": {

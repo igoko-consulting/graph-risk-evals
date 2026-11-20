@@ -2,9 +2,9 @@
   "result": "leakage-tests",
   "provenance": {
     "generated_by": "leakage_gate.py",
-    "generated_at": "2026-11-20T00:24:22+00:00",
+    "generated_at": "2026-11-20T15:02:17+00:00",
     "git": {
-      "commit": "edc58a23b9e0b67a98b841b246846d3d1abae6b7",
+      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -24,7 +24,7 @@
     }
   },
   "data": {
-    "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its unperturbed value. A feature that moves is dropped, not adjusted.",
+    "description": "Gate 2. Every Arm B feature is recomputed under three perturbations and compared with its unperturbed value. Any feature that moves under the future-edge or label-shuffle test, or any movement in Arm D's reference scores, fails the gate. A score aggregate that moves only under the own-label flip is dropped, not adjusted, as the pre-registration allows.",
     "tests": {
       "future_edge": {
         "what": "Inject edges dated to the last time step, including two that cross back to step 10. No feature of any node in an earlier step may change.",
@@ -129,13 +129,14 @@
     },
     "tests_valid": true,
     "dropped_features": [],
+    "features_failing_future_edge_or_label_shuffle": [],
     "gate_passed": true,
     "pagerank": {
       "damping": 0.85,
       "iterations": 100,
       "pagerank_final_max_change": 1.8487203413096454e-11,
-      "structural_features_seconds": 139.6
+      "structural_features_seconds": 150.8
     },
-    "seconds": 321.5
+    "seconds": 345.8
   }
 }

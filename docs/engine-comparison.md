@@ -22,12 +22,12 @@ Both reviews of the specification recommended cutting this appendix, because at 
 <!-- generated:engine-comparison by 00-build/render_readme.py from results/; do not edit by hand -->
 | Workload | What it does | LadybugDB, median (first run) | DuckDB, median (first run) | LadybugDB time ÷ DuckDB time | Largest output difference |
 |---|---|---|---|---|---|
-| Degree | Aggregation: in- and out-degree, same-step neighbours only, one query per step for each | 4.13s (4.16s) | 0.41s (0.42s) | 10.0 | 0 |
-| Two-hop size | Traversal: distinct transactions within two hops, ignoring direction, one query per step | 10.85s (10.79s) | 0.41s (0.42s) | 26.8 | 0 |
-| Neighbour scores | Aggregation over a join: mean and maximum neighbour score, both directions, whole graph | 0.51s (0.51s) | 0.23s (0.23s) | 2.2 | 5e-16 |
-| PageRank | Iterative: PageRank within each step, 100 fixed iterations, whole graph | 125.87s (125.38s) | 2.63s (2.62s) | 47.9 | 6e-17 |
+| Degree | Aggregation: in- and out-degree, same-step neighbours only, one query per step for each | 4.97s (5.05s) | 0.45s (0.51s) | 11.0 | 0 |
+| Two-hop size | Traversal: distinct transactions within two hops, ignoring direction, one query per step | 11.44s (11.59s) | 0.45s (0.48s) | 25.6 | 0 |
+| Neighbour scores | Aggregation over a join: mean and maximum neighbour score, both directions, whole graph | 0.56s (0.54s) | 0.24s (0.24s) | 2.3 | 5e-16 |
+| PageRank | Iterative: PageRank within each step, 100 fixed iterations, whole graph | 129.25s (129.66s) | 3.18s (3.19s) | 40.7 | 6e-17 |
 
-**What it showed.** On every workload here the columnar store was faster, by 2.2 to 47.9 times, with the widest gaps on PageRank and two-hop size.
+**What it showed.** On every workload here the columnar store was faster, by 2.3 to 40.7 times, with the widest gaps on PageRank and two-hop size.
 
 203,769 transactions, 234,355 edges, 49 time steps. LadybugDB (graph store, Cypher) 0.18.3; DuckDB (columnar store, SQL) 2.0.0. 6 threads in both, 3 repeats after a first run, engine order alternated between repeats. Both file-based and on the same disk, loaded from the same Parquet export; default settings. Rows fetched as Python tuples in both engines; fetch time is included. Machine: Apple M3 Pro, 6 performance cores, 36 GB, macOS-27.0.1-arm64-arm-64bit-Mach-O, Python 3.13.18.
 
