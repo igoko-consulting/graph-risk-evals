@@ -46,14 +46,14 @@ Each rung is climbed only once the one below has been measured and plateaued.
 ## The decision matrix
 
 <!-- generated:decision-matrix by 00-build/render_readme.py from results/; do not edit by hand -->
-_Populated from `results/` when Phase 3 completes._
+| Finding | Product decision | Applies here | Evidence |
+|---|---|---|---|
+| Tabular performs comparably to graph features | Do not introduce graph complexity | No | B minus A, precision at k pre-shift: +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band |
+| Graph features improve detection economics | Invest in graph-derived features, not graph models | **Yes** | B beats A outside the noise band: yes. Modelled cost per true positive, pre-shift: A €33.17, B €32.38 |
+| The GNN adds material value beyond graph features | Investigate whether the operational burden is justified | No | D minus B: -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. H2 bar: +5.0 pts and excluding zero |
+| All arms perform similarly | Do not invest further on the basis of this dataset | No | Every pairwise interval on pre-shift precision at k includes zero: no |
 
-| Finding | Product decision | Evidence |
-|---|---|---|
-| Tabular performs comparably to graph features | Do not introduce graph complexity | _pending_ |
-| Graph features materially improve detection economics | Invest in graph-derived features, not graph models | _pending_ |
-| The GNN adds material value beyond graph features | Investigate whether the operational burden is justified | _pending_ |
-| All arms perform similarly | Do not invest further on the basis of this dataset | _pending_ |
+_Draft for the author to edit. Which row applies is decided by code from `results/`, using rules written before Arm D ran. The product decisions are the PRD's; they are about this dataset and do not transfer to payments without the account-level data this dataset lacks._
 <!-- end generated:decision-matrix -->
 
 ---
@@ -77,24 +77,35 @@ Two gates can halt the pipeline. **Gate 1** checks the pre-registration hash aga
 _Populated as phases complete. Nothing here is hand-entered._
 
 <!-- generated:results by 00-build/render_readme.py from results/; do not edit by hand -->
-| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive |
+| Arm | Precision at k, pre-shift | Precision at k, post-shift | PR-AUC, pre-shift | PR-AUC, post-shift | Cost per true positive, pre-shift |
 |---|---|---|---|---|---|
-| A, 93 local features | 75.4% (71.4% to 78.2%) | 4.9% (3.4% to 6.7%) | 90.3% (88.8% to 91.7%) | 3.4% (2.7% to 4.6%) | Phase 3 |
-| B, plus graph features | 77.2% (73.3% to 80.3%) | 10.9% (8.7% to 13.2%) | 92.0% (90.6% to 93.4%) | 5.1% (4.3% to 6.5%) | Phase 3 |
+| A, 93 local features | 75.4% (71.4% to 78.2%) | 4.9% (3.4% to 6.7%) | 90.3% (88.8% to 91.7%) | 3.4% (2.7% to 4.6%) | €33.17 modelled; €16.59 to €49.76 across the analyst-cost range |
+| B, plus graph features | 77.2% (73.3% to 80.3%) | 10.9% (8.7% to 13.2%) | 92.0% (90.6% to 93.4%) | 5.1% (4.3% to 6.5%) | €32.38 modelled; €16.19 to €48.57 across the analyst-cost range |
+| D, GraphSAGE on local features | 64.0% (60.3% to 67.2%) | 4.2% (2.5% to 5.7%) | 79.9% (77.3% to 82.2%) | 2.8% (2.3% to 3.5%) | €39.08 modelled; €19.54 to €58.62 across the analyst-cost range |
 | B minus A | +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band | +6.0 pts (+4.2 pts to +7.7 pts), B higher, outside the noise band | +1.7 pts (+1.2 pts to +2.2 pts), B higher, outside the noise band | +1.8 pts (+1.3 pts to +2.3 pts), B higher, outside the noise band | |
-| D, GraphSAGE | Phase 3 | | | | |
+| D minus B | -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band | -6.7 pts (-9.2 pts to -4.6 pts), B higher, outside the noise band | -12.1 pts (-14.1 pts to -10.1 pts), B higher, outside the noise band | -2.3 pts (-3.3 pts to -1.8 pts), B higher, outside the noise band | |
+| D minus A | -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band | -0.7 pts (-2.8 pts to +1.0 pts), within the noise band | -10.3 pts (-12.3 pts to -8.4 pts), A higher, outside the noise band | -0.5 pts (-1.5 pts to -0.2 pts), A higher, outside the noise band | |
 
-k = 102 alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled transactions in the period. Brackets are 95% paired bootstrap intervals, 1,000 resamples stratified by time step. A difference is called only when its interval excludes zero. Labelled transactions only; unlabelled is not licit. Source: `results/evaluation-arms-a-b.json`.
+k = 102 alerts per time step (`results/k.json`). PR-AUC is average precision pooled over labelled transactions in the period. Brackets on metrics are 95% paired bootstrap intervals, 1,000 resamples stratified by time step; a difference is called only when its interval excludes zero. Labelled transactions only; unlabelled is not licit. **Cost is modelled, not measured:** analyst cost of €25 per alert, with a range of €12.50 to €37.50, plus measured tuning time priced at €0.05 per vCPU-hour. The cost range is that assumption's range, not a confidence interval. Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.
 
-![Precision at k by test step](site/charts/precision-at-k-arms-a-b.svg)
+![Precision at k by test step, all arms](site/charts/precision-at-k-all-arms.svg)
 
-**Phase 2 finding (draft for the author to edit).** Adding graph features lifted precision at k before the regime shift: B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band. Arm D is built in Phase 3 to test whether learned message passing adds more than hand-built graph features. After the shift at step 43, precision at k was 4.9% for A and 10.9% for B; B minus A +6.0 pts (+4.2 pts to +7.7 pts), B higher, outside the noise band. There are fewer illicit labels than alerts after the shift, so no model could exceed 23.7% there (before the shift the ceiling is 81.4%). Mean per-step PR-AUC fell by 89.0% for A and 85.5% for B from the pre-shift to the post-shift period. H3 is assessed across all arms in Phase 3. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. The post-shift period has few illicit labels, which caps precision at k there.
+**Phase 3 finding (draft for the author to edit).** Before the regime shift, the arms ranked B, then A, then D on precision at k. B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band; D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band; D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band. Given A's local features plus the transaction graph, the GNN still ranked below A. That matches the direction of the published comparison cited in the pre-registration. Ranked over every transaction in a step, labelled or not, unlabelled transactions would fill 77.8% of D's top 102 before the shift, against 48.5% for A and 49.4% for B. Precision at k counts labelled transactions only, so it describes less of D's real queue than of A's or B's. After the shift at step 43, precision at k was 4.9% for A, 10.9% for B and 4.2% for D, against a ceiling of 23.7% set by the number of illicit labels. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. Arm D's search space was fixed before any result and was not widened afterwards.
 <!-- end generated:results -->
 
 ### Hypotheses
 
 <!-- generated:hypotheses by 00-build/render_readme.py from results/; do not edit by hand -->
-_Assessed when Phase 3 completes, against the rules in [`01-the-bet/pre-registration.md`](01-the-bet/pre-registration.md) and [`change_log.md`](change_log.md)._
+| Hypothesis | Outcome | Evidence |
+|---|---|---|
+| **H1.** Graph-derived features capture the majority of available lift | Supported, by construction | Share of lift, PR-AUC pre-shift: 1.00 (1.00 to 1.00). Threshold 0.5. The ratio is 1 whenever B beats D, as it did in every resample, so the available lift is B's own. D's PR-AUC was also below A's (79.9% against 90.3%), so the GNN added no lift for graph features to capture. |
+| **H2.** The GNN does not justify its cost | Stands: the GNN does not clear the bar | D minus B, precision at k pre-shift: -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. Bar: +5.0 pts and excluding zero. |
+| **H3.** Simpler arms degrade less after the regime shift | Not separable | Relative fall in mean per-step PR-AUC: A fell 89.0%; B fell 85.5%; D fell 92.6%. Differences in fall, positive where the more complex arm fell more: B minus A -3.5 pts (-7.3 pts to +2.8 pts), within the noise band; D minus B +7.1 pts (+3.6 pts to +16.8 pts), outside the noise band; D minus A +3.6 pts (-1.5 pts to +15.4 pts), within the noise band. Supported needs all three above zero. |
+| **H4.** The graph-feature advantage widens as labels get scarcer | Not separable | B minus A, precision at k pre-shift: at 5% of training labels, +1.1 pts (-0.1 pts to +1.6 pts), within the noise band; at 100%, +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band. Change from 100% to 5%, positive if the advantage widened: -0.7 pts (-2.9 pts to +0.2 pts), within the noise band. Reported alongside, D minus A changed by -3.6 pts (-6.0 pts to -1.3 pts), contradicted: D fell further behind A as labels shrank. |
+
+Outcomes follow the rules fixed in `change_log.md` before Arm D or any label budget ran. Source: `results/evaluation-phase-3.json`, `results/label-budget-curve.json`.
+
+![Label-budget curve](site/charts/label-budget-curve.svg)
 <!-- end generated:hypotheses -->
 
 ---
@@ -109,10 +120,10 @@ _Assessed when Phase 3 completes, against the rules in [`01-the-bet/pre-registra
 | 4 | Arm A, 93 local features, time step excluded | 2 | Done | `00-build/` |
 | 5 | Arm B, traversal queries | 2 | Done | [`graph/queries/`](graph/queries/) |
 | 6 | Leakage tests | 2 | Done | `00-build/leakage_gate.py`, `tests/` |
-| 7 | Arm D, GraphSAGE | 3 | — | `00-build/` |
-| 8 | Label-budget curve | 3 | — | `results/` |
-| 9 | Cost per true positive | 3 | — | `03-the-margin/` |
-| 10 | Decision matrix | 4 | — | this README |
+| 7 | Arm D, GraphSAGE | 3 | Done | `00-build/` |
+| 8 | Label-budget curve | 3 | Done | `results/` |
+| 9 | Cost per true positive | 3 | Done, modelled | `03-the-margin/` |
+| 10 | Decision matrix | 4 | Draft, generated | this README |
 | 11 | Evidence chains | 4 | — | `results/` |
 | 12 | Entity resolution note | 4 | — | `docs/entity-resolution.md` |
 | 13 | Governance and sovereignty note | 4 | — | `06-governance/` |
@@ -126,9 +137,18 @@ _Assessed when Phase 3 completes, against the rules in [`01-the-bet/pre-registra
 Separated deliberately into three categories.
 
 <!-- generated:limitations by 00-build/render_readme.py from results/; do not edit by hand -->
-**What this demonstrates.** _pending results._
+**What this demonstrates.** _Draft for the author to edit._
 
-**What this suggests.** _pending results._
+- On this dataset, before the regime shift, adding graph features to a tuned local-feature model changed precision at k by +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band.
+- A two-layer GraphSAGE on the same local features, against graph features: D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. Against the local-feature model alone: D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band.
+- After the regime shift at step 43, mean per-step PR-AUC fell by 89.0% for A, 85.5% for B, 92.6% for D.
+- No feature moved under the future-edge, label-shuffle or own-label tests (`results/leakage-tests.json`).
+
+**What this suggests.**
+
+- H1, whether hand-built graph features capture most of the available lift: supported, but only by construction, because B beat D in every resample. It says nothing about how much a stronger GNN might add.
+- Compute is less than 0.1% of modelled cost per true positive for every arm. Analyst time dominates, so the decision turns on alert quality, not on compute.
+- H4, whether the graph-feature advantage widens as labels get scarcer: not separable. Validation labels were kept in full at every budget, so small-budget results are somewhat optimistic. A's precision at k was 75.6% at 5% of training labels and 75.4% at 100%.
 <!-- end generated:limitations -->
 
 **What this cannot establish.**
@@ -172,7 +192,7 @@ Datasets sit behind a loader interface from the first commit, so this is additiv
 make all
 ```
 
-One command on a clean clone. Pinned versions, laptop CPU, under 30 minutes. Datasets are fetched by script and never committed. Needs [uv](https://docs.astral.sh/uv/) or Python 3.13; see `00-build/NOTES.md`.
+One command on a clean clone. Pinned versions, laptop CPU. The full protocol takes hours, not the 30 minutes the specification targeted, because every arm is tuned in full at every label budget. Datasets are fetched by script and never committed. Needs [uv](https://docs.astral.sh/uv/) or Python 3.13; see `00-build/NOTES.md`.
 
 ---
 

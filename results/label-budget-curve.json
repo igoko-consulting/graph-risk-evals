@@ -1,0 +1,515 @@
+{
+  "result": "label-budget-curve",
+  "provenance": {
+    "generated_by": "evaluate_label_budgets.py",
+    "generated_at": "2026-11-19T23:57:45+00:00",
+    "git": {
+      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
+      "uncommitted_changes": true
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": {
+      "passed_at": "2026-11-19T15:23:33+00:00",
+      "dropped_features": []
+    },
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "k": 102,
+    "budgets_percent": [
+      5,
+      10,
+      25,
+      50,
+      100
+    ],
+    "metric": "Precision at k pooled over the period, from seed-averaged scores, on labelled nodes",
+    "bootstrap": "Same resamples as results/evaluation-phase-3.json",
+    "curve": {
+      "005": {
+        "pre_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.7561274509803921,
+            "interval_95": {
+              "low": 0.7181372549019608,
+              "high": 0.7904718137254901,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.7671568627450981,
+            "interval_95": {
+              "low": 0.7266850490196078,
+              "high": 0.7941176470588235,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.6066176470588235,
+            "interval_95": {
+              "low": 0.5734987745098039,
+              "high": 0.6397058823529411,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.011029411764705954,
+            "interval_95": {
+              "low": -0.001225490196078427,
+              "high": 0.015931372549019662,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          },
+          "D minus A": {
+            "difference": -0.14950980392156865,
+            "interval_95": {
+              "low": -0.17769607843137247,
+              "high": -0.11764705882352944,
+              "resamples": 1000
+            },
+            "verdict": "A higher, outside the noise band"
+          }
+        },
+        "post_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.047619047619047616,
+            "interval_95": {
+              "low": 0.03221288515406162,
+              "high": 0.06442577030812324,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.047619047619047616,
+            "interval_95": {
+              "low": 0.03217787114845938,
+              "high": 0.06302521008403361,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.05742296918767507,
+            "interval_95": {
+              "low": 0.04341736694677871,
+              "high": 0.07703081232492998,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.0,
+            "interval_95": {
+              "low": -0.015406162464985995,
+              "high": 0.014005602240896357,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          },
+          "D minus A": {
+            "difference": 0.00980392156862745,
+            "interval_95": {
+              "low": -0.007002801120448182,
+              "high": 0.03081232492997199,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          }
+        }
+      },
+      "010": {
+        "pre_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.758578431372549,
+            "interval_95": {
+              "low": 0.7205882352941176,
+              "high": 0.7892463235294117,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.7745098039215687,
+            "interval_95": {
+              "low": 0.7340686274509803,
+              "high": 0.803921568627451,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.6004901960784313,
+            "interval_95": {
+              "low": 0.5673713235294118,
+              "high": 0.6323529411764706,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.015931372549019662,
+            "interval_95": {
+              "low": 0.004901960784313708,
+              "high": 0.023284313725490224,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.15808823529411764,
+            "interval_95": {
+              "low": -0.18504901960784315,
+              "high": -0.12622549019607843,
+              "resamples": 1000
+            },
+            "verdict": "A higher, outside the noise band"
+          }
+        },
+        "post_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.04341736694677871,
+            "interval_95": {
+              "low": 0.028011204481792718,
+              "high": 0.05742296918767507,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.06302521008403361,
+            "interval_95": {
+              "low": 0.04481792717086835,
+              "high": 0.08123249299719888,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.06722689075630252,
+            "interval_95": {
+              "low": 0.047619047619047616,
+              "high": 0.08406862745098037,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.0196078431372549,
+            "interval_95": {
+              "low": 0.005602240896358544,
+              "high": 0.036414565826330535,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": 0.023809523809523808,
+            "interval_95": {
+              "low": 0.0042016806722689065,
+              "high": 0.04341736694677872,
+              "resamples": 1000
+            },
+            "verdict": "D higher, outside the noise band"
+          }
+        }
+      },
+      "025": {
+        "pre_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.7598039215686274,
+            "interval_95": {
+              "low": 0.7205882352941176,
+              "high": 0.784344362745098,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.7732843137254902,
+            "interval_95": {
+              "low": 0.7328125,
+              "high": 0.8014705882352942,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.6237745098039216,
+            "interval_95": {
+              "low": 0.5906862745098039,
+              "high": 0.6556678921568627,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.013480392156862808,
+            "interval_95": {
+              "low": 0.004871323529411752,
+              "high": 0.023284313725490224,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.13602941176470584,
+            "interval_95": {
+              "low": -0.15444240196078432,
+              "high": -0.10536151960784312,
+              "resamples": 1000
+            },
+            "verdict": "A higher, outside the noise band"
+          }
+        },
+        "post_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.0546218487394958,
+            "interval_95": {
+              "low": 0.037815126050420166,
+              "high": 0.0742296918767507,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.09103641456582633,
+            "interval_95": {
+              "low": 0.07139355742296918,
+              "high": 0.11064425770308123,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.05742296918767507,
+            "interval_95": {
+              "low": 0.0392156862745098,
+              "high": 0.07282913165266107,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.03641456582633053,
+            "interval_95": {
+              "low": 0.01960784313725491,
+              "high": 0.05042016806722689,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": 0.0028011204481792687,
+            "interval_95": {
+              "low": -0.021008403361344533,
+              "high": 0.021008403361344533,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          }
+        }
+      },
+      "050": {
+        "pre_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.7610294117647058,
+            "interval_95": {
+              "low": 0.7193321078431373,
+              "high": 0.784344362745098,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.7732843137254902,
+            "interval_95": {
+              "low": 0.7328431372549019,
+              "high": 0.803921568627451,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.6433823529411765,
+            "interval_95": {
+              "low": 0.6090686274509803,
+              "high": 0.6727941176470589,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.012254901960784381,
+            "interval_95": {
+              "low": 0.004901960784313708,
+              "high": 0.028186274509803825,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.11764705882352933,
+            "interval_95": {
+              "low": -0.13725490196078438,
+              "high": -0.0894607843137255,
+              "resamples": 1000
+            },
+            "verdict": "A higher, outside the noise band"
+          }
+        },
+        "post_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.06162464985994398,
+            "interval_95": {
+              "low": 0.04201680672268908,
+              "high": 0.07986694677871145,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.0938375350140056,
+            "interval_95": {
+              "low": 0.07282913165266107,
+              "high": 0.11484593837535013,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.05042016806722689,
+            "interval_95": {
+              "low": 0.0350140056022409,
+              "high": 0.06582633053221289,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.03221288515406162,
+            "interval_95": {
+              "low": 0.018207282913165264,
+              "high": 0.04761904761904762,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.011204481792717089,
+            "interval_95": {
+              "low": -0.03081232492997199,
+              "high": 0.00840336134453782,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          }
+        }
+      },
+      "100": {
+        "pre_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.7536764705882353,
+            "interval_95": {
+              "low": 0.7144607843137255,
+              "high": 0.7818933823529411,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.7720588235294118,
+            "interval_95": {
+              "low": 0.7328431372549019,
+              "high": 0.8026960784313726,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.6397058823529411,
+            "interval_95": {
+              "low": 0.6029411764705882,
+              "high": 0.6715686274509803,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.018382352941176516,
+            "interval_95": {
+              "low": 0.006127450980392246,
+              "high": 0.031862745098039214,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.11397058823529416,
+            "interval_95": {
+              "low": -0.13480392156862753,
+              "high": -0.08578431372549022,
+              "resamples": 1000
+            },
+            "verdict": "A higher, outside the noise band"
+          }
+        },
+        "post_shift_test": {
+          "A": {
+            "precision_at_k_pooled": 0.049019607843137254,
+            "interval_95": {
+              "low": 0.03361344537815126,
+              "high": 0.06722689075630252,
+              "resamples": 1000
+            }
+          },
+          "B": {
+            "precision_at_k_pooled": 0.1092436974789916,
+            "interval_95": {
+              "low": 0.08683473389355742,
+              "high": 0.13165266106442577,
+              "resamples": 1000
+            }
+          },
+          "D": {
+            "precision_at_k_pooled": 0.04201680672268908,
+            "interval_95": {
+              "low": 0.025210084033613446,
+              "high": 0.05742296918767507,
+              "resamples": 1000
+            }
+          },
+          "B minus A": {
+            "difference": 0.06022408963585434,
+            "interval_95": {
+              "low": 0.04201680672268907,
+              "high": 0.07703081232492998,
+              "resamples": 1000
+            },
+            "verdict": "B higher, outside the noise band"
+          },
+          "D minus A": {
+            "difference": -0.007002801120448175,
+            "interval_95": {
+              "low": -0.028011204481792715,
+              "high": 0.00980392156862745,
+              "resamples": 1000
+            },
+            "verdict": "within the noise band"
+          }
+        }
+      }
+    },
+    "H4": {
+      "definition": "(B - A at 5%) - (B - A at 100%), pre-shift precision at k. Supported if the 95% interval lies wholly above zero.",
+      "B minus A": {
+        "widening": -0.007352941176470562,
+        "interval_95": {
+          "low": -0.02941176470588236,
+          "high": 0.002450980392156854,
+          "resamples": 1000
+        },
+        "outcome": "not separable"
+      },
+      "D minus A, reported alongside": {
+        "widening": -0.035539215686274495,
+        "interval_95": {
+          "low": -0.060049019607843146,
+          "high": -0.013480392156862697,
+          "resamples": 1000
+        },
+        "outcome": "contradicted"
+      },
+      "outcome": "not separable"
+    }
+  }
+}

@@ -2,9 +2,9 @@
   "result": "graph-store-check",
   "provenance": {
     "generated_by": "build_graph_store.py",
-    "generated_at": "2026-11-19T14:10:57+00:00",
+    "generated_at": "2026-11-19T15:17:57+00:00",
     "git": {
-      "commit": "f0084c188e7c2c6f6a05c5738fe80b2dffab3420",
+      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -33,8 +33,8 @@
     "edges_crossing_time_steps": 0,
     "nodes_where_in_degree_disagrees_with_columnar_store": 0,
     "timing_seconds": {
-      "load": 0.349,
-      "in_degree_all_steps": 2.042
+      "load": 0.367,
+      "in_degree_all_steps": 2.018
     },
     "timing_note": "Wall-clock on the machine that ran the build. Not a benchmark.",
     "machine": "Darwin arm64"

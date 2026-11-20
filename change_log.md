@@ -149,3 +149,27 @@ The Phase 3 stages were run once in miniature: 2 trials, 2 seeds, Arm D capped a
 ## 2026-11-19, Arm D search space kept as fixed
 
 After the Phase 3 headline was seen, Arm D's chosen learning rate or epoch count sat near the top of its range in three of five seeds (`results/arm-d-tuning.json`). The search space is kept as pre-registered in the Phase 3 protocol above. Widening it after test results are known would let the result choose the protocol. No exploratory rerun is planned. The README lists "whether a different GNN would close the gap" under what this cannot establish.
+
+## 2026-11-20, Phase 3 result
+
+The clean-clone build at commit `ef453b5` completed without error: the gates, every arm, the evaluation and the label-budget curve. Numbers are in `results/` and the README; none are restated here.
+
+- **H2 stands.** The pre-registered prediction held. Arm D ranked below both A and B on pre-shift precision at k, outside the noise band in both comparisons.
+- **H1 is supported only by construction.** B beat D in every resample, which makes the pre-registered ratio exactly 1. The README says so beside the outcome.
+- **H3 is not separable.** D fell more than B after the shift, outside the noise band; the other two pairs are within it.
+- **H4 is not separable.** The point estimate moved against the prediction, within the noise band. Reported alongside, D fell further behind A as labels shrank, outside the noise band.
+- **Phase 2 results reproduced.** Every Phase 2 result regenerated identically apart from timings. PageRank's leakage-test maxima differ only at floating-point noise, far below the test tolerance.
+
+**Provenance flag on two files.** `label-budget-curve.json` and `label-budget-tuning.json` carry `uncommitted_changes: true`. The cause is `README.md`, which the pipeline's own render step rewrote earlier in the same run, before the label budgets ran. `git status` on the clone showed no other change outside the excluded output paths, so no code differed from `ef453b5`. `README.md` is now excluded from the check, as the other pipeline outputs already were. The next clean-clone run regenerates both files with the corrected check.
+
+**Presentation changes made after the results were seen; outcomes untouched.**
+- H1 is labelled "by construction", with the reason.
+- H3 shows its three pair intervals.
+- The stale Phase 2 paragraph is replaced by a Phase 3 finding.
+- The cost column says its bracket is the analyst-cost range, not a confidence interval.
+- H4 shows the per-budget differences, the sign convention and the D minus A comparison this protocol said would be reported alongside.
+- The label-budget chart notes that overlapping bands do not settle a comparison.
+
+No result file was regenerated for any of these.
+
+**Runtime.** The full protocol took hours on the clean clone, not the 30-minute target, as already accepted above. The run's own log is not a result file, so the figure is not quoted. A `record_runtime.py` stage now writes the measured total to `results/pipeline-runtime.json` on every `make all`.

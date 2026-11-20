@@ -2,9 +2,9 @@
   "result": "day-one-checks",
   "provenance": {
     "generated_by": "day_one_checks.py",
-    "generated_at": "2026-11-19T14:10:54+00:00",
+    "generated_at": "2026-11-19T15:17:54+00:00",
     "git": {
-      "commit": "f0084c188e7c2c6f6a05c5738fe80b2dffab3420",
+      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
       "uncommitted_changes": false
     },
     "preregistration": {

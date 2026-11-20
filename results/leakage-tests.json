@@ -2,9 +2,9 @@
   "result": "leakage-tests",
   "provenance": {
     "generated_by": "leakage_gate.py",
-    "generated_at": "2026-11-19T14:16:16+00:00",
+    "generated_at": "2026-11-19T15:23:33+00:00",
     "git": {
-      "commit": "f0084c188e7c2c6f6a05c5738fe80b2dffab3420",
+      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -53,6 +53,20 @@
         "effect_visible_elsewhere": true
       }
     },
+    "arm_d": {
+      "reference_config": {
+        "hidden": 32,
+        "learning_rate": 0.01,
+        "dropout": 0.0,
+        "weight_decay": 0.0,
+        "epochs": 30,
+        "class_weight": null
+      },
+      "future_edge_max_change_earlier_steps": 0.0,
+      "future_edge_effect_visible_in_last_step": true,
+      "label_shuffle_max_change": 0.0,
+      "passed": true
+    },
     "stage_one_model": {
       "config": {
         "learning_rate": 0.1,
@@ -79,7 +93,7 @@
         "passed": true
       },
       "pagerank": {
-        "future_edge_max_change_earlier_steps": 5.551115123125783e-17,
+        "future_edge_max_change_earlier_steps": 0.0,
         "label_shuffle_max_change": 0.0,
         "passed": true
       },
@@ -119,8 +133,9 @@
     "pagerank": {
       "damping": 0.85,
       "iterations": 100,
-      "pagerank_final_max_change": 1.8487203304676236e-11
+      "pagerank_final_max_change": 1.8487203413096454e-11,
+      "structural_features_seconds": 142.3
     },
-    "seconds": 316.3
+    "seconds": 327.8
   }
 }

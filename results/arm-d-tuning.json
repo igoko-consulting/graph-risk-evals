@@ -1,0 +1,2529 @@
+{
+  "result": "arm-d-tuning",
+  "provenance": {
+    "generated_by": "run_arm_d.py",
+    "generated_at": "2026-11-19T17:16:28+00:00",
+    "git": {
+      "commit": "ef453b51ee040dadd3bd34167d8f7f3eecd8586e",
+      "uncommitted_changes": false
+    },
+    "preregistration": {
+      "tag": "prereg-v1",
+      "tag_commit": "e0661438fcd48838336f227297bd0157b508287d",
+      "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
+    },
+    "leakage_gate": {
+      "passed_at": "2026-11-19T15:23:33+00:00",
+      "dropped_features": []
+    },
+    "dataset": {
+      "name": "elliptic",
+      "source": "mirror",
+      "files_sha256": {
+        "elliptic_txs_features.csv": "fd7f83573443c9e302e371d3f110e3b6224160f5d1ed8a287757936127800ff0",
+        "elliptic_txs_edgelist.csv": "a35053ba68a98e4382cae2ba65b9d9e36b23b6439e02dff084971b1b72a5156e",
+        "elliptic_txs_classes.csv": "93e2e7b2405c735ba752bf6ba06b947561deddd1f5a8fc91e46f6a4c0e439493"
+      }
+    }
+  },
+  "data": {
+    "arm": "D",
+    "architecture": "two-layer GraphSAGE, mean aggregation, same-step edges in both directions, inductive",
+    "input_features": 93,
+    "reads_graph_structure": true,
+    "trials_per_seed": 40,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "trials_total": 200,
+    "fit_seconds_total": 3968.2,
+    "cpu_count": 12,
+    "omp_num_threads": "6",
+    "per_seed": [
+      {
+        "seed": 0,
+        "best_config": {
+          "hidden": 128,
+          "learning_rate": 0.026899508708431604,
+          "dropout": 0.007353152482684644,
+          "weight_decay": 0.00038987040636640326,
+          "epochs": 190,
+          "class_weight": null
+        },
+        "best_validation_average_precision": 0.949825565009208,
+        "tuning_fit_seconds": 722.25,
+        "final_fit_seconds": 34.23,
+        "trials": [
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0025032699681422667,
+              "dropout": 0.020486761968097345,
+              "weight_decay": 1.1209413928285799e-06,
+              "epochs": 146,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9388719930274969,
+            "fit_seconds": 29.29864174989052
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.022297217157477782,
+              "dropout": 0.30331788788358993,
+              "weight_decay": 0.0001543439757117908,
+              "epochs": 145,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.932508229483842,
+            "fit_seconds": 26.611900416901335
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.01603668599173831,
+              "dropout": 0.0013692500850740474,
+              "weight_decay": 0.00037343311708676953,
+              "epochs": 191,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9251473976992283,
+            "fit_seconds": 20.90426058298908
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.011961608074967942,
+              "dropout": 0.08782781030127951,
+              "weight_decay": 0.0003886303977238023,
+              "epochs": 53,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8915695042323816,
+            "fit_seconds": 4.099903208902106
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.004210757962128052,
+              "dropout": 0.014159835572731483,
+              "weight_decay": 2.3596621672706335e-06,
+              "epochs": 95,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9184615924431537,
+            "fit_seconds": 7.842051458079368
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.009036024158680017,
+              "dropout": 0.3076925557406269,
+              "weight_decay": 1.4159002641739007e-05,
+              "epochs": 119,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9266062717572378,
+            "fit_seconds": 22.72653383295983
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.010295054174033034,
+              "dropout": 0.32522963813390815,
+              "weight_decay": 0.00011623587566145882,
+              "epochs": 198,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9286671468066099,
+            "fit_seconds": 35.66007966687903
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0015832661219044447,
+              "dropout": 0.36074417009704085,
+              "weight_decay": 3.767584204208895e-05,
+              "epochs": 106,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8908682296896345,
+            "fit_seconds": 11.795166959054768
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.020600671929658324,
+              "dropout": 0.46702175797812484,
+              "weight_decay": 1.1840923904208545e-05,
+              "epochs": 123,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9099875179305578,
+            "fit_seconds": 13.811435959069058
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.002988409571995539,
+              "dropout": 0.2971500150998484,
+              "weight_decay": 1.0321282770792006e-05,
+              "epochs": 164,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9350355210424804,
+            "fit_seconds": 18.658801541896537
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.002165405869228828,
+              "dropout": 0.3115935723430212,
+              "weight_decay": 1.7866769341908822e-06,
+              "epochs": 184,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9187210118870691,
+            "fit_seconds": 13.85324175003916
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.014542518988713728,
+              "dropout": 0.11968472149647608,
+              "weight_decay": 0.00042604227239787846,
+              "epochs": 61,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9404043828100049,
+            "fit_seconds": 10.403887833002955
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0016671742532014058,
+              "dropout": 0.2251696833246435,
+              "weight_decay": 0.00024489099222950407,
+              "epochs": 100,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.901220780674988,
+            "fit_seconds": 17.472041124943644
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0011935531670430705,
+              "dropout": 0.2022759199107641,
+              "weight_decay": 3.940389322146105e-06,
+              "epochs": 192,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8933783839681784,
+            "fit_seconds": 13.18877520901151
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0027619156218277045,
+              "dropout": 0.3359974389781797,
+              "weight_decay": 3.967768560798436e-06,
+              "epochs": 137,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9060513382139674,
+            "fit_seconds": 14.180118374992162
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0034618798412531632,
+              "dropout": 0.052747639785114764,
+              "weight_decay": 7.714796141841601e-05,
+              "epochs": 165,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9239314726966046,
+            "fit_seconds": 27.752027832902968
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02570667504874672,
+              "dropout": 0.2499479068438235,
+              "weight_decay": 1.886626257594487e-05,
+              "epochs": 116,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9229064761026078,
+            "fit_seconds": 11.724234250141308
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02950381650732771,
+              "dropout": 0.47447183746888266,
+              "weight_decay": 2.3995810188590607e-05,
+              "epochs": 176,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9166313547156812,
+            "fit_seconds": 16.623190416954458
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.006051433180593499,
+              "dropout": 0.39289285035690374,
+              "weight_decay": 1.7537494509340684e-05,
+              "epochs": 125,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.941988884582173,
+            "fit_seconds": 18.471920625073835
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.01123166806923636,
+              "dropout": 0.4660298433066891,
+              "weight_decay": 2.212065079354181e-06,
+              "epochs": 69,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9126932749908516,
+            "fit_seconds": 19.391854249872267
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.026899508708431604,
+              "dropout": 0.007353152482684644,
+              "weight_decay": 0.00038987040636640326,
+              "epochs": 190,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.949825565009208,
+            "fit_seconds": 54.87149095791392
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.025936746749683732,
+              "dropout": 0.07438200611624896,
+              "weight_decay": 0.0008277257032024989,
+              "epochs": 105,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9264575404037068,
+            "fit_seconds": 30.467760249972343
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0051168226471458664,
+              "dropout": 0.11618645981965192,
+              "weight_decay": 0.00025447301546313556,
+              "epochs": 174,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9418935808376575,
+            "fit_seconds": 29.45219337497838
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002472331383195324,
+              "dropout": 0.26946720381109346,
+              "weight_decay": 2.1294060661170453e-05,
+              "epochs": 72,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.89958735835004,
+            "fit_seconds": 15.062191542005166
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.012057628811763336,
+              "dropout": 0.3071866234744983,
+              "weight_decay": 1.2164551330979682e-06,
+              "epochs": 56,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9171465029771214,
+            "fit_seconds": 11.355873417109251
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0010558974075083937,
+              "dropout": 0.37897550117821405,
+              "weight_decay": 3.4536328756814296e-05,
+              "epochs": 185,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9045555338652838,
+            "fit_seconds": 41.96393987489864
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.01748749630267363,
+              "dropout": 0.0333450043835507,
+              "weight_decay": 1.078772672630005e-05,
+              "epochs": 59,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9221424071402985,
+            "fit_seconds": 6.09984966693446
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.026729499873950575,
+              "dropout": 0.2811159211142285,
+              "weight_decay": 5.97852128134904e-06,
+              "epochs": 91,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9493667542485358,
+            "fit_seconds": 11.876769834198058
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0021559393212769212,
+              "dropout": 0.06227735291764175,
+              "weight_decay": 7.328114914494654e-06,
+              "epochs": 184,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.892478387551223,
+            "fit_seconds": 11.865061917109415
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.006583530589522526,
+              "dropout": 0.40485538795638887,
+              "weight_decay": 4.802063028681261e-05,
+              "epochs": 118,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9421191725728324,
+            "fit_seconds": 11.734319499926642
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.016160837938024263,
+              "dropout": 0.31325323120987675,
+              "weight_decay": 0.0007537597243841405,
+              "epochs": 112,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9169371668302876,
+            "fit_seconds": 10.39549508295022
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.006550496332047127,
+              "dropout": 0.29696210080658414,
+              "weight_decay": 0.00035064982365579653,
+              "epochs": 192,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.942889414376764,
+            "fit_seconds": 17.926483958028257
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.02208613503865344,
+              "dropout": 0.021533444284102088,
+              "weight_decay": 0.00029384536217762127,
+              "epochs": 111,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9314722301580006,
+            "fit_seconds": 18.256423708051443
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.016815938249846188,
+              "dropout": 0.004977280403645978,
+              "weight_decay": 1.2449114841648305e-05,
+              "epochs": 66,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9446637415254877,
+            "fit_seconds": 6.362820999929681
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0025380976332434924,
+              "dropout": 0.35132603532989315,
+              "weight_decay": 0.0006782726116930007,
+              "epochs": 148,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8776524050934191,
+            "fit_seconds": 9.969389334088191
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.018940105804390293,
+              "dropout": 0.029732075800169233,
+              "weight_decay": 1.3877509232468999e-05,
+              "epochs": 115,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9382578932923862,
+            "fit_seconds": 7.741316791856661
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.02769193159654791,
+              "dropout": 0.3878455940509142,
+              "weight_decay": 8.4444639918897e-06,
+              "epochs": 123,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9003382554047783,
+            "fit_seconds": 8.72854270786047
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.018833593782508602,
+              "dropout": 0.44065358636884494,
+              "weight_decay": 3.40501881977342e-05,
+              "epochs": 145,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9483974639405603,
+            "fit_seconds": 10.427981917047873
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0029287811867197123,
+              "dropout": 0.09135618946328122,
+              "weight_decay": 0.000436811802071636,
+              "epochs": 200,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9382394281921783,
+            "fit_seconds": 21.511672999942675
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.009695129998940902,
+              "dropout": 0.47920681588897596,
+              "weight_decay": 0.0005986096747501632,
+              "epochs": 195,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9250712337052774,
+            "fit_seconds": 31.71359929209575
+          }
+        ]
+      },
+      {
+        "seed": 1,
+        "best_config": {
+          "hidden": 64,
+          "learning_rate": 0.02534837525070234,
+          "dropout": 0.07207980635981687,
+          "weight_decay": 0.0007013718664701575,
+          "epochs": 127,
+          "class_weight": null
+        },
+        "best_validation_average_precision": 0.9536484748138022,
+        "tuning_fit_seconds": 543.35,
+        "final_fit_seconds": 12.74,
+        "trials": [
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02534837525070234,
+              "dropout": 0.07207980635981687,
+              "weight_decay": 0.0007013718664701575,
+              "epochs": 127,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9536484748138022,
+            "fit_seconds": 12.842209083028138
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.004219922697844698,
+              "dropout": 0.4138512969102209,
+              "weight_decay": 1.6888746193562853e-05,
+              "epochs": 147,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8874280129890129,
+            "fit_seconds": 9.800280750030652
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.012972695626945033,
+              "dropout": 0.2690716566096391,
+              "weight_decay": 9.754278461230974e-06,
+              "epochs": 54,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9272338464996447,
+            "fit_seconds": 3.4488460838329047
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002804500531604222,
+              "dropout": 0.22674894474032575,
+              "weight_decay": 2.5242077263871883e-06,
+              "epochs": 107,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9281396597145904,
+            "fit_seconds": 17.74321841704659
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0024404426741600244,
+              "dropout": 0.3751823363150263,
+              "weight_decay": 6.9378718542651805e-06,
+              "epochs": 80,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9081459802621835,
+            "fit_seconds": 13.133341999957338
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.028097505384952745,
+              "dropout": 0.4808285968318934,
+              "weight_decay": 0.00014940661361120274,
+              "epochs": 94,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9118085204928166,
+            "fit_seconds": 9.49647791706957
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0017270403992167176,
+              "dropout": 0.4849627066080663,
+              "weight_decay": 3.533505377964188e-05,
+              "epochs": 91,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8992791993756482,
+            "fit_seconds": 15.681554875103757
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.008336235403763752,
+              "dropout": 0.388341557171149,
+              "weight_decay": 6.90255543465842e-05,
+              "epochs": 166,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9049799776775599,
+            "fit_seconds": 10.459502041107044
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.00603657270636433,
+              "dropout": 0.22966794144270186,
+              "weight_decay": 1.5383272649712918e-06,
+              "epochs": 55,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9241236160265651,
+            "fit_seconds": 5.242329083848745
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.018173647000492555,
+              "dropout": 0.296470509052142,
+              "weight_decay": 6.029653326678227e-06,
+              "epochs": 102,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9287925518846211,
+            "fit_seconds": 9.569587250007316
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.005683879079489509,
+              "dropout": 0.37651510385108894,
+              "weight_decay": 2.778216634772805e-06,
+              "epochs": 126,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9064412366676251,
+            "fit_seconds": 11.874664541101083
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.010216393496147521,
+              "dropout": 0.3935484707774005,
+              "weight_decay": 3.757065591004838e-06,
+              "epochs": 133,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9260274619444864,
+            "fit_seconds": 22.69605508306995
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0013196631948771112,
+              "dropout": 0.4276134871435351,
+              "weight_decay": 0.00038357517206802886,
+              "epochs": 78,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8329838144398153,
+            "fit_seconds": 7.957796250004321
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.004978148834063891,
+              "dropout": 0.13702419430685914,
+              "weight_decay": 1.0502083955944217e-06,
+              "epochs": 176,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9327559062094088,
+            "fit_seconds": 28.99830145901069
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.017148930863675266,
+              "dropout": 0.14093891368227107,
+              "weight_decay": 4.422364157485386e-06,
+              "epochs": 158,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9376548540404878,
+            "fit_seconds": 9.983623374952003
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.015458366697519618,
+              "dropout": 0.48183543642248544,
+              "weight_decay": 2.8286192412082606e-06,
+              "epochs": 56,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9391291739191979,
+            "fit_seconds": 5.809283958980814
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.004211183131559849,
+              "dropout": 0.29475103104202405,
+              "weight_decay": 1.1843280966609346e-06,
+              "epochs": 185,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9371411549411003,
+            "fit_seconds": 18.551505625015125
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.02278270753188422,
+              "dropout": 0.41341266477836053,
+              "weight_decay": 0.0004534827797782975,
+              "epochs": 61,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9157704209866819,
+            "fit_seconds": 10.576489249942824
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.013651890420809706,
+              "dropout": 0.10583737130375526,
+              "weight_decay": 0.00031176295126132133,
+              "epochs": 87,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9422858460493497,
+            "fit_seconds": 5.901869792025536
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.01657088085262707,
+              "dropout": 0.08225363323705065,
+              "weight_decay": 1.3348761986386676e-05,
+              "epochs": 164,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9463063616475831,
+            "fit_seconds": 10.95995191601105
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0018355757719775204,
+              "dropout": 0.19812808110849323,
+              "weight_decay": 1.0410552660460883e-06,
+              "epochs": 154,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8924149262366211,
+            "fit_seconds": 11.554626625031233
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.004189352938854691,
+              "dropout": 0.052960618353662225,
+              "weight_decay": 7.933774237972442e-05,
+              "epochs": 165,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.939952258310401,
+            "fit_seconds": 12.243787958985195
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.009243562513940309,
+              "dropout": 0.2156133743887031,
+              "weight_decay": 0.0003999093120064947,
+              "epochs": 159,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9412949355378694,
+            "fit_seconds": 11.159474832937121
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.015735243489924767,
+              "dropout": 0.1708973619700565,
+              "weight_decay": 4.275706332569878e-05,
+              "epochs": 182,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9417135108023054,
+            "fit_seconds": 19.674155540997162
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002286960859102448,
+              "dropout": 0.12843373361355137,
+              "weight_decay": 1.657945373471851e-06,
+              "epochs": 200,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9155403753205779,
+            "fit_seconds": 32.14563799998723
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.013403967788691315,
+              "dropout": 0.34894678534154067,
+              "weight_decay": 2.432313985492969e-06,
+              "epochs": 69,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.931279966313401,
+            "fit_seconds": 4.982680875109509
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.009599803961352932,
+              "dropout": 0.22796448152187443,
+              "weight_decay": 5.748505887289803e-05,
+              "epochs": 113,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9433381124631108,
+            "fit_seconds": 7.317642082925886
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.011832856855155758,
+              "dropout": 0.18250363175427947,
+              "weight_decay": 2.2140576658643e-05,
+              "epochs": 136,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9531434096271966,
+            "fit_seconds": 22.93372937501408
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0019962383959281817,
+              "dropout": 0.14190324447206554,
+              "weight_decay": 8.75793437895872e-06,
+              "epochs": 66,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8301280601390251,
+            "fit_seconds": 4.369996416149661
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.007109767656886339,
+              "dropout": 0.48584498780987734,
+              "weight_decay": 0.00021085912731736605,
+              "epochs": 73,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.886155276700467,
+            "fit_seconds": 4.661110208136961
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.007617689480539893,
+              "dropout": 0.45884612858545637,
+              "weight_decay": 0.00011718997627656672,
+              "epochs": 164,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.948341283134516,
+            "fit_seconds": 27.259202624903992
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.001299756900857539,
+              "dropout": 0.24422461354276193,
+              "weight_decay": 4.3500373514032795e-06,
+              "epochs": 89,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.868125243060388,
+            "fit_seconds": 9.723706250078976
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.01444329136797928,
+              "dropout": 0.14750322140275973,
+              "weight_decay": 0.00020244883396560906,
+              "epochs": 126,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9369364928610483,
+            "fit_seconds": 21.40936170797795
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0016602060925991757,
+              "dropout": 0.48248387198986786,
+              "weight_decay": 1.6029082776416e-05,
+              "epochs": 160,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.919620692600082,
+            "fit_seconds": 16.629501583985984
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0015270139428501602,
+              "dropout": 0.3667952305368517,
+              "weight_decay": 3.6599422074707722e-06,
+              "epochs": 177,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8983366200682404,
+            "fit_seconds": 17.526817499892786
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.002200615864137518,
+              "dropout": 0.42061399634619345,
+              "weight_decay": 1.4798703052748807e-05,
+              "epochs": 197,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8975361723310953,
+            "fit_seconds": 19.33622574992478
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.01058193359573187,
+              "dropout": 0.26076256106620876,
+              "weight_decay": 8.450931806111017e-06,
+              "epochs": 144,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9420320362372601,
+            "fit_seconds": 9.456228374969214
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02453996211295151,
+              "dropout": 0.10060160036233223,
+              "weight_decay": 0.0009218424511648391,
+              "epochs": 151,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9297801612504641,
+            "fit_seconds": 16.123385709011927
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.008863257324729038,
+              "dropout": 0.19049076964654377,
+              "weight_decay": 1.3946935676043578e-05,
+              "epochs": 104,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9224344542804361,
+            "fit_seconds": 16.898686833912507
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0010585262570188202,
+              "dropout": 0.2467857799716981,
+              "weight_decay": 0.0008218550732019151,
+              "epochs": 167,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9050768790445015,
+            "fit_seconds": 17.216823332943022
+          }
+        ]
+      },
+      {
+        "seed": 2,
+        "best_config": {
+          "hidden": 64,
+          "learning_rate": 0.011917145436742067,
+          "dropout": 0.09395053668330172,
+          "weight_decay": 1.4636589138887002e-06,
+          "epochs": 134,
+          "class_weight": null
+        },
+        "best_validation_average_precision": 0.9493048901687904,
+        "tuning_fit_seconds": 1045.59,
+        "final_fit_seconds": 28.31,
+        "trials": [
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0027599906593489113,
+              "dropout": 0.40711287029714016,
+              "weight_decay": 1.8868954029413197e-06,
+              "epochs": 89,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9193486053133282,
+            "fit_seconds": 15.038281499873847
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.011917145436742067,
+              "dropout": 0.09395053668330172,
+              "weight_decay": 1.4636589138887002e-06,
+              "epochs": 134,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9493048901687904,
+            "fit_seconds": 14.82533595804125
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.006769156599383105,
+              "dropout": 0.07503113165266806,
+              "weight_decay": 1.9856027809732132e-05,
+              "epochs": 149,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9066650035785826,
+            "fit_seconds": 11.25666300021112
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.004212153864902203,
+              "dropout": 0.3165921996370582,
+              "weight_decay": 0.0007985605607442435,
+              "epochs": 181,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9183869455128179,
+            "fit_seconds": 33.874614416854456
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0018905786568201354,
+              "dropout": 0.17298033278586655,
+              "weight_decay": 3.413484386560912e-05,
+              "epochs": 109,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9032358102712866,
+            "fit_seconds": 10.61893416615203
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.013983052357917043,
+              "dropout": 0.15907330030768718,
+              "weight_decay": 0.0005924486163386414,
+              "epochs": 83,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9448414680029239,
+            "fit_seconds": 14.744397708913311
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0014399857487065754,
+              "dropout": 0.05227177921647075,
+              "weight_decay": 4.033874129083364e-06,
+              "epochs": 154,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9194900026420506,
+            "fit_seconds": 18.504777499940246
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.010096339807057264,
+              "dropout": 0.4246181618072173,
+              "weight_decay": 8.576474636841357e-05,
+              "epochs": 118,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9395761291000149,
+            "fit_seconds": 32.31069712503813
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.007526412786714976,
+              "dropout": 0.43105899245381407,
+              "weight_decay": 2.0632815679209728e-05,
+              "epochs": 128,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.945181526873432,
+            "fit_seconds": 29.300059708068147
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.008063699481669889,
+              "dropout": 0.41467806290329073,
+              "weight_decay": 3.1200974945600224e-05,
+              "epochs": 64,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9073557701688522,
+            "fit_seconds": 23.442556582856923
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0059194464449529175,
+              "dropout": 0.10811169550950722,
+              "weight_decay": 2.004983514350495e-06,
+              "epochs": 101,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9231569732705458,
+            "fit_seconds": 25.71758966706693
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.010885903780498826,
+              "dropout": 0.22821531044077803,
+              "weight_decay": 0.0004934037447278604,
+              "epochs": 98,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9002708171275431,
+            "fit_seconds": 18.521259999834
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02743099784342643,
+              "dropout": 0.2960310055391823,
+              "weight_decay": 0.0001984494696680856,
+              "epochs": 108,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9214405075867055,
+            "fit_seconds": 25.272534916875884
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0019487976466577095,
+              "dropout": 0.08588850754091726,
+              "weight_decay": 3.496380413597349e-06,
+              "epochs": 168,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9182504534759398,
+            "fit_seconds": 37.813046416966245
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.001070066062061943,
+              "dropout": 0.41649848209421025,
+              "weight_decay": 1.9871623666270143e-06,
+              "epochs": 67,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.7407017196013876,
+            "fit_seconds": 11.402387124951929
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.005267100744018801,
+              "dropout": 0.3101362041917812,
+              "weight_decay": 3.251198210335389e-05,
+              "epochs": 117,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9186686713332775,
+            "fit_seconds": 26.973703750176355
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.007055969163567017,
+              "dropout": 0.3086360683526416,
+              "weight_decay": 3.3086777796139366e-05,
+              "epochs": 163,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.92565569731429,
+            "fit_seconds": 57.64685875014402
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0021614947004147474,
+              "dropout": 0.34451356857428417,
+              "weight_decay": 4.626899183780646e-05,
+              "epochs": 64,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8886209285932244,
+            "fit_seconds": 21.907909790985286
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.023417362936613704,
+              "dropout": 0.3922824287149999,
+              "weight_decay": 1.092680721090406e-06,
+              "epochs": 94,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9457161714789302,
+            "fit_seconds": 31.403419583803043
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0010339122702873284,
+              "dropout": 0.41373347148903894,
+              "weight_decay": 2.143397781806602e-06,
+              "epochs": 174,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8819637222738841,
+            "fit_seconds": 26.947207791963592
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.004556211498274693,
+              "dropout": 0.159196499531838,
+              "weight_decay": 1.4029434593623509e-06,
+              "epochs": 198,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.924061913338019,
+            "fit_seconds": 43.019420750206336
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0034728343744405126,
+              "dropout": 0.2617403940277321,
+              "weight_decay": 1.0479882163636482e-06,
+              "epochs": 181,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9439363151312887,
+            "fit_seconds": 39.58077933406457
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.004473820832014307,
+              "dropout": 0.15115168315493316,
+              "weight_decay": 6.9180393740016e-05,
+              "epochs": 81,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9296535138552993,
+            "fit_seconds": 28.069391916971654
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.022061663350246202,
+              "dropout": 0.48093497909903826,
+              "weight_decay": 1.5076641091277107e-06,
+              "epochs": 152,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9471494379731359,
+            "fit_seconds": 24.338172875111923
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.013751770159127279,
+              "dropout": 0.03201211566219059,
+              "weight_decay": 3.5843305454409995e-06,
+              "epochs": 135,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9363084487603759,
+            "fit_seconds": 43.891594000160694
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.009721590697826042,
+              "dropout": 0.4516639634944058,
+              "weight_decay": 0.0003989503869356657,
+              "epochs": 86,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8987720971774052,
+            "fit_seconds": 18.573139915941283
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.027708340911928975,
+              "dropout": 0.3073139745755784,
+              "weight_decay": 1.8127897862967424e-06,
+              "epochs": 57,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9330003980004938,
+            "fit_seconds": 8.938908125041053
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.00825903016402398,
+              "dropout": 0.19282005844181976,
+              "weight_decay": 2.18680685431406e-05,
+              "epochs": 140,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9061376336472333,
+            "fit_seconds": 21.67889712518081
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0064220054564475375,
+              "dropout": 0.39622555202722237,
+              "weight_decay": 1.6520180467819543e-05,
+              "epochs": 174,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9279754685484817,
+            "fit_seconds": 57.192455917131156
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.007832374877529984,
+              "dropout": 0.48384899134340914,
+              "weight_decay": 1.3550741986894191e-06,
+              "epochs": 107,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9126299813042105,
+            "fit_seconds": 34.48156133410521
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.011327429837567012,
+              "dropout": 0.09629748768951002,
+              "weight_decay": 4.426639224337924e-05,
+              "epochs": 134,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9252104069126774,
+            "fit_seconds": 28.322686791885644
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.001431553075534848,
+              "dropout": 0.0015933853090585592,
+              "weight_decay": 0.0005254362838849662,
+              "epochs": 174,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8994460472605221,
+            "fit_seconds": 26.36567712505348
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0024034187696057065,
+              "dropout": 0.23279715576087423,
+              "weight_decay": 0.0002850110904855763,
+              "epochs": 80,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8954587712138657,
+            "fit_seconds": 17.147268041037023
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.02688657873633635,
+              "dropout": 0.47195538321354347,
+              "weight_decay": 5.41976289170679e-06,
+              "epochs": 115,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9048133131096536,
+            "fit_seconds": 17.65018333401531
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.010715961227673912,
+              "dropout": 0.04345805007387671,
+              "weight_decay": 2.5697900345305968e-05,
+              "epochs": 104,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9195642060476109,
+            "fit_seconds": 22.497093708021566
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.008421328818293324,
+              "dropout": 0.3463977370857816,
+              "weight_decay": 0.0004722197196172046,
+              "epochs": 156,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9448641117928458,
+            "fit_seconds": 32.783937542000785
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.003775494215358908,
+              "dropout": 0.284414073844559,
+              "weight_decay": 0.0007613533846471089,
+              "epochs": 73,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.902574858834649,
+            "fit_seconds": 23.425701333908364
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.01232449653300688,
+              "dropout": 0.48635852690531184,
+              "weight_decay": 6.3566673977647766e-06,
+              "epochs": 80,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9448740759489657,
+            "fit_seconds": 25.618133124895394
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0027313111147646103,
+              "dropout": 0.32555169261423456,
+              "weight_decay": 0.0007163772119903467,
+              "epochs": 113,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9249388526919511,
+            "fit_seconds": 23.919609874952585
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.005821991006656848,
+              "dropout": 0.3387890493991186,
+              "weight_decay": 3.0167060880127204e-05,
+              "epochs": 134,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.895464699975252,
+            "fit_seconds": 20.571825332939625
+          }
+        ]
+      },
+      {
+        "seed": 3,
+        "best_config": {
+          "hidden": 128,
+          "learning_rate": 0.011061430529705988,
+          "dropout": 0.04406642190519289,
+          "weight_decay": 3.2127321356580527e-06,
+          "epochs": 108,
+          "class_weight": null
+        },
+        "best_validation_average_precision": 0.9505024077536697,
+        "tuning_fit_seconds": 756.78,
+        "final_fit_seconds": 22.02,
+        "trials": [
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0022376792394712716,
+              "dropout": 0.40063723260319845,
+              "weight_decay": 5.578097591574261e-05,
+              "epochs": 62,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8981254567039353,
+            "fit_seconds": 20.14641458285041
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.004362957770370318,
+              "dropout": 0.239525649070417,
+              "weight_decay": 3.014510104306926e-06,
+              "epochs": 154,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.893384830950593,
+            "fit_seconds": 24.018449916969985
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0037834802879930054,
+              "dropout": 0.25837009131068184,
+              "weight_decay": 1.95832181236984e-05,
+              "epochs": 67,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8416533153168305,
+            "fit_seconds": 11.154403541935608
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.012299172088433362,
+              "dropout": 0.47813362741804927,
+              "weight_decay": 7.122024957832099e-06,
+              "epochs": 98,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.888323856156891,
+            "fit_seconds": 21.82097804103978
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0027063504912359358,
+              "dropout": 0.0007450417544180854,
+              "weight_decay": 0.0008324934482861539,
+              "epochs": 155,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.907294147152743,
+            "fit_seconds": 34.39553579199128
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0029093461580959683,
+              "dropout": 0.4458555352225786,
+              "weight_decay": 5.6949356309344984e-05,
+              "epochs": 86,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8731394702915458,
+            "fit_seconds": 14.472725333180279
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0011087272788007248,
+              "dropout": 0.35348254782781174,
+              "weight_decay": 1.3265740589011345e-05,
+              "epochs": 166,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8546223703927861,
+            "fit_seconds": 27.00579358288087
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.009454502659402748,
+              "dropout": 0.46573192737067726,
+              "weight_decay": 4.183824938020591e-06,
+              "epochs": 141,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8747064799144788,
+            "fit_seconds": 23.993857875000685
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.012464204273594409,
+              "dropout": 0.36108240407105874,
+              "weight_decay": 4.530501449669631e-06,
+              "epochs": 95,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.936799986948069,
+            "fit_seconds": 16.040640000021085
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.009363367277522771,
+              "dropout": 0.3413994539301751,
+              "weight_decay": 0.0002885541006849718,
+              "epochs": 187,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9492770359518921,
+            "fit_seconds": 63.972892167046666
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.019843658874454544,
+              "dropout": 0.0511599609610372,
+              "weight_decay": 0.0003542460467595858,
+              "epochs": 164,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9411686508838089,
+            "fit_seconds": 44.09717266703956
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0051115347657833075,
+              "dropout": 0.07316728487909924,
+              "weight_decay": 0.0001245314471161756,
+              "epochs": 170,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9417865914401716,
+            "fit_seconds": 21.682307875016704
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0025512989199497614,
+              "dropout": 0.28090485936544496,
+              "weight_decay": 1.5811339481055167e-05,
+              "epochs": 181,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9341688183790285,
+            "fit_seconds": 22.519477792084217
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0019519109507256242,
+              "dropout": 0.09014377042154759,
+              "weight_decay": 0.00017401278467086924,
+              "epochs": 77,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8677880372019368,
+            "fit_seconds": 9.808304375037551
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.022937515158530233,
+              "dropout": 0.10288752411450941,
+              "weight_decay": 0.00035702890157296,
+              "epochs": 135,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.888278482628978,
+            "fit_seconds": 12.530605333857238
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.026575000825507095,
+              "dropout": 0.31184636405307586,
+              "weight_decay": 6.616851134598058e-05,
+              "epochs": 125,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8891082830689968,
+            "fit_seconds": 10.962453667074442
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.01468263130599422,
+              "dropout": 0.027046878935482632,
+              "weight_decay": 1.2819140818123577e-05,
+              "epochs": 168,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9388865841848906,
+            "fit_seconds": 20.36015758290887
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0019313620962784954,
+              "dropout": 0.1069334953460736,
+              "weight_decay": 0.000376639440916954,
+              "epochs": 124,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8800759510176737,
+            "fit_seconds": 9.546191999921575
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.005345578947236124,
+              "dropout": 0.42473020559476843,
+              "weight_decay": 0.0007864919150028258,
+              "epochs": 94,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8668845073885455,
+            "fit_seconds": 7.19556533312425
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002068435265862713,
+              "dropout": 0.27249134072900205,
+              "weight_decay": 0.00013118287025927933,
+              "epochs": 173,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9386760726724155,
+            "fit_seconds": 33.948424249887466
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0034994269040519036,
+              "dropout": 0.29485014338960414,
+              "weight_decay": 0.00010199992288561143,
+              "epochs": 152,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8854170944320505,
+            "fit_seconds": 13.883145249914378
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.005923903028420506,
+              "dropout": 0.2773687162325446,
+              "weight_decay": 3.93051212950637e-06,
+              "epochs": 55,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9271825165901173,
+            "fit_seconds": 10.723951291991398
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.00513005019734783,
+              "dropout": 0.26812246278490576,
+              "weight_decay": 0.00021004601617438518,
+              "epochs": 68,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9182994514444,
+            "fit_seconds": 7.88684062496759
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0010689372090132787,
+              "dropout": 0.26387496660675164,
+              "weight_decay": 4.127598798378772e-06,
+              "epochs": 55,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.7789237664796909,
+            "fit_seconds": 6.380339916097
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0036475814431150286,
+              "dropout": 0.4547272898846485,
+              "weight_decay": 1.50977187872425e-05,
+              "epochs": 108,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9382258608245401,
+            "fit_seconds": 20.768022583099082
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.003266384816645344,
+              "dropout": 0.24038278515129097,
+              "weight_decay": 1.9049181784568407e-06,
+              "epochs": 95,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8909890341256078,
+            "fit_seconds": 11.01038333401084
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.006784285983235821,
+              "dropout": 0.37195510367527357,
+              "weight_decay": 0.0006940999122489763,
+              "epochs": 189,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9309206918180792,
+            "fit_seconds": 14.534498165827245
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.012559940551082772,
+              "dropout": 0.40658186959728043,
+              "weight_decay": 0.00028868028466572424,
+              "epochs": 154,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9497317724243902,
+            "fit_seconds": 29.762650292133912
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.003207998796959276,
+              "dropout": 0.13086664681432708,
+              "weight_decay": 5.183877728932304e-05,
+              "epochs": 122,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9307973922344643,
+            "fit_seconds": 14.160921916132793
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.008200318734945578,
+              "dropout": 0.29120826513587855,
+              "weight_decay": 2.0568230145645104e-06,
+              "epochs": 143,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9407557237656052,
+            "fit_seconds": 11.072133083129302
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.011061430529705988,
+              "dropout": 0.04406642190519289,
+              "weight_decay": 3.2127321356580527e-06,
+              "epochs": 108,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9505024077536697,
+            "fit_seconds": 20.762620417168364
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.003959442098777219,
+              "dropout": 0.3326733400908597,
+              "weight_decay": 9.967128634978569e-06,
+              "epochs": 80,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9169233704192182,
+            "fit_seconds": 9.303921249927953
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0022922643186737766,
+              "dropout": 0.07353215371661731,
+              "weight_decay": 6.913253193847482e-06,
+              "epochs": 190,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9404694550160978,
+            "fit_seconds": 39.337395374896005
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.002150421619061754,
+              "dropout": 0.268158225531957,
+              "weight_decay": 0.000646846953411059,
+              "epochs": 191,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.929570044071952,
+            "fit_seconds": 22.34019016707316
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.00970397251191674,
+              "dropout": 0.4423574912427044,
+              "weight_decay": 0.0009986402928378508,
+              "epochs": 112,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9459723919773976,
+            "fit_seconds": 23.312964292010292
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.006218045403122914,
+              "dropout": 0.4406002643627459,
+              "weight_decay": 1.4424109962345678e-06,
+              "epochs": 180,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8855235435533783,
+            "fit_seconds": 15.28057025000453
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.013620040540217199,
+              "dropout": 0.4688155173634561,
+              "weight_decay": 4.119690385847718e-05,
+              "epochs": 76,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9295706885830082,
+            "fit_seconds": 6.463439707877114
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0012442438870194274,
+              "dropout": 0.20785096195961117,
+              "weight_decay": 0.0003482666678565378,
+              "epochs": 147,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8554345309542255,
+            "fit_seconds": 12.657717375084758
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.00396907063929558,
+              "dropout": 0.13257759508401484,
+              "weight_decay": 0.00012932048481326,
+              "epochs": 151,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9038220391899512,
+            "fit_seconds": 12.858916250057518
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0035425276959352926,
+              "dropout": 0.38265515438384873,
+              "weight_decay": 3.059142628018158e-05,
+              "epochs": 54,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8035364636133298,
+            "fit_seconds": 4.607286292128265
+          }
+        ]
+      },
+      {
+        "seed": 4,
+        "best_config": {
+          "hidden": 64,
+          "learning_rate": 0.019706024559674844,
+          "dropout": 0.4588212074163266,
+          "weight_decay": 5.016823313715271e-06,
+          "epochs": 197,
+          "class_weight": null
+        },
+        "best_validation_average_precision": 0.9540016955612084,
+        "tuning_fit_seconds": 783.24,
+        "final_fit_seconds": 19.74,
+        "trials": [
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.005692365743106427,
+              "dropout": 0.48812185285385207,
+              "weight_decay": 1.7478657475046662e-06,
+              "epochs": 192,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9451791110905909,
+            "fit_seconds": 41.597489667125046
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0035984571530925827,
+              "dropout": 0.4009506034929036,
+              "weight_decay": 3.3387465205438787e-06,
+              "epochs": 152,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9002290223779489,
+            "fit_seconds": 25.6093336250633
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.021512013936759555,
+              "dropout": 0.23857676191960314,
+              "weight_decay": 1.956540459674493e-05,
+              "epochs": 132,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9179527652308886,
+            "fit_seconds": 14.772730041993782
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.02842584045110483,
+              "dropout": 0.1848628963262144,
+              "weight_decay": 0.0008068607841154404,
+              "epochs": 136,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.934333424514785,
+            "fit_seconds": 34.48227208387107
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.007931360027440314,
+              "dropout": 0.3524323727823713,
+              "weight_decay": 0.0006736138955818685,
+              "epochs": 76,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9373313683995612,
+            "fit_seconds": 12.566555416909978
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0015741340226321646,
+              "dropout": 0.24893379939268723,
+              "weight_decay": 3.0259343530353482e-05,
+              "epochs": 179,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9038131303660376,
+            "fit_seconds": 26.677323375130072
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0032877589682748032,
+              "dropout": 0.11188557338910798,
+              "weight_decay": 3.683502819644119e-05,
+              "epochs": 194,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9189614892885288,
+            "fit_seconds": 36.36038670782
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.02438793276629414,
+              "dropout": 0.2910079003235229,
+              "weight_decay": 6.360630550985659e-06,
+              "epochs": 200,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9285340559893026,
+            "fit_seconds": 40.65428029210307
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.00995955241503174,
+              "dropout": 0.23801945523770096,
+              "weight_decay": 4.476515362739353e-06,
+              "epochs": 124,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9012144131716557,
+            "fit_seconds": 17.340211750008166
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.013750378916832305,
+              "dropout": 0.09539425262926882,
+              "weight_decay": 2.3974416076380148e-05,
+              "epochs": 122,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9402889785991102,
+            "fit_seconds": 37.85057258303277
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.0021230647592960466,
+              "dropout": 0.4812537056631892,
+              "weight_decay": 0.0004494373435258533,
+              "epochs": 75,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9024400434061332,
+            "fit_seconds": 22.078203999903053
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.012367776963869419,
+              "dropout": 0.020984018590635256,
+              "weight_decay": 0.000556123956327429,
+              "epochs": 99,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9258110269395395,
+            "fit_seconds": 16.780440707923844
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0025561966728921445,
+              "dropout": 0.18806190658953387,
+              "weight_decay": 1.1069580343249816e-05,
+              "epochs": 173,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9230960634753342,
+            "fit_seconds": 21.88242754107341
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.004308879223404637,
+              "dropout": 0.24984637026599832,
+              "weight_decay": 0.0007377968387329612,
+              "epochs": 179,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9258935295015499,
+            "fit_seconds": 48.83104216703214
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.002844493305781369,
+              "dropout": 0.40352396806751906,
+              "weight_decay": 2.100945417563683e-06,
+              "epochs": 109,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9056622531271027,
+            "fit_seconds": 12.612155249807984
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.019706024559674844,
+              "dropout": 0.4588212074163266,
+              "weight_decay": 5.016823313715271e-06,
+              "epochs": 197,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9540016955612084,
+            "fit_seconds": 28.30277437483892
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.00828784453915539,
+              "dropout": 0.11875240881191862,
+              "weight_decay": 3.2936661969024014e-05,
+              "epochs": 168,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9084028004166822,
+            "fit_seconds": 14.326880000066012
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.01081717513783052,
+              "dropout": 0.2633627279830282,
+              "weight_decay": 0.00013000007214396524,
+              "epochs": 138,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9071197742302627,
+            "fit_seconds": 11.902300709160045
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.003523960277743713,
+              "dropout": 0.24965428299680403,
+              "weight_decay": 1.0149566636987644e-05,
+              "epochs": 147,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.893984605100005,
+            "fit_seconds": 12.595858917105943
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.006908604090830421,
+              "dropout": 0.30855737854561105,
+              "weight_decay": 1.549311919271275e-06,
+              "epochs": 97,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9398802899910378,
+            "fit_seconds": 11.852433458901942
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.003682793778842261,
+              "dropout": 0.24050424688784067,
+              "weight_decay": 2.172830397221371e-06,
+              "epochs": 60,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8980061239520876,
+            "fit_seconds": 12.160504708997905
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.005246685392673022,
+              "dropout": 0.2501648560324306,
+              "weight_decay": 6.200083279911769e-05,
+              "epochs": 50,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9004055219211826,
+            "fit_seconds": 8.45099383406341
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0013743111861064866,
+              "dropout": 0.07323461359237232,
+              "weight_decay": 0.00012069224928153411,
+              "epochs": 138,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9032240527711826,
+            "fit_seconds": 14.650400124955922
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.0130512110963382,
+              "dropout": 0.25531940255517277,
+              "weight_decay": 1.377417665055766e-05,
+              "epochs": 57,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8915529953799216,
+            "fit_seconds": 4.135815000161529
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002634527575224669,
+              "dropout": 0.14597041117208953,
+              "weight_decay": 1.7617899533354855e-05,
+              "epochs": 77,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9016859065712254,
+            "fit_seconds": 12.028840707847849
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.01585694638394382,
+              "dropout": 0.4108016933806619,
+              "weight_decay": 7.824373781943711e-05,
+              "epochs": 158,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9489578487707179,
+            "fit_seconds": 25.03686266602017
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.005510849660015808,
+              "dropout": 0.4492273751001136,
+              "weight_decay": 1.234057157503139e-05,
+              "epochs": 93,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9408479829379169,
+            "fit_seconds": 14.965442792046815
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.017922707452685555,
+              "dropout": 0.17070324603187798,
+              "weight_decay": 0.00017547874042544924,
+              "epochs": 163,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9370733239637915,
+            "fit_seconds": 15.481302167056128
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.00851682154376084,
+              "dropout": 0.24242748397555025,
+              "weight_decay": 2.1823161463687797e-06,
+              "epochs": 129,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9356118151717833,
+            "fit_seconds": 19.939499499974772
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.027065299004569936,
+              "dropout": 0.41658182833414453,
+              "weight_decay": 1.1517960660275045e-05,
+              "epochs": 56,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9130496736569598,
+            "fit_seconds": 8.725778041174635
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.001235796405910223,
+              "dropout": 0.39472267324716853,
+              "weight_decay": 1.797559898705672e-06,
+              "epochs": 166,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9033029373004505,
+            "fit_seconds": 25.916393124964088
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.002273358325129802,
+              "dropout": 0.4815710609477786,
+              "weight_decay": 4.9684832218064516e-06,
+              "epochs": 87,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8973564228457322,
+            "fit_seconds": 15.27217279211618
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.02875540373442052,
+              "dropout": 0.3528485522913276,
+              "weight_decay": 0.00031928347313664484,
+              "epochs": 175,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9484300770581494,
+            "fit_seconds": 27.73389329086058
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.012849899734781636,
+              "dropout": 0.19232236663124957,
+              "weight_decay": 0.0006159415224636454,
+              "epochs": 100,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9265694699294637,
+            "fit_seconds": 9.25282287504524
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.014400842841152055,
+              "dropout": 0.03325579851023336,
+              "weight_decay": 0.0005959764928688327,
+              "epochs": 107,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.9054021269767056,
+            "fit_seconds": 7.117483374895528
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.003043077657435787,
+              "dropout": 0.3234735752916872,
+              "weight_decay": 0.0002253346955391731,
+              "epochs": 92,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9054780712363962,
+            "fit_seconds": 14.592899166978896
+          },
+          {
+            "config": {
+              "hidden": 128,
+              "learning_rate": 0.004107075296937431,
+              "dropout": 0.16000533376828896,
+              "weight_decay": 1.2967647113299835e-05,
+              "epochs": 183,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.9317566998622323,
+            "fit_seconds": 28.39564724988304
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.005100896825691867,
+              "dropout": 0.37870044237956657,
+              "weight_decay": 0.00042043270843723297,
+              "epochs": 152,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.8887383137559451,
+            "fit_seconds": 9.395687415963039
+          },
+          {
+            "config": {
+              "hidden": 32,
+              "learning_rate": 0.02709645972853809,
+              "dropout": 0.32985334226559493,
+              "weight_decay": 1.7943116586713978e-06,
+              "epochs": 168,
+              "class_weight": "balanced"
+            },
+            "validation_average_precision": 0.848844924151172,
+            "fit_seconds": 10.91471204184927
+          },
+          {
+            "config": {
+              "hidden": 64,
+              "learning_rate": 0.0010697454512700203,
+              "dropout": 0.3388337047199511,
+              "weight_decay": 0.0009890975925390556,
+              "epochs": 106,
+              "class_weight": null
+            },
+            "validation_average_precision": 0.8337571908871367,
+            "fit_seconds": 10.001696957973763
+          }
+        ]
+      }
+    ]
+  }
+}
