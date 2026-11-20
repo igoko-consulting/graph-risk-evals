@@ -28,6 +28,7 @@
 11. `render_charts.py` and `render_readme.py`: charts and README blocks from `results/` only. They run twice, so the headline is published before the label-budget curve finishes.
 12. `run_label_budgets.py`: every arm re-tuned at 5, 10, 25 and 50 percent of training labels.
 13. `evaluate_label_budgets.py`: the curve and H4, on the same resamples again.
+14. `record_runtime.py`: total elapsed time of `make all`, from a clock started before the tests, to `results/pipeline-runtime.json`.
 
 ## The two gates
 
@@ -45,4 +46,6 @@
 - **CPU-only PyTorch without dependency confusion.** Listing PyTorch's CPU index as an extra index for every package made `certifi` resolve to an older copy hosted there. `uv pip sync --torch-backend cpu` consults that index for PyTorch packages only. The pip fallback in the Makefile uses `--extra-index-url`, which picks the newest match across indexes, so it is unaffected. The Linux route has not been run on a Linux machine.
 - **Arm D is deterministic on CPU.** `torch.use_deterministic_algorithms(True)` costs nothing measurable here, and repeated fits give identical scores, so seed spread for D reflects tuning and initialisation only.
 - **One graph database, not 49.** Each per-step graph is the set of nodes sharing a `time_step` property; queries take the step as a parameter. With no cross-step edges this is equivalent to separate graphs and far simpler to load.
+- **The full protocol takes hours, not the specification's 30 minutes.** The target gave way to full tuning, as recorded in `change_log.md`. The label-budget stage dominates: every arm is re-tuned at four further budgets, and Arm D's full-batch training costs the same at every budget because the graph does not shrink when labels do. Per-fit seconds are in the tuning results; the total is in `results/pipeline-runtime.json` from the first run that includes `record_runtime.py`.
+- **Generated files must not count as uncommitted code.** The provenance check ignores pipeline outputs. It did not ignore `README.md` until Phase 3, so the two label-budget results written after the first README render carry `uncommitted_changes: true`. No code had changed; see `change_log.md`.
 - **Deterministic chart output.** Charts use matplotlib's bundled font, text drawn as paths and a fixed SVG hash salt, so a rerun on any machine produces the same bytes and diffs only show real changes.

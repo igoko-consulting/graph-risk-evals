@@ -18,7 +18,7 @@ class ResultRefused(RuntimeError):
 def _git_state(root: Path) -> dict:
     head = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True)
     # The pipeline rewrites its own outputs mid-run, so they must not count as uncommitted code.
-    outputs = [":!results", ":!site/charts", ":!04-the-data/NOTES.md"]
+    outputs = [":!results", ":!site/charts", ":!04-the-data/NOTES.md", ":!README.md"]
     dirty = subprocess.run(["git", "-C", str(root), "status", "--porcelain", "--untracked-files=no", "--", ".", *outputs],
                            capture_output=True, text=True)
     return {"commit": head.stdout.strip(), "uncommitted_changes": bool(dirty.stdout.strip())}

@@ -2,7 +2,9 @@
 
 The Phase 2 wording and the decision rules were written before any arm had run. Three pieces of Phase 3
 wording were added after the Phase 3 headline was seen, to state it accurately rather than to change it:
-the by-construction note on H1, the pair intervals behind H3, and finding_phase3. Outcomes are computed in
+the by-construction note on H1, the pair intervals behind H3, and finding_phase3. After the label-budget curve
+was seen, H4's evidence gained the per-budget differences, its sign convention and the D minus A comparison
+the protocol said would be reported alongside, and the H4 limitation gained A's precision at both ends. Outcomes are computed in
 evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
 """
 import re
@@ -242,11 +244,18 @@ def hypotheses_block(ev: dict, budget: dict | None) -> str:
     ]
     if budget:
         h4 = budget["H4"]
-        b = h4["B minus A"]
+        b, d = h4["B minus A"], h4["D minus A, reported alongside"]
+        pre5, pre100 = budget["curve"]["005"]["pre_shift_test"], budget["curve"]["100"]["pre_shift_test"]
+        h4_ev = (f"B minus A, precision at k pre-shift: at 5% of training labels, {diff_with_ci(pre5['B minus A'])}; "
+                 f"at 100%, {diff_with_ci(pre100['B minus A'])}. Change from 100% to 5%, positive if the advantage "
+                 f"widened: {signed(b['widening'])} ({signed(b['interval_95']['low'])} to {signed(b['interval_95']['high'])}), "
+                 + ("outside" if outside(b["interval_95"]) else "within") + " the noise band. "
+                 f"Reported alongside, D minus A changed by {signed(d['widening'])} "
+                 f"({signed(d['interval_95']['low'])} to {signed(d['interval_95']['high'])}), {d['outcome']}")
+        if d["interval_95"]["high"] < 0:
+            h4_ev += ": D fell further behind A as labels shrank"
         rows.append(
-            f"| **H4.** The graph-feature advantage widens as labels get scarcer | {sentence(h4['outcome'])} "
-            f"| Change in B minus A from 100% to 5% of labels: {signed(b['widening'])} "
-            f"({signed(b['interval_95']['low'])} to {signed(b['interval_95']['high'])}). |"
+            f"| **H4.** The graph-feature advantage widens as labels get scarcer | {sentence(h4['outcome'])} | {h4_ev}. |"
         )
     else:
         rows.append("| **H4.** The graph-feature advantage widens as labels get scarcer | Pending | Label-budget curve still running |")
@@ -309,8 +318,11 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None) -> str:
         "so the decision turns on alert quality, not on compute.",
     ]
     if budget:
+        a5 = budget["curve"]["005"]["pre_shift_test"]["A"]["precision_at_k_pooled"]
+        a100 = budget["curve"]["100"]["pre_shift_test"]["A"]["precision_at_k_pooled"]
         suggested.append(f"H4, whether the graph-feature advantage widens as labels get scarcer: {budget['H4']['outcome']}. "
-                         "Validation labels were kept in full at every budget, so small-budget results are somewhat optimistic.")
+                         "Validation labels were kept in full at every budget, so small-budget results are somewhat optimistic. "
+                         f"A's precision at k was {pct(a5)} at 5% of training labels and {pct(a100)} at 100%.")
     return ("**What this demonstrates.** _Draft for the author to edit._\n\n" + "\n".join(f"- {x}" for x in demonstrated)
             + "\n\n**What this suggests.**\n\n" + "\n".join(f"- {x}" for x in suggested))
 

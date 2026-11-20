@@ -274,8 +274,9 @@ def label_budget_curve() -> None:
                  fontsize=13, color=TEXT, fontweight="bold")
     fig.text(0.07, 0.925, "Pooled over steps 35 to 42. Bands are 95% bootstrap intervals. Full protocol re-run at every budget.",
              ha="left", color=TEXT_SECONDARY, fontsize=8.5)
-    fig.text(0.07, 0.015, "Validation labels kept in full at every budget, so small budgets are somewhat optimistic. "
-             "Cryptocurrency data, not payments data.\nSource: results/label-budget-curve.json.",
+    fig.text(0.07, 0.015, "Overlapping bands do not settle a comparison: arms are compared on paired resamples (H4 in the README). "
+             "Validation labels kept in full at every budget,\nso small budgets are somewhat optimistic. "
+             "Cryptocurrency data, not payments data. Source: results/label-budget-curve.json.",
              ha="left", va="bottom", color=TEXT_SECONDARY, fontsize=7.5)
     fig.subplots_adjust(left=0.08, right=0.985, top=0.82, bottom=0.17)
     _save(fig, "label-budget-curve.svg")
