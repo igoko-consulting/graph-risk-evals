@@ -5,7 +5,6 @@ time: structure and Arm A's stage-one scores. Every fact in every chain is then 
 columnar store, and the stage halts if any disagrees. Full chains stay in data/store/runs/, because
 the dataset's licence rules out publishing per-transaction outputs; results/ gets aggregates only.
 """
-import csv
 import json
 
 import duckdb
@@ -14,6 +13,7 @@ import numpy as np
 
 import graph_store
 from evaluate_arms import TEST_PERIODS
+from evidence_review import write_sheet
 from leakage_gate import BASE_GRAPH, STAGING, STRUCTURAL_CACHE
 from paths import COLUMNAR_STORE, RUNS
 from protocol import PERIODS, period_of, require, require_k_first
@@ -188,11 +188,7 @@ def main() -> None:
     rng = np.random.default_rng(REVIEW_SEED)
     pre = [c for c in chains if c["period"] == "pre_shift_test"]
     sample = [pre[j] for j in sorted(rng.choice(len(pre), size=min(REVIEW_SAMPLE, len(pre)), replace=False))]
-    with open(RUNS / "evidence-chain-review.csv", "w", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["node_id", "chain", "true", "sufficient", "actionable", "note"])
-        for c in sample:
-            w.writerow([c["node_id"], sentence(c, k), "", "", "", ""])
+    write_sheet([(c["node_id"], sentence(c, k)) for c in sample])
 
     def share(rows, test) -> float | None:
         return sum(1 for r in rows if test(r)) / len(rows) if rows else None

@@ -469,7 +469,7 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None, gate: dict) -> 
             + "\n\n**What this suggests.**\n\n" + "\n".join(f"- {x}" for x in suggested))
 
 
-def evidence_block(e: dict) -> str:
+def evidence_block(e: dict, review: dict | None) -> str:
     k = e["k"]
     pre = e["by_period"]["pre_shift_test"]
     cols = (pre["all_flagged"], pre["flagged_illicit"], pre["flagged_licit"])
@@ -504,11 +504,26 @@ def evidence_block(e: dict) -> str:
         "through learned weights. The traversal can list them but not say which mattered, "
         "and a post-hoc explainer would add an approximation, not a fact about the graph.",
         "",
-        f"Whether a chain is sufficient and actionable needs a human. A seeded sample of {e['review']['sample']} sits in "
-        f"`{e['review']['file']}` for the author to score: true, sufficient, actionable. Not yet scored. "
-        "Source: `results/evidence-chains.json`.",
+        review_note(e, review),
     ]
     return "\n".join(rows + [""] + notes)
+
+
+def review_note(e: dict, r: dict | None) -> str:
+    if r is None:
+        return (f"Whether a chain is sufficient and actionable needs a human. A seeded sample of {e['review']['sample']} "
+                "is drawn for the author to score. Source: `results/evidence-chains.json`.")
+    where = (f"Whether a chain is true, sufficient and actionable needs a human. A seeded sample of {r['sample']} chains "
+             f"from the pre-shift queue is scored by the author in `{r['sheet']}`, outside git because the chains name "
+             f"transactions; the scores are saved without them in [`{r['scores_file']}`]({r['scores_file']}). ")
+    source = "Source: `results/evidence-chain-review.json`."
+    if r["scored"] == 0:
+        return where + "Not yet scored. " + source
+    yes = r["answered_yes"]
+    so_far = f"{r['scored']} of {r['sample']} scored so far" if r["scored"] < r["sample"] else f"All {r['sample']} scored"
+    return (where + f"{so_far}: {yes['true']} true, {yes['sufficient']} sufficient, {yes['actionable']} actionable, "
+            f"{r['yes_to_all_three']} all three. One scorer and a small sample, so this suggests whether the chains "
+            "would serve an investigator; it does not demonstrate it. " + source)
 
 
 def runtime_block(rt: dict) -> str:
@@ -671,7 +686,8 @@ def main() -> None:
     values = prose_values()
     text = fill_values(README.read_text(), values, "README.md")
     if (RESULTS / "evidence-chains.json").is_file():
-        text = replace_block(text, "evidence-chains", evidence_block(read_result("evidence-chains")["data"]))
+        review = read_result("evidence-chain-review")["data"] if (RESULTS / "evidence-chain-review.json").is_file() else None
+        text = replace_block(text, "evidence-chains", evidence_block(read_result("evidence-chains")["data"], review))
     if (RESULTS / "engine-comparison.json").is_file() and ENGINE_DOC.is_file():
         ENGINE_DOC.write_text(replace_block(ENGINE_DOC.read_text(), "engine-comparison",
                                             engine_block(read_result("engine-comparison")["data"])))
