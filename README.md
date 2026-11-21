@@ -215,7 +215,7 @@ For each transaction Arm B queues, the graph store builds a structural reason an
 
 **Arm D cannot produce a chain.** Across the 1,530 transactions Arm D queued in both periods, its score depends on a median of 5 transactions within two hops, through learned weights. The traversal can list them but not say which mattered, and a post-hoc explainer would add an approximation, not a fact about the graph.
 
-Whether a chain is sufficient and actionable needs a human. A seeded sample of 30 sits in `data/store/runs/evidence-chain-review.csv` for the author to score: true, sufficient, actionable. Not yet scored. Source: `results/evidence-chains.json`.
+Whether a chain is true, sufficient and actionable needs a human. A seeded sample of 30 chains from the pre-shift queue is scored by the author in `data/store/runs/evidence-chain-review.csv`, outside git because the chains name transactions; the scores are saved without them in [`05-evals-and-guardrails/evidence-chain-scores.csv`](05-evals-and-guardrails/evidence-chain-scores.csv). Not yet scored. Source: `results/evidence-chain-review.json`.
 <!-- end generated:evidence-chains -->
 
 ---
