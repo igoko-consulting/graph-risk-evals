@@ -632,6 +632,28 @@ def money(x: float) -> str:
     return f"€{x:,.0f}" if x == int(x) else f"€{x:,.2f}"
 
 
+def build_days_block(d: dict) -> str:
+    lab, production = d["lab_minutes"], d["production_days_modelled"]
+    rows = ["| Arm | Lab build time, minutes (estimated from git) | Production estimate, engineer-days (modelled) | Basis |",
+            "|---|---|---|---|"]
+    for arm, m in lab.items():
+        p = production[arm]
+        if p is None:
+            span, basis = "Not yet recorded", ""
+        else:
+            span = f"{p['low']:g}" if p["low"] == p["high"] else f"{p['low']:g} to {p['high']:g}"
+            basis = p["basis"]
+        rows.append(f"| {arm} | About {m['estimate']:.0f}, at most {m['upper_bound']:.0f} | {span} | {basis} |")
+    return "\n".join(rows + [
+        "",
+        f"**How lab time is estimated.** {d['lab_method']} History up to commit `{d['lab_history_end']}`.",
+        "",
+        f"**What it does not show.** {d['lab_caveat']} Neither column is an input to cost per true positive.",
+        "",
+        "Source: `results/build-days.json`.",
+    ])
+
+
 def is_result(name: str) -> bool:
     return (RESULTS / f"{name}.json").is_file()
 
@@ -707,7 +729,10 @@ def main() -> None:
     if (RESULTS / "pipeline-runtime.json").is_file():
         text = replace_block(text, "runtime", runtime_block(read_result("pipeline-runtime")["data"]))
     README.write_text(text)
-    MARGIN_NOTES.write_text(fill_values(MARGIN_NOTES.read_text(), values, "03-the-margin/NOTES.md"))
+    margin = fill_values(MARGIN_NOTES.read_text(), values, "03-the-margin/NOTES.md")
+    if is_result("build-days"):
+        margin = replace_block(margin, "build-days", build_days_block(read_result("build-days")["data"]))
+    MARGIN_NOTES.write_text(margin)
     print("README.md generated blocks and quoted values updated")
 
 

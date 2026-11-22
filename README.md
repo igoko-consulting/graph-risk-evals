@@ -12,7 +12,7 @@ Before the regime shift, adding graph features to a tuned tabular model raised p
 **Decision, for this Bitcoin dataset only: invest in graph-derived features, not graph models.** Costs are modelled, not measured. Nothing here transfers to payments without the account-level data this dataset lacks. Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.
 <!-- end generated:answer -->
 
-> **Status.** Phases 1 to 4 are built and have run end to end from a clean clone. Still with the author: reviewing the items marked [in review], scoring the evidence-chain review sample, and build days per arm, on which the investment decision partly depends. Every result on this page, and every count, setting and assumption the pipeline uses, is read from `results/` and written by code, including those quoted in prose.
+> **Status.** Phases 1 to 4 are built and have run end to end from a clean clone. Still with the author: reviewing the items marked [in review] and scoring the evidence-chain review sample. Every result on this page, and every count, setting and assumption the pipeline uses, is read from `results/` and written by code, including those quoted in prose.
 
 ---
 
@@ -232,7 +232,7 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 6 | Leakage tests | 2 | Done | `00-build/leakage_gate.py`, `tests/` |
 | 7 | Arm D, GraphSAGE | 3 | Done | `00-build/` |
 | 8 | Label-budget curve | 3 | Done | `results/` |
-| 9 | Cost per true positive | 3 | Done, modelled; build days pending | `03-the-margin/` |
+| 9 | Cost per true positive | 3 | Done, modelled; build days in review | `03-the-margin/` |
 | 10 | Decision matrix | 4 | In review, generated | this README |
 | 11 | Evidence chains | 4 | Done; human review pending | `results/evidence-chains.json` |
 | 12 | Entity resolution note | 4 | In review | [`docs/entity-resolution.md`](docs/entity-resolution.md) |

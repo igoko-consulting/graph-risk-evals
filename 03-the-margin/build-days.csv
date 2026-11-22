@@ -1,0 +1,4 @@
+arm,production_days_low,production_days_high,basis
+A,20,40,"Engineer-days for a first production version: feature pipeline from existing data, tuned boosted model, batch scoring, monitoring and model governance. Unsourced range suggested by the coding assistant."
+B,40,80,"Added to A: link features or a graph store, kept fresh and computed point-in-time so they cannot leak, and operational on-call. Unsourced range suggested by the coding assistant."
+D,60,120,"Added to A: a GNN training pipeline, scoring new nodes as they arrive, explanations for investigators and model risk review. Unsourced range suggested by the coding assistant."

@@ -6,14 +6,14 @@ EXCLUDE_NEWER ?= 2026-11-05
 # CPU-only PyTorch, consulted for PyTorch packages only, so a Linux clone does not pull CUDA libraries.
 TORCH_CPU_INDEX := https://download.pytorch.org/whl/cpu
 STAGES := compute_k class_balance day_one_checks build_graph_store leakage_gate run_arms evaluate_arms \
-	run_arm_d evaluate_phase3 evidence_chains evidence_review engine_comparison render_charts render_readme run_label_budgets evaluate_label_budgets render_charts record_runtime render_readme
+	run_arm_d evaluate_phase3 build_days evidence_chains evidence_review engine_comparison render_charts render_readme run_label_budgets evaluate_label_budgets render_charts record_runtime render_readme
 
 export PYTHONPATH := $(CURDIR):$(CURDIR)/00-build
 # Performance cores only: on Apple silicon, threads on efficiency cores make every fit wait for stragglers.
 OMP_NUM_THREADS ?= $(shell sysctl -n hw.perflevel0.physicalcpu 2>/dev/null || nproc 2>/dev/null || echo 4)
 export OMP_NUM_THREADS
 
-.PHONY: all data test review clean distclean lock start-clock
+.PHONY: all data test review build-days clean distclean lock start-clock
 
 all: start-clock test data
 	@for stage in $(STAGES); do echo "== $$stage"; $(PY) 00-build/$$stage.py || exit 1; done
@@ -40,6 +40,11 @@ test: $(VENV)/.installed
 # Feature-derived stages refuse to rerun alone after a new commit, so saving scores needs a step of its own.
 review: $(VENV)/.installed
 	$(PY) 00-build/evidence_review.py
+
+# Records the author's production estimates from 03-the-margin/build-days.csv and refreshes the margin notes.
+build-days: $(VENV)/.installed
+	$(PY) 00-build/build_days.py
+	$(PY) 00-build/render_readme.py
 
 clean:
 	rm -rf data/store
