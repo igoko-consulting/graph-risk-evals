@@ -2,9 +2,9 @@
   "result": "engine-comparison",
   "provenance": {
     "generated_by": "engine_comparison.py",
-    "generated_at": "2026-11-20T16:57:25+00:00",
+    "generated_at": "2026-11-21T23:59:26+00:00",
     "git": {
-      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
+      "commit": "68c1dae3008f7be6e050acb040697ba6fddc63d2",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -30,100 +30,100 @@
         "max_difference_between_engines": 0.0,
         "seconds": {
           "ladybug": {
-            "first_run": 5.046,
-            "median_of_repeats": 4.969,
+            "first_run": 4.235,
+            "median_of_repeats": 4.174,
             "repeats": [
-              5.184,
-              4.969,
-              4.913
+              4.163,
+              4.174,
+              4.177
             ]
           },
           "duckdb": {
-            "first_run": 0.51,
-            "median_of_repeats": 0.452,
+            "first_run": 0.424,
+            "median_of_repeats": 0.419,
             "repeats": [
-              0.445,
-              0.452,
-              0.469
+              0.414,
+              0.419,
+              0.42
             ]
           }
         },
-        "ratio_ladybug_to_duckdb": 10.992220113470271
+        "ratio_ladybug_to_duckdb": 9.958022927087738
       },
       "two_hop": {
         "description": "Traversal: distinct transactions within two hops, ignoring direction, one query per step",
         "max_difference_between_engines": 0.0,
         "seconds": {
           "ladybug": {
-            "first_run": 11.585,
-            "median_of_repeats": 11.442,
+            "first_run": 10.769,
+            "median_of_repeats": 10.929,
             "repeats": [
-              11.51,
-              11.442,
-              11.398
+              10.95,
+              10.886,
+              10.929
             ]
           },
           "duckdb": {
-            "first_run": 0.482,
-            "median_of_repeats": 0.446,
+            "first_run": 0.432,
+            "median_of_repeats": 0.415,
             "repeats": [
-              0.446,
-              0.54,
-              0.435
+              0.42,
+              0.405,
+              0.415
             ]
           }
         },
-        "ratio_ladybug_to_duckdb": 25.641361756943923
+        "ratio_ladybug_to_duckdb": 26.316572561611387
       },
       "neighbour_scores": {
         "description": "Aggregation over a join: mean and maximum neighbour score, both directions, whole graph",
-        "max_difference_between_engines": 4.996003610813204e-16,
+        "max_difference_between_engines": 5.551115123125783e-16,
         "seconds": {
           "ladybug": {
-            "first_run": 0.537,
-            "median_of_repeats": 0.558,
+            "first_run": 0.519,
+            "median_of_repeats": 0.524,
             "repeats": [
-              0.554,
-              0.558,
-              0.581
+              0.524,
+              0.52,
+              0.542
             ]
           },
           "duckdb": {
-            "first_run": 0.243,
-            "median_of_repeats": 0.24,
+            "first_run": 0.239,
+            "median_of_repeats": 0.235,
             "repeats": [
-              0.238,
-              0.24,
-              0.244
+              0.231,
+              0.235,
+              0.235
             ]
           }
         },
-        "ratio_ladybug_to_duckdb": 2.320918329291828
+        "ratio_ladybug_to_duckdb": 2.232151222929817
       },
       "pagerank": {
         "description": "Iterative: PageRank within each step, 100 fixed iterations, whole graph",
         "max_difference_between_engines": 5.898059818321144e-17,
         "seconds": {
           "ladybug": {
-            "first_run": 129.662,
-            "median_of_repeats": 129.252,
+            "first_run": 126.461,
+            "median_of_repeats": 126.823,
             "repeats": [
-              129.759,
-              128.891,
-              129.252
+              126.823,
+              126.569,
+              126.879
             ]
           },
           "duckdb": {
-            "first_run": 3.194,
-            "median_of_repeats": 3.177,
+            "first_run": 2.879,
+            "median_of_repeats": 2.817,
             "repeats": [
-              3.194,
-              3.067,
-              3.177
+              2.817,
+              2.732,
+              2.832
             ]
           }
         },
-        "ratio_ladybug_to_duckdb": 40.68379312352858
+        "ratio_ladybug_to_duckdb": 45.020575057672815
       }
     },
     "graph": {

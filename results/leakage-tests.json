@@ -2,9 +2,9 @@
   "result": "leakage-tests",
   "provenance": {
     "generated_by": "leakage_gate.py",
-    "generated_at": "2026-11-20T15:02:17+00:00",
+    "generated_at": "2026-11-21T22:08:26+00:00",
     "git": {
-      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
+      "commit": "68c1dae3008f7be6e050acb040697ba6fddc63d2",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -93,7 +93,7 @@
         "passed": true
       },
       "pagerank": {
-        "future_edge_max_change_earlier_steps": 0.0,
+        "future_edge_max_change_earlier_steps": 3.469446951953614e-18,
         "label_shuffle_max_change": 0.0,
         "passed": true
       },
@@ -135,8 +135,8 @@
       "damping": 0.85,
       "iterations": 100,
       "pagerank_final_max_change": 1.8487203413096454e-11,
-      "structural_features_seconds": 150.8
+      "structural_features_seconds": 169.2
     },
-    "seconds": 345.8
+    "seconds": 419.0
   }
 }

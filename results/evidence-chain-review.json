@@ -2,9 +2,9 @@
   "result": "evidence-chain-review",
   "provenance": {
     "generated_by": "evidence_review.py",
-    "generated_at": "2026-11-21T10:23:18+00:00",
+    "generated_at": "2026-11-21T23:49:39+00:00",
     "git": {
-      "commit": "e9f10270552021216d93c35616aeb204844f8484",
+      "commit": "68c1dae3008f7be6e050acb040697ba6fddc63d2",
       "uncommitted_changes": false
     },
     "preregistration": {

@@ -112,7 +112,7 @@ The calls that most shape the result. Each states why it was made, what it costs
 
 ### Engineering
 
-- **Arm B's graph features are queries in an embedded graph store.** Cypher queries in [`graph/queries/`](graph/queries/), run in LadybugDB, rather than calls to a Python graph library. *Why:* working knowledge of graph query languages is a stated aim of the lab, and the queries become an artefact a reader can inspect. *Cost:* speed. The same workloads ran <!-- value:engine-ratio-min -->2.3<!-- end value --> to <!-- value:engine-ratio-max -->40.7<!-- end value --> times faster in a columnar store, as the [engine comparison](docs/engine-comparison.md) records.
+- **Arm B's graph features are queries in an embedded graph store.** Cypher queries in [`graph/queries/`](graph/queries/), run in LadybugDB, rather than calls to a Python graph library. *Why:* working knowledge of graph query languages is a stated aim of the lab, and the queries become an artefact a reader can inspect. *Cost:* speed. The same workloads ran <!-- value:engine-ratio-min -->2.2<!-- end value --> to <!-- value:engine-ratio-max -->45.0<!-- end value --> times faster in a columnar store, as the [engine comparison](docs/engine-comparison.md) records.
 - **The engine comparison was kept against review advice.** Both reviews recommended cutting it, because at this size it mostly times start-up and caching. *Why kept:* the learning was worth more to the author than the risk. It was timeboxed to half a day and states its confounds beside its table.
 - **Gradient-boosted trees from scikit-learn.** One fewer dependency to pin and reproduce than a dedicated boosting library. LightGBM and XGBoost also need a system library a stock Mac lacks, so scikit-learn's version runs from a clean clone with nothing installed by hand. *Cost:* the less common choice in practice, and possibly some speed; no claim is made about accuracy either way.
 - **Static, reproducible, one command.** Pinned versions, laptop CPU, no server. Datasets are fetched by script and never committed, and only aggregates are published, because the dataset's licence (CC BY-NC-ND 4.0) does not allow redistribution. *Cost:* no interactive explorer yet.
@@ -253,7 +253,7 @@ Separated deliberately into three categories.
 - On this dataset, before the regime shift, adding graph features to a tuned local-feature model changed precision at k by +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band.
 - A two-layer GraphSAGE on the same local features, against graph features: D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. Against the local-feature model alone: D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band.
 - After the regime shift at step 43, mean per-step PR-AUC fell by 89.0% for A, 85.5% for B, 92.6% for D.
-- No feature moved under the future-edge, label-shuffle or own-label tests (`results/leakage-tests.json`).
+- No feature moved by more than 1e-12 under the future-edge, label-shuffle or own-label tests (`results/leakage-tests.json`).
 
 **What this suggests.**
 
@@ -308,7 +308,7 @@ make all
 One command on a clean clone. Pinned versions, laptop CPU. Datasets are fetched by script and never committed. Needs [uv](https://docs.astral.sh/uv/) or Python 3.13; see `00-build/NOTES.md`.
 
 <!-- generated:runtime by 00-build/render_readme.py from results/; do not edit by hand -->
-The last clean-clone run of `make all` took 7.6 hours on an Apple M3 Pro with 6 performance cores, against the specification's target of 30 minutes. The target gave way to full tuning: every arm is tuned in full at every label budget, and that stage dominates. The figure includes install and download, which depend on the network. Source: `results/pipeline-runtime.json`.
+The last clean-clone run of `make all` took 7.4 hours on an Apple M3 Pro with 6 performance cores, against the specification's target of 30 minutes. The target gave way to full tuning: every arm is tuned in full at every label budget, and that stage dominates. The figure includes install and download, which depend on the network. Source: `results/pipeline-runtime.json`.
 <!-- end generated:runtime -->
 
 ---

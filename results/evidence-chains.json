@@ -2,9 +2,9 @@
   "result": "evidence-chains",
   "provenance": {
     "generated_by": "evidence_chains.py",
-    "generated_at": "2026-11-20T16:47:18+00:00",
+    "generated_at": "2026-11-21T23:49:38+00:00",
     "git": {
-      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
+      "commit": "68c1dae3008f7be6e050acb040697ba6fddc63d2",
       "uncommitted_changes": false
     },
     "preregistration": {
@@ -13,7 +13,7 @@
       "prereg_sha256": "81b0922063be1af3655a7b04dd87e601bcff8868acbe2803bca7bb3ff2c9870a"
     },
     "leakage_gate": {
-      "passed_at": "2026-11-20T15:02:17+00:00",
+      "passed_at": "2026-11-21T22:08:26+00:00",
       "dropped_features": []
     },
     "dataset": {

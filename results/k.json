@@ -2,9 +2,9 @@
   "result": "k",
   "provenance": {
     "generated_by": "compute_k.py",
-    "generated_at": "2026-11-20T14:56:17+00:00",
+    "generated_at": "2026-11-21T22:01:12+00:00",
     "git": {
-      "commit": "6d241e532a09600334ab395f9fe68abc80d3d3c3",
+      "commit": "68c1dae3008f7be6e050acb040697ba6fddc63d2",
       "uncommitted_changes": false
     },
     "preregistration": {
