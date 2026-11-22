@@ -10,3 +10,6 @@ The rubric, from the PRD: is the reason true, sufficient, and actionable by an i
 - **Notes are published.** A note holding what looks like a transaction ID is refused.
 - **A blank sheet row keeps a saved score.** To withdraw one, edit the saved file.
 - **A blind second scorer.** `make review` also writes `data/store/runs/evidence-chain-review-blind.csv`, which holds only the chain text. After the author has scored, a language model scores that sheet with the same rubric, without seeing the author's answers, and the next `make review` saves its scores to [`evidence-chain-scores-model.csv`](evidence-chain-scores-model.csv) and counts how often the two scorers agree. The author scores first, so the model's answers cannot anchor the author's.
+## Gates and failures
+
+[failure-taxonomy.md](failure-taxonomy.md), [gate-policy.md](gate-policy.md), [coverage-matrix.md](coverage-matrix.md), [judge-calibration.md](judge-calibration.md) and the Phase 4 [ship-hold-memo.md](ship-hold-memo.md), added on 2026-11-22 (see `change_log.md`).

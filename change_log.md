@@ -285,3 +285,14 @@ The review sample's sheet lives in `data/store/runs/`, which is git-ignored and 
 ## 2026-11-22, draft markers renamed
 
 Text waiting for the author's edit is now marked `[in review]` instead of "draft for the author to edit", so every item left to review is found with one search. The deliverables table says "In review" for the same items. Wording only: no result, number or definition changed, and the entry above that mentions the old marker is left as written.
+
+## 2026-11-22, course-structure additions
+
+The author's other projects share a structure drawn from the Product School courses they took. Three of those courses (AI Evals, Product Leadership and Go-to-market) were added to the structure after this lab was specified, so their artefacts are added here, each in the folder that already owns its topic, with nothing renumbered. Prose only: no code, result, test or published figure changes, and every new file is marked `[in review]`.
+
+- `05-evals-and-guardrails/`: a failure taxonomy, the gate policy, a coverage matrix, a judge-calibration note (awaiting scores) and the Phase 4 ship-or-hold memo, which holds the gate until the author's review is done.
+- `02-the-decision/`: a business case with its kill criteria, and OKRs, written after the build and labelled as such.
+- `docs/team-charter.md`: roles and decision rights for the author, the build sessions, the reviewers and the second scorer.
+- `08-go-to-market/`: an applied exercise on readers, positioning and messaging. It positions the findings, not the author, following the PRD review's point that naming a hiring audience reads as marketing. Pricing is not applicable.
+
+The author gave the objective, the project kill criterion, the readers in order and the reviewers on 2026-11-22.
