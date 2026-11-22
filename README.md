@@ -242,7 +242,7 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 16 | Static charts | 4 | Done | [`site/charts/`](site/charts/) |
 | 17 | Failure taxonomy, gate policy and coverage matrix | All | In review | [`05-evals-and-guardrails/`](05-evals-and-guardrails/) |
 | 18 | Judge calibration for the evidence-chain review | 4 | In review; awaiting scores | [`05-evals-and-guardrails/judge-calibration.md`](05-evals-and-guardrails/judge-calibration.md) |
-| 19 | Phase 4 ship-or-hold memo | 4 | In review; holds the gate | [`05-evals-and-guardrails/ship-hold-memo.md`](05-evals-and-guardrails/ship-hold-memo.md) |
+| 19 | Phase 4 ship-or-hold memo | 4 | In review; recommends a hold | [`05-evals-and-guardrails/ship-hold-memo.md`](05-evals-and-guardrails/ship-hold-memo.md) |
 | 20 | Business case, kill criteria and OKRs | All | In review | [`02-the-decision/`](02-the-decision/) |
 | 21 | Team charter | All | In review | [`docs/team-charter.md`](docs/team-charter.md) |
 | 22 | Readers, positioning and messaging, as an exercise | After 4 | In review | [`08-go-to-market/`](08-go-to-market/) |

@@ -13,4 +13,10 @@ The rubric, from the PRD: is the reason true, sufficient, and actionable by an i
 
 ## Gates and failures
 
-[failure-taxonomy.md](failure-taxonomy.md), [gate-policy.md](gate-policy.md), [coverage-matrix.md](coverage-matrix.md), [judge-calibration.md](judge-calibration.md) and the Phase 4 [ship-hold-memo.md](ship-hold-memo.md), added on 2026-11-22 (see `change_log.md`).
+Added on 2026-11-22 from the AI Evals course structure (see `change_log.md`), all `[in review]`:
+
+- [failure-taxonomy.md](failure-taxonomy.md): every failure found so far, ranked, and what now catches it.
+- [gate-policy.md](gate-policy.md): Gate 1, Gate 2 and the other checks, which are hard and which advisory.
+- [coverage-matrix.md](coverage-matrix.md): what each check catches, what nothing catches, and the critical gap.
+- [judge-calibration.md](judge-calibration.md): the protocol for the blind second scorer; awaiting scores.
+- [ship-hold-memo.md](ship-hold-memo.md): the Phase 4 gate decision, recommended as a hold.

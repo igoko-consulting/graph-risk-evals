@@ -288,13 +288,12 @@ Text waiting for the author's edit is now marked `[in review]` instead of "draft
 
 ## 2026-11-22, course-structure additions
 
-The author's other projects share a structure drawn from the Product School courses they took. Three of those courses (AI Evals, Product Leadership and Go-to-market) were added to the structure after this lab was specified, so their artefacts are added here, each in the folder that already owns its topic, with nothing renumbered. Prose only: no code, result, test or published figure changes, and every new file is marked `[in review]`.
+The author's other projects share a structure drawn from the Product School courses they took. Three of those courses (AI Evals, Product Leadership and Go-to-market) were added to that structure after this lab was specified, so their artefacts are added here, each in the folder that already owns its topic, with nothing renumbered and one new folder. Each follows the matching course artefact's structure and is written from this repository's record, citing where each claim comes from. Prose only: no code, result, test or published figure changes, and every new file is marked `[in review]`.
 
-- `05-evals-and-guardrails/`: a failure taxonomy, the gate policy, a coverage matrix, a judge-calibration note (awaiting scores) and the Phase 4 ship-or-hold memo, which holds the gate until the author's review is done.
-- `02-the-decision/`: a business case with its kill criteria, and OKRs, written after the build and labelled as such.
-- `docs/team-charter.md`: roles and decision rights for the author, the build sessions, the reviewers and the second scorer.
-- `08-go-to-market/`: an applied exercise on readers, positioning and messaging. It positions the findings, not the author, following the PRD review's point that naming a hiring audience reads as marketing. Pricing is not applicable.
+- `05-evals-and-guardrails/`: a failure taxonomy, ranked; the gate policy as built; a coverage matrix, whose critical gap is that red line 4 has no failing test; a judge-calibration protocol for the blind second scorer, awaiting scores; and the Phase 4 ship-or-hold memo, which recommends holding the gate until the author's review is done.
+- `02-the-decision/`: a business case with the project and pre-registered kill criteria, and OKRs with an outcome roadmap, written after the build and labelled as such.
+- `docs/team-charter.md`: roles, decision rights, the build sessions, and the author's sign-offs on record. It records that no stakeholder updates exist.
+- `08-go-to-market/`: an applied exercise on readers, positioning and messaging, with channels, sequence and metrics marked proposed. It positions the findings, not the author, following the PRD review's point that naming a hiring audience reads as marketing. Pricing is not applicable.
+- `README.md`: the repo tree and new rows in the deliverables table, hand-written, with no figures.
 
-The author gave the objective, the project kill criterion, the readers in order and the reviewers on 2026-11-22.
-
-A check of these files against the record then corrected the business case, which had placed the independent audit after the two-day sprint; it fell within it. The failure taxonomy gained the untestable predictions both PRD reviewers found, and the README's deliverables table gained a row for each new artefact.
+The author gave the objective (learning), the project kill criterion (scope, a working version demonstrating learning, within the time frame), the readers in order and the reviewers, by role, on 2026-11-22.
