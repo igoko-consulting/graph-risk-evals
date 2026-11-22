@@ -20,5 +20,5 @@ The case for building this lab, framed the way the Product Leadership course fra
 ## What happened
 
 - **No kill criterion fired.** The thin slice worked in the first session. Before the regime shift, Arm B beat Arm A outside the noise band, so Arm D was built, as the pre-registration allowed (README, Results).
-- **The build fitted the sprint; the checking did not.** Phases 1 to 4 were built within the sprint. The independent audit, the clean-clone reruns and the write-up continued after it, and are recorded in `change_log.md`.
+- **The pipeline fitted the sprint; the follow-through did not.** The arms and their results, the independent audit and its fixes, and the cold-reader revision all fell within the sprint (`change_log.md`). The later clean-clone reruns, the build-days result, the governance note, the decision log and the blind second scorer came after it (git history).
 - **Reviewers.** Personal only: family and colleagues (author, 2026-11-22). There was no sponsor and no budget holder.

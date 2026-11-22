@@ -16,7 +16,7 @@ In order (author, 2026-11-22):
 
 ## Positioning
 
-For product leaders deciding whether to invest in graph methods for fraud or AML detection, this lab is a pre-registered, reproducible test of where graph stops paying for itself. Unlike most published comparisons, its baseline leaves out the neighbour aggregates, so the lift from graph information is isolated, and it reports cost per true positive at a fixed alert budget rather than model scores alone.
+For product leaders deciding whether to invest in graph methods for fraud or AML detection, this lab is a pre-registered, reproducible test of where graph stops paying for itself. Unlike many published comparisons, its baseline leaves out the neighbour aggregates, so the lift from graph information is isolated, and it reports cost per true positive at a fixed alert budget rather than model scores alone.
 
 ## Battlecard: against the published comparisons
 

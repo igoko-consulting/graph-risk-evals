@@ -296,3 +296,5 @@ The author's other projects share a structure drawn from the Product School cour
 - `08-go-to-market/`: an applied exercise on readers, positioning and messaging. It positions the findings, not the author, following the PRD review's point that naming a hiring audience reads as marketing. Pricing is not applicable.
 
 The author gave the objective, the project kill criterion, the readers in order and the reviewers on 2026-11-22.
+
+A check of these files against the record then corrected the business case, which had placed the independent audit after the two-day sprint; it fell within it. The failure taxonomy gained the untestable predictions both PRD reviewers found, and the README's deliverables table gained a row for each new artefact.
