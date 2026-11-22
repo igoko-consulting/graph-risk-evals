@@ -1,6 +1,6 @@
 # Entity resolution: the layer beneath the graph
 
-_Draft for the author to edit._
+[in review]
 
 ## Why it comes first
 

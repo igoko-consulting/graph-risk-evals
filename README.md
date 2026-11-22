@@ -41,7 +41,7 @@ If you want to check the work:
 - **One public dataset.** The Elliptic Bitcoin transaction graph: transactions as nodes, anonymised features, and most transactions unlabelled. It is not payments data. Nothing here should be read as a claim about payments without the account-level data this dataset lacks.
 - **What the time box left out, on purpose.** An unsupervised arm, graph algorithms beyond Arm B's features, the interactive threshold explorer, a second dataset, continuous integration and adversarial tests. Each is deferred in the roadmap, not ruled out. See [Phase 5](#planned-extension-phase-5).
 - **What it kept, despite the time box.** Pre-registration, leakage tests and equal tuning for every arm. Dropping any of them would have been quicker, and would have left a result nobody could trust. The price was runtime: the full protocol takes hours rather than the <!-- value:runtime-target-minutes -->30<!-- end value --> minutes the specification targeted.
-- **How to read the drafts.** Text marked "draft for the author to edit" is not yet in its final form. The numbers inside it are generated and final; the wording around them is not.
+- **How to read the drafts.** Text marked [in review] is not yet in its final form. The numbers inside it are generated and final; the wording around them is not.
 
 ---
 
@@ -85,7 +85,7 @@ Each row pairs a possible finding with the product decision it would support. Th
 | The GNN adds material value beyond graph features | Investigate whether the operational burden is justified | No | D minus B: -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. H2 stands: the GNN does not clear the bar |
 | All arms perform similarly | Do not invest further on the basis of this dataset | No | No: B minus A, D minus B and D minus A are outside the noise band |
 
-_Draft for the author to edit. Which row applies is decided by code from `results/`, using rules written before Arm D ran. The product decisions are the PRD's; they are about this dataset and do not transfer to payments without the account-level data this dataset lacks._
+[in review] _Which row applies is decided by code from `results/`, using rules written before Arm D ran. The product decisions are the PRD's; they are about this dataset and do not transfer to payments without the account-level data this dataset lacks._
 <!-- end generated:decision-matrix -->
 
 ---
@@ -116,7 +116,7 @@ The calls that most shape the result. Each states why it was made, what it costs
 - **The engine comparison was kept against review advice.** Both reviews recommended cutting it, because at this size it mostly times start-up and caching. *Why kept:* the learning was worth more to the author than the risk. It was timeboxed to half a day and states its confounds beside its table.
 - **Gradient-boosted trees from scikit-learn.** One fewer dependency to pin and reproduce than a dedicated boosting library. LightGBM and XGBoost also need a system library a stock Mac lacks, so scikit-learn's version runs from a clean clone with nothing installed by hand. *Cost:* the less common choice in practice, and possibly some speed; no claim is made about accuracy either way.
 - **Static, reproducible, one command.** Pinned versions, laptop CPU, no server. Datasets are fetched by script and never committed, and only aggregates are published, because the dataset's licence (CC BY-NC-ND 4.0) does not allow redistribution. *Cost:* no interactive explorer yet.
-- **Every number generated.** Tables, charts and the numbers in prose are written by code from `results/`, and each result records the commit and data that produced it. *Why:* it removes transcription errors and makes every figure traceable. *Cost:* prose is written around numbers it cannot see in advance, which is why some of it is marked as a draft.
+- **Every number generated.** Tables, charts and the numbers in prose are written by code from `results/`, and each result records the commit and data that produced it. *Why:* it removes transcription errors and makes every figure traceable. *Cost:* prose is written around numbers it cannot see in advance, which is why some of it is marked [in review].
 - **Deliberately not built.** An unsupervised community-detection arm, because on small disjoint per-step graphs scored against incomplete labels it gives a noisy result that does not serve the question. Language-model explanation summaries, because they add a second evaluation problem, faithfulness; deterministic evidence chains can be checked fact by fact.
 
 ---
@@ -158,7 +158,7 @@ Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json
 
 ![Precision at k by test step, all arms](site/charts/precision-at-k-all-arms.svg)
 
-**Phase 3 finding (draft for the author to edit).** Before the regime shift, on point estimates, the arms ranked B, then A, then D on precision at k. B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band; D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band; D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band. Given A's local features plus the transaction graph, the GNN still ranked below A. That matches the direction of the published comparison (Weber et al., 2019). After the shift at step 43, precision at k was 4.9% for A, 10.9% for B and 4.2% for D, against a ceiling of 23.7% set by the number of illicit labels. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. Arm D's search space was fixed before any result and was not widened afterwards.
+**Phase 3 finding.** [in review] Before the regime shift, on point estimates, the arms ranked B, then A, then D on precision at k. B minus A was +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band; D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band; D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band. Given A's local features plus the transaction graph, the GNN still ranked below A. That matches the direction of the published comparison (Weber et al., 2019). After the shift at step 43, precision at k was 4.9% for A, 10.9% for B and 4.2% for D, against a ceiling of 23.7% set by the number of illicit labels. This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level payments graphs. Arm D's search space was fixed before any result and was not widened afterwards.
 <!-- end generated:results -->
 
 ### Hypotheses
@@ -211,7 +211,7 @@ For each transaction Arm B queues, the graph store builds a structural reason an
 | Also queued by Arm A, without graph features | 83.1% | 93.2% | 48.9% |
 | Median transactions within two hops | 9 | 10 | 7 |
 
-**Draft for the author to edit.** Every chain is built with `graph/queries/`, and all 8,950 facts in them were recomputed in SQL from the columnar store; none disagreed. 83.1% of the queue would have been queued by Arm A without any graph feature, so for most queued transactions the chain is context rather than the reason they were queued. A chain can never cite a counterparty whose label was known at scoring time: edges never cross time steps, and there are no links from a queued transaction to steps 1 to 34. On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.
+[in review] Every chain is built with `graph/queries/`, and all 8,950 facts in them were recomputed in SQL from the columnar store; none disagreed. 83.1% of the queue would have been queued by Arm A without any graph feature, so for most queued transactions the chain is context rather than the reason they were queued. A chain can never cite a counterparty whose label was known at scoring time: edges never cross time steps, and there are no links from a queued transaction to steps 1 to 34. On payments data the strongest evidence is often a link to a confirmed bad account; this dataset cannot show one.
 
 **Arm D cannot produce a chain.** Across the 1,530 transactions Arm D queued in both periods, its score depends on a median of 5 transactions within two hops, through learned weights. The traversal can list them but not say which mattered, and a post-hoc explainer would add an approximation, not a fact about the graph.
 
@@ -233,10 +233,10 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 7 | Arm D, GraphSAGE | 3 | Done | `00-build/` |
 | 8 | Label-budget curve | 3 | Done | `results/` |
 | 9 | Cost per true positive | 3 | Done, modelled; build days pending | `03-the-margin/` |
-| 10 | Decision matrix | 4 | Draft, generated | this README |
+| 10 | Decision matrix | 4 | In review, generated | this README |
 | 11 | Evidence chains | 4 | Done; human review pending | `results/evidence-chains.json` |
-| 12 | Entity resolution note | 4 | Draft | [`docs/entity-resolution.md`](docs/entity-resolution.md) |
-| 13 | Governance and sovereignty note | 4 | Draft | [`06-governance/governance-and-sovereignty.md`](06-governance/governance-and-sovereignty.md) |
+| 12 | Entity resolution note | 4 | In review | [`docs/entity-resolution.md`](docs/entity-resolution.md) |
+| 13 | Governance and sovereignty note | 4 | In review | [`06-governance/governance-and-sovereignty.md`](06-governance/governance-and-sovereignty.md) |
 | 14 | Decision log | 4 | Not started: needs the author's production experience | `07-decision-log/` |
 | 15 | Engine comparison appendix | 4 | Done | [`docs/engine-comparison.md`](docs/engine-comparison.md) |
 | 16 | Static charts | 4 | Done | [`site/charts/`](site/charts/) |
@@ -248,7 +248,7 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 Separated deliberately into three categories.
 
 <!-- generated:limitations by 00-build/render_readme.py from results/; do not edit by hand -->
-**What this demonstrates.** _Draft for the author to edit._
+**What this demonstrates.** [in review]
 
 - On this dataset, before the regime shift, adding graph features to a tuned local-feature model changed precision at k by +1.8 pts (+0.6 pts to +3.2 pts), B higher, outside the noise band.
 - A two-layer GraphSAGE on the same local features, against graph features: D minus B -13.2 pts (-15.6 pts to -10.2 pts), B higher, outside the noise band. Against the local-feature model alone: D minus A -11.4 pts (-13.5 pts to -8.6 pts), A higher, outside the noise band.

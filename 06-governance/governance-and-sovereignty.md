@@ -1,6 +1,6 @@
 # Governance and sovereignty
 
-_Draft for the author to edit._
+[in review]
 
 The first half describes what this repository does with its data, and every line of it can be checked in the code. The second comes from the author's production work, not from the dataset, which has no geography, jurisdictions or account holders.
 

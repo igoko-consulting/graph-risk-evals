@@ -281,3 +281,7 @@ An independent read-only review, made as a hiring manager and then a technical r
 The review sample's sheet lives in `data/store/runs/`, which is git-ignored and rewritten by every run, so scores entered there would be lost and the README could not report them. The sheet stays there, because its chains name transactions and the dataset's licence rules out publishing per-transaction outputs. The author's answers are now saved to `05-evals-and-guardrails/evidence-chain-scores.csv` against a SHA-256 of each chain, without the chain itself, and notes that look like transaction IDs are refused.
 
 `make review` saves the scores and counts them into `results/evidence-chain-review.json`, from which the README's sentence is generated; it also runs as a stage after the evidence chains. A rerun refills the sheet from the saved scores. If a chain changes, the scores given to it are not carried over: the run halts and says so. The counts write no model feature values, so they pass Gate 1 only. No result or outcome changes; the sample is not yet scored.
+
+## 2026-11-22, draft markers renamed
+
+Text waiting for the author's edit is now marked `[in review]` instead of "draft for the author to edit", so every item left to review is found with one search. The deliverables table says "In review" for the same items. Wording only: no result, number or definition changed, and the entry above that mentions the old marker is left as written.

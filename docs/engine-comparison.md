@@ -1,6 +1,6 @@
 # Engine comparison appendix
 
-_Draft for the author to edit. Timeboxed to half a day, as the specification requires._
+[in review] _Timeboxed to half a day, as the specification requires._
 
 ## What it asks
 

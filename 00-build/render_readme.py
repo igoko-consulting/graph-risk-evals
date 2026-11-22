@@ -8,7 +8,7 @@ the protocol said would be reported alongside, and the H4 limitation gained A's 
 The Phase 4 evidence-chain and engine wording was written after a local smoke run whose numbers were
 discarded; its one conditional sentence depends on the share of the queue Arm A also queues. The queue-volume block
 and the runtime line were written after their results were published; they state no outcome. Outcomes are computed in
-evaluate_phase3.py and are not touched here. It is a draft for the author to edit.
+evaluate_phase3.py and are not touched here. Its prose is marked [in review] until the author has edited it.
 
 Hand-written prose quotes figures through value spans, filled here from results/ like the blocks. The spans and the
 generated leakage sentence were added after an audit, with every result already published; they state no outcome.
@@ -140,7 +140,7 @@ def finding(ev: dict) -> str:
         "This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level "
         "payments graphs. The post-shift period has few illicit labels, which caps precision at k there."
     )
-    return f"**Phase 2 finding (draft for the author to edit).** {headline} {shift} {limits}"
+    return f"**Phase 2 finding.** [in review] {headline} {shift} {limits}"
 
 
 def replace_block(text: str, name: str, content: str) -> str:
@@ -275,7 +275,7 @@ def finding_phase3(ev: dict) -> str:
         "This is one Bitcoin transaction graph with anonymised features. It says nothing directly about account-level "
         "payments graphs. Arm D's search space was fixed before any result and was not widened afterwards."
     )
-    return "**Phase 3 finding (draft for the author to edit).** " + " ".join(parts)
+    return "**Phase 3 finding.** [in review] " + " ".join(parts)
 
 
 def results_block_phase3(ev: dict, cost: dict) -> str:
@@ -416,7 +416,7 @@ def decision_block(ev: dict, cost: dict) -> str:
         "|---|---|---|---|",
         *[f"| {finding} | {decision} | {yes(applies[key])} | {evidence[key]} |" for key, finding, decision in MATRIX],
         "",
-        "_Draft for the author to edit. Which row applies is decided by code from `results/`, using rules written before "
+        "[in review] _Which row applies is decided by code from `results/`, using rules written before "
         "Arm D ran. The product decisions are the PRD's; they are about this dataset and do not transfer to payments "
         "without the account-level data this dataset lacks._",
     ]
@@ -465,7 +465,7 @@ def limitations_block(ev: dict, cost: dict, budget: dict | None, gate: dict) -> 
                          "Validation labels were kept in full at every budget, so small-budget results are somewhat optimistic. "
                          f"A's precision at k was {pct(a_lo)} at {budget_label(lo)} of training labels and {pct(a_hi)} "
                          f"at {budget_label(hi)}.")
-    return ("**What this demonstrates.** _Draft for the author to edit._\n\n" + "\n".join(f"- {x}" for x in demonstrated)
+    return ("**What this demonstrates.** [in review]\n\n" + "\n".join(f"- {x}" for x in demonstrated)
             + "\n\n**What this suggests.**\n\n" + "\n".join(f"- {x}" for x in suggested))
 
 
@@ -489,7 +489,7 @@ def evidence_block(e: dict, review: dict | None) -> str:
     a_share = cols[0]["also_queued_by_arm_a"]
     known_steps = "steps {} to {}".format(*recorded()["known_labels"])
     notes = [
-        f"**Draft for the author to edit.** Every chain is built with `graph/queries/`, and all {t['facts_checked']:,} "
+        f"[in review] Every chain is built with `graph/queries/`, and all {t['facts_checked']:,} "
         f"facts in them were recomputed in SQL from the columnar store; "
         + ("none disagreed. " if t["facts_false"] == 0 else f"{t['facts_false']} disagreed. ")
         + (f"{pct(a_share)} of the queue would have been queued by Arm A without any graph feature, so for most queued "
