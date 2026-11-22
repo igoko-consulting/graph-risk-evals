@@ -4,12 +4,15 @@ The chains name transactions, and the dataset's licence rules out publishing per
 the sheet the author reads and scores stays in data/store/runs/. Each score is saved to
 05-evals-and-guardrails/evidence-chain-scores.csv against a SHA-256 of the chain it judges, so a later run
 refills the sheet, and a chain that changes cannot inherit a score given to a different one.
+
+A second scorer, a language model, scores the same chains afterwards from a sheet that holds only the chain text, so
+it never sees the author's answers. Its scores are saved the same way, and the result counts how often the two agree.
 """
 import csv
 import hashlib
 import re
 
-from paths import REVIEW_SCORES, REVIEW_SHEET, ROOT
+from paths import REVIEW_SCORES, REVIEW_SCORES_MODEL, REVIEW_SHEET, REVIEW_SHEET_BLIND, ROOT
 from protocol import require
 from results_io import write_result
 
@@ -17,7 +20,10 @@ CRITERIA = ("true", "sufficient", "actionable")
 ANSWERS = {"y": "y", "yes": "y", "n": "n", "no": "n", "": ""}
 SHEET_COLUMNS = ("node_id", "chain", *CRITERIA, "note")
 SCORE_COLUMNS = ("chain_sha256", *CRITERIA, "note")
-RUBRIC = "Is the reason true, sufficient, and actionable by an investigator. Each answered y or n by the author."
+BLIND_COLUMNS = ("chain", *CRITERIA, "note")
+RUBRIC = "Is the reason true, sufficient, and actionable by an investigator. Each criterion answered y or n."
+SECOND_SCORER = "A language model, Claude Opus 5.5, given the same rubric"
+BLIND_PROTOCOL = "Scored after the author, from a sheet holding only the chain text, so it never saw the author's answers."
 
 
 def fingerprint(chain: str) -> str:
@@ -54,18 +60,19 @@ def scored(row: dict) -> bool:
     return any(row[c] for c in CRITERIA) or bool(row["note"])
 
 
-def refuse_stale(saved: dict, current: set) -> None:
+def refuse_stale(saved: dict, current: set, scores=REVIEW_SCORES) -> None:
     stale = [h for h, r in saved.items() if h not in current and scored(r)]
-    require(not stale, f"{len(stale)} saved scores in {REVIEW_SCORES.relative_to(ROOT)} judge chains that are no "
-                       "longer in the review sample, so they cannot be carried over. Move the file aside and score "
-                       "the new sample.")
+    if stale:
+        require(False, f"{len(stale)} saved scores in {scores.relative_to(ROOT)} judge chains that are no "
+                           "longer in the review sample, so they cannot be carried over. Move the file aside and score "
+                           "the new sample.")
 
 
 def sync(sheet=REVIEW_SHEET, scores=REVIEW_SCORES) -> list[dict]:
     """Save the sheet's scores in sheet order. A blank sheet row keeps a score already saved for that chain."""
     saved = read_saved(scores)
     rows = [r if scored(r) else saved.get(r["chain_sha256"], r) for r in scores_from_sheet(sheet)]
-    refuse_stale(saved, {r["chain_sha256"] for r in rows})
+    refuse_stale(saved, {r["chain_sha256"] for r in rows}, scores)
     with open(scores, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=SCORE_COLUMNS, lineterminator="\n")
         w.writeheader()
@@ -78,7 +85,7 @@ def write_sheet(sample: list[tuple[int, str]], sheet=REVIEW_SHEET, scores=REVIEW
     if sheet.is_file():
         sync(sheet, scores)
     saved = read_saved(scores)
-    refuse_stale(saved, {fingerprint(chain) for _, chain in sample})
+    refuse_stale(saved, {fingerprint(chain) for _, chain in sample}, scores)
     sheet.parent.mkdir(parents=True, exist_ok=True)
     with open(sheet, "w", newline="") as f:
         w = csv.writer(f)
@@ -86,25 +93,59 @@ def write_sheet(sample: list[tuple[int, str]], sheet=REVIEW_SHEET, scores=REVIEW
         for node_id, chain in sample:
             s = saved.get(fingerprint(chain), {})
             w.writerow([node_id, chain, *(s.get(c, "") for c in CRITERIA), s.get("note", "")])
+    if sheet == REVIEW_SHEET:
+        write_blind_sheet([chain for _, chain in sample])
+
+
+def write_blind_sheet(chains: list[str], sheet=REVIEW_SHEET_BLIND, scores=REVIEW_SCORES_MODEL) -> None:
+    """The second scorer's sheet: the chain text and its own saved answers, never the author's."""
+    if sheet.is_file():
+        sync(sheet, scores)
+    saved = read_saved(scores)
+    refuse_stale(saved, {fingerprint(chain) for chain in chains}, scores)
+    sheet.parent.mkdir(parents=True, exist_ok=True)
+    with open(sheet, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(BLIND_COLUMNS)
+        for chain in chains:
+            s = saved.get(fingerprint(chain), {})
+            w.writerow([chain, *(s.get(c, "") for c in CRITERIA), s.get("note", "")])
+
+
+def counts(rows: list[dict]) -> dict:
+    done = [r for r in rows if r["true"]]
+    return {"scored": len(done), "answered_yes": {c: sum(r[c] == "y" for r in done) for c in CRITERIA},
+            "yes_to_all_three": sum(all(r[c] == "y" for c in CRITERIA) for r in done)}
+
+
+def agreement(first: list[dict], second: list[dict]) -> dict:
+    other = {r["chain_sha256"]: r for r in second if r["true"]}
+    both = [(r, other[r["chain_sha256"]]) for r in first if r["true"] and r["chain_sha256"] in other]
+    return {"chains_scored_by_both": len(both), "same_answer": {c: sum(a[c] == b[c] for a, b in both) for c in CRITERIA}}
 
 
 def main() -> None:
     require(REVIEW_SHEET.is_file(), f"{REVIEW_SHEET.relative_to(ROOT)} is missing; run `make all` first")
     rows = sync()
-    done = [r for r in rows if r["true"]]
-    yes = {c: sum(r[c] == "y" for r in done) for c in CRITERIA}
+    if not REVIEW_SHEET_BLIND.is_file():
+        write_blind_sheet([r["chain"] for r in read_csv(REVIEW_SHEET)])
+    second = sync(REVIEW_SHEET_BLIND, REVIEW_SCORES_MODEL)
+    mine, theirs = counts(rows), counts(second)
     write_result("evidence-chain-review", {
         "sample": len(rows),
-        "scored": len(done),
-        "answered_yes": yes,
-        "yes_to_all_three": sum(all(r[c] == "y" for c in CRITERIA) for r in done),
+        **mine,
         "rubric": RUBRIC,
-        "scorer": "The author alone; there is no second scorer.",
+        "scorer": "The author.",
+        "second_scorer": {"who": SECOND_SCORER, "protocol": BLIND_PROTOCOL, **theirs,
+                          "scores_file": str(REVIEW_SCORES_MODEL.relative_to(ROOT)),
+                          "sheet": str(REVIEW_SHEET_BLIND.relative_to(ROOT))},
+        "agreement": agreement(rows, second),
         "drawn_from": "A seeded sample of Arm B's pre-shift queue, as recorded in results/evidence-chains.json.",
         "scores_file": str(REVIEW_SCORES.relative_to(ROOT)),
         "sheet": str(REVIEW_SHEET.relative_to(ROOT)),
     })
-    print(f"evidence-chain review: {len(done)} of {len(rows)} scored; scores saved to {REVIEW_SCORES.relative_to(ROOT)}")
+    print(f"evidence-chain review: author {mine['scored']} of {len(rows)} scored, second scorer {theirs['scored']}; "
+          f"scores saved to {REVIEW_SCORES.relative_to(ROOT)} and {REVIEW_SCORES_MODEL.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

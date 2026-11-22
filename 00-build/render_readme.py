@@ -521,9 +521,18 @@ def review_note(e: dict, r: dict | None) -> str:
         return where + "Not yet scored. " + source
     yes = r["answered_yes"]
     so_far = f"{r['scored']} of {r['sample']} scored so far" if r["scored"] < r["sample"] else f"All {r['sample']} scored"
-    return (where + f"{so_far}: {yes['true']} true, {yes['sufficient']} sufficient, {yes['actionable']} actionable, "
-            f"{r['yes_to_all_three']} all three. One scorer and a small sample, so this suggests whether the chains "
-            "would serve an investigator; it does not demonstrate it. " + source)
+    text = where + (f"{so_far}: {yes['true']} true, {yes['sufficient']} sufficient, {yes['actionable']} actionable, "
+                    f"{r['yes_to_all_three']} all three. ")
+    second, agree = r.get("second_scorer"), r.get("agreement")
+    if second and agree and agree["chains_scored_by_both"]:
+        same = agree["same_answer"]
+        text += (f"A second scorer, {second['who'][0].lower()}{second['who'][1:]}, scored the same chains without seeing "
+                 f"the author's answers. On the {agree['chains_scored_by_both']} both scored, it gave the same answer on "
+                 f"{same['true']} for true, {same['sufficient']} for sufficient and {same['actionable']} for actionable. ")
+        caveat = "Two scorers, one of them a model, and a small sample"
+    else:
+        caveat = "One scorer and a small sample"
+    return text + f"{caveat}, so this suggests whether the chains would serve an investigator; it does not demonstrate it. " + source
 
 
 def runtime_block(rt: dict) -> str:
