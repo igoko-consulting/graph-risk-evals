@@ -425,8 +425,8 @@ def decision_block(ev: dict, cost: dict) -> str:
 
 def leakage_sentence(gate: dict) -> str:
     dropped = gate["dropped_features"]
-    kept = [v for name, r in gate["per_feature"].items() if name not in dropped for key, v in r.items() if key != "passed"]
-    moved = "moved" if max(kept, default=0.0) == 0 else f"moved by more than {gate['tolerance']:g}"
+    # Floating-point noise below the tolerance varies between identical runs, so an exact-zero claim would not reproduce.
+    moved = f"moved by more than {gate['tolerance']:g}"
     tests = "the future-edge, label-shuffle or own-label tests"
     if not dropped:
         return f"No feature {moved} under {tests} (`results/leakage-tests.json`)."
