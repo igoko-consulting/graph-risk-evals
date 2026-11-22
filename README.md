@@ -236,7 +236,7 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 10 | Decision matrix | 4 | Draft, generated | this README |
 | 11 | Evidence chains | 4 | Done; human review pending | `results/evidence-chains.json` |
 | 12 | Entity resolution note | 4 | Draft | [`docs/entity-resolution.md`](docs/entity-resolution.md) |
-| 13 | Governance and sovereignty note | 4 | Not started: needs the author's production experience | `06-governance/` |
+| 13 | Governance and sovereignty note | 4 | Draft | [`06-governance/governance-and-sovereignty.md`](06-governance/governance-and-sovereignty.md) |
 | 14 | Decision log | 4 | Not started: needs the author's production experience | `07-decision-log/` |
 | 15 | Engine comparison appendix | 4 | Done | [`docs/engine-comparison.md`](docs/engine-comparison.md) |
 | 16 | Static charts | 4 | Done | [`site/charts/`](site/charts/) |
