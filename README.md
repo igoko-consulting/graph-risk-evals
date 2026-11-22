@@ -12,7 +12,7 @@ Before the regime shift, adding graph features to a tuned tabular model raised p
 **Decision, for this Bitcoin dataset only: invest in graph-derived features, not graph models.** Costs are modelled, not measured. Nothing here transfers to payments without the account-level data this dataset lacks. Sources: `results/evaluation-phase-3.json`, `results/cost-per-true-positive.json`.
 <!-- end generated:answer -->
 
-> **Status.** Phases 1 to 4 are built and have run end to end from a clean clone. Still with the author: the governance note, the decision log, scoring the evidence-chain review sample, and build days per arm, on which the investment decision partly depends. Every result on this page, and every count, setting and assumption the pipeline uses, is read from `results/` and written by code, including those quoted in prose.
+> **Status.** Phases 1 to 4 are built and have run end to end from a clean clone. Still with the author: reviewing the items marked [in review], scoring the evidence-chain review sample, and build days per arm, on which the investment decision partly depends. Every result on this page, and every count, setting and assumption the pipeline uses, is read from `results/` and written by code, including those quoted in prose.
 
 ---
 
@@ -237,7 +237,7 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 11 | Evidence chains | 4 | Done; human review pending | `results/evidence-chains.json` |
 | 12 | Entity resolution note | 4 | In review | [`docs/entity-resolution.md`](docs/entity-resolution.md) |
 | 13 | Governance and sovereignty note | 4 | In review | [`06-governance/governance-and-sovereignty.md`](06-governance/governance-and-sovereignty.md) |
-| 14 | Decision log | 4 | Not started: needs the author's production experience | `07-decision-log/` |
+| 14 | Decision log | 4 | In review | [`07-decision-log/decision-log.md`](07-decision-log/decision-log.md) |
 | 15 | Engine comparison appendix | 4 | Done | [`docs/engine-comparison.md`](docs/engine-comparison.md) |
 | 16 | Static charts | 4 | Done | [`site/charts/`](site/charts/) |
 
