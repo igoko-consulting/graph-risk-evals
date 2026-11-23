@@ -10,3 +10,13 @@ The rubric, from the PRD: is the reason true, sufficient, and actionable by an i
 - **Notes are published.** A note holding what looks like a transaction ID is refused.
 - **A blank sheet row keeps a saved score.** To withdraw one, edit the saved file.
 - **A blind second scorer.** `make review` also writes `data/store/runs/evidence-chain-review-blind.csv`, which holds only the chain text. After the author has scored, a language model scores that sheet with the same rubric, without seeing the author's answers, and the next `make review` saves its scores to [`evidence-chain-scores-model.csv`](evidence-chain-scores-model.csv) and counts how often the two scorers agree. The author scores first, so the model's answers cannot anchor the author's.
+
+## Gates and failures
+
+Added on 2026-11-22 from the AI Evals course structure (see `change_log.md`), all `[in review]`:
+
+- [failure-taxonomy.md](failure-taxonomy.md): every failure found so far, ranked, and what now catches it.
+- [gate-policy.md](gate-policy.md): Gate 1, Gate 2 and the other checks, which are hard and which advisory.
+- [coverage-matrix.md](coverage-matrix.md): what each check catches, what nothing catches, and the critical gap.
+- [judge-calibration.md](judge-calibration.md): the protocol for the blind second scorer; awaiting scores.
+- [ship-hold-memo.md](ship-hold-memo.md): the Phase 4 gate decision, recommended as a hold.

@@ -240,6 +240,12 @@ Whether a chain is true, sufficient and actionable needs a human. A seeded sampl
 | 14 | Decision log | 4 | In review | [`07-decision-log/decision-log.md`](07-decision-log/decision-log.md) |
 | 15 | Engine comparison appendix | 4 | Done | [`docs/engine-comparison.md`](docs/engine-comparison.md) |
 | 16 | Static charts | 4 | Done | [`site/charts/`](site/charts/) |
+| 17 | Failure taxonomy, gate policy and coverage matrix | All | In review | [`05-evals-and-guardrails/`](05-evals-and-guardrails/) |
+| 18 | Judge calibration for the evidence-chain review | 4 | In review; awaiting scores | [`05-evals-and-guardrails/judge-calibration.md`](05-evals-and-guardrails/judge-calibration.md) |
+| 19 | Phase 4 ship-or-hold memo | 4 | In review; recommends a hold | [`05-evals-and-guardrails/ship-hold-memo.md`](05-evals-and-guardrails/ship-hold-memo.md) |
+| 20 | Business case, kill criteria and OKRs | All | In review | [`02-the-decision/`](02-the-decision/) |
+| 21 | Team charter | All | In review | [`docs/team-charter.md`](docs/team-charter.md) |
+| 22 | Readers, positioning and messaging, as an exercise | After 4 | In review | [`08-go-to-market/`](08-go-to-market/) |
 
 ---
 
@@ -318,25 +324,26 @@ The last clean-clone run of `make all` took 7.4 hours on an Apple M3 Pro with 6 
 ```
 00-build/                 pipeline: loaders, features, arms, evaluation
 01-the-bet/               pre-registration, hypotheses, kill criteria
-02-the-decision/          the ladder, build-vs-buy, rung selection
+02-the-decision/          the ladder, build-vs-buy, business case, OKRs
 03-the-margin/            cost model, assumptions, sensitivity
 04-the-data/              dataset notes, labels, leakage tests
-05-evals-and-guardrails/  eval stack, red lines, review queue
+05-evals-and-guardrails/  eval stack, gates, failure taxonomy, review queue
 06-governance/            controls, data protection, sovereignty
 07-decision-log/          anonymised production decisions, mapped to rungs
+08-go-to-market/          readers, positioning and messaging, as an exercise
 graph/queries/            traversal queries for Arm B features
 graph/sql/                the same workloads in SQL, for the engine comparison
 results/                  JSON. every result on this page comes from here
 site/charts/              static charts, written by code from results/
 prds/                     versioned PRDs, never overwritten
-docs/                     review disposition, notes, diagrams
+docs/                     review disposition, team charter, notes, diagrams
 ```
 
 ---
 
 ## Related work in this portfolio
 
-Conventions, eval structure, strategy framing and roadmap format are carried across rather than reinvented: [`ai-evals`](https://github.com/igoko-consulting/ai-evals), [`my-AI-product-strategy`](https://github.com/igoko-consulting/my-AI-product-strategy), [`juno-pm`](https://github.com/igoko-consulting/juno-pm), [`pm-os-agent`](https://github.com/igoko-consulting/pm-os-agent), [`product-leadership`](https://github.com/igoko-consulting/product-leadership).
+Conventions, eval structure, strategy framing and roadmap format are carried across rather than reinvented: [`ai-evals`](https://github.com/igoko-consulting/ai-evals), [`my-AI-product-strategy`](https://github.com/igoko-consulting/my-AI-product-strategy), [`juno-pm`](https://github.com/igoko-consulting/juno-pm), [`pm-os-agent`](https://github.com/igoko-consulting/pm-os-agent), [`product-leadership`](https://github.com/igoko-consulting/product-leadership), [`roamly-gtm-strategy`](https://github.com/igoko-consulting/roamly-gtm-strategy).
 
 ---
 
